@@ -1,46 +1,27 @@
-# Astro Starter Kit: Basics
+# Almena Network Web
 
-```sh
-npm create astro@latest -- --template basics
-```
+Astro-based landing and marketing site for the Almena Network decentralized identity platform.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Description
 
-## 🚀 Project Structure
+The web project provides the public-facing website for Almena Network. It is a static site built with Astro, suitable for deployment to any static hosting (Vercel, Netlify, etc.).
 
-Inside of your Astro project, you'll see the following folders and files:
+## Tech Stack
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+- **Framework**: Astro 5
+- **Package manager**: pnpm
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Tasks (Taskfile)
 
-## 🧞 Commands
+Run `task` or `task --list` from this directory.
 
-All commands are run from the root of the project, from a terminal:
+| Task | Description |
+|------|-------------|
+| `task install` | Install dependencies |
+| `task dev` | Run dev server with hot reload |
+| `task build` | Build static site to `dist/` |
+| `task preview` | Serve built site locally |
+| `task serve` | Serve built site (run build first) |
+| `task clean` | Remove build artifacts (dist/) |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+From the repo root: `task -d web install`, `task -d web build`, etc.
