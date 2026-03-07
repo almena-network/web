@@ -1,0 +1,43 @@
+version: '3'
+
+# Web — Almena Network landing/marketing site (Astro)
+# Run: task (lists options) or task <name>
+
+vars:
+  PKG_MGR: pnpm
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - "{{.PKG_MGR}} install"
+
+  build:
+    desc: Build static site
+    cmds:
+      - "{{.PKG_MGR}} run build"
+
+  dev:
+    desc: Run dev server with hot reload
+    cmds:
+      - "{{.PKG_MGR}} run dev"
+
+  preview:
+    desc: Serve built site locally
+    cmds:
+      - "{{.PKG_MGR}} run preview"
+
+  serve:
+    desc: Serve built site (run build first if needed)
+    cmds:
+      - "{{.PKG_MGR}} run preview"
+
+  clean:
+    desc: Remove build artifacts (dist)
+    cmds:
+      - rm -rf dist
