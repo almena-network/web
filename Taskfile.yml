@@ -15,29 +15,35 @@ tasks:
   install:
     desc: Install dependencies
     cmds:
+      - echo "Installing web dependencies (pnpm)..."
       - "{{.PKG_MGR}} install"
 
   build:
     desc: Build static site
     cmds:
+      - echo "Building web static site (Astro)..."
       - "{{.PKG_MGR}} run build"
 
   dev:
     desc: Run dev server with hot reload
     cmds:
+      - echo "Starting web dev server with hot reload..."
       - "{{.PKG_MGR}} run dev"
 
   preview:
     desc: Serve built site locally
     cmds:
+      - echo "Previewing built web site locally..."
       - "{{.PKG_MGR}} run preview"
 
   serve:
     desc: Serve built site (run build first if needed)
     cmds:
+      - echo "Serving built web site locally..."
       - "{{.PKG_MGR}} run preview"
 
   clean:
     desc: Remove build artifacts (dist)
     cmds:
+      - echo "Removing web build artifacts (dist)..."
       - rm -rf dist

@@ -1,6 +1,6 @@
 # Almena Network Web
 
-Astro-based landing and marketing site for the Almena Network decentralized identity platform.
+Astro-based landing and marketing site for the Almena Network decentralized platform.
 
 ## Description
 
