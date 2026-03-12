@@ -6,9 +6,9 @@ Astro-based landing and marketing site for the Almena Network decentralized plat
 
 | Tool | Version | Purpose |
 |------|---------|---------|
-| **Task** | 3.x | Task runner |
-| **Node.js** | 20+ | Astro, Vite |
-| **pnpm** | Latest | Package manager |
+| [**Task**](https://taskfile.dev/) | 3.x | Task runner |
+| [**Node.js**](https://nodejs.org/) | 20+ | Astro, Vite |
+| [**pnpm**](https://pnpm.io/) | Latest | Package manager |
 
 ## Description
 
