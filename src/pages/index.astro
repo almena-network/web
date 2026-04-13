@@ -3,9 +3,12 @@ import LandingLayout from '../layouts/LandingLayout.astro';
 import Landing from '../components/Landing.astro';
 import { landing } from '../data/landing';
 
+import Analytics from '@vercel/analytics/astro'
+
 const t = landing.en;
 ---
 
 <LandingLayout title={t.title} description={t.description} lang="en">
+  <Analytics/>
   <Landing lang="en" />
 </LandingLayout>

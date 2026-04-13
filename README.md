@@ -2,6 +2,14 @@
 
 Astro-based landing and marketing site for the Almena Network decentralized platform.
 
+## Prerequisites
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| [**Task**](https://taskfile.dev/) | 3.x | Task runner |
+| [**Node.js**](https://nodejs.org/) | 20+ | Astro, Vite |
+| [**pnpm**](https://pnpm.io/) | Latest | Package manager |
+
 ## Description
 
 The web project provides the public-facing website for Almena Network. It is a static site built with Astro, suitable for deployment to any static hosting (Vercel, Netlify, etc.).
