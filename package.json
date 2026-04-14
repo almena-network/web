@@ -10,6 +10,6 @@
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",
-    "astro": "^6.0.3"
+    "astro": "^6.1.6"
   }
 }

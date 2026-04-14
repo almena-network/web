@@ -1,77 +1,115 @@
 export const landing = {
   en: {
-    title: "Almena Network | Decentralized Platform",
-    description: "Decentralized platform built on W3C standards. Identity (DIDs, Verifiable Credentials), and future capabilities: applications, persistence, messaging, coordination and consensus.",
+    title: "Almena Network — Open-Source Decentralized Platform",
+    description:
+      "Community-driven open-source project for decentralized identity. DIDs, Verifiable Credentials, and peer-to-peer networking built on W3C standards.",
     hero: {
-      title: "Decentralized, by design",
-      subtitle: "Almena Network is a decentralized platform built on W3C standards. Identity (DIDs, Verifiable Credentials) is one of its core capabilities—with more to come: applications, persistence, messaging, coordination and consensus, time and ordering.",
-    },
-    purpose: {
-      title: "Why Almena Network?",
-      p1: "Traditional systems put your data in the hands of corporations and governments. Almena Network is designed differently: you control your identity and data.",
-      p2: "Identity today uses DIDs and Verifiable Credentials (VCs) to create portable, cryptographic identities. The platform will grow with decentralized applications, persistence, messaging, coordination and consensus.",
+      title: "Open-Source Decentralized Platform",
+      subtitle:
+        "Community-driven tools for decentralized identity based on W3C standards. DIDs, Verifiable Credentials, and peer-to-peer networking — no central authority required.",
     },
     features: {
-      title: "What we offer",
-      did: {
+      title: "Core Capabilities",
+      identity: {
         title: "Self-Sovereign Identity",
-        text: "Create and own your decentralised identifier. No central registry, no gatekeeper.",
+        text: "Create and control your own DIDs and Verifiable Credentials. Your identity lives on your device — no platform can revoke it.",
       },
-      vc: {
-        title: "Verifiable Credentials",
-        text: "Receive, store, and present tamper-evident credentials from trusted issuers.",
+      p2p: {
+        title: "Peer-to-Peer Network",
+        text: "Nodes discover each other via libp2p and replicate the document registry without a central server.",
       },
-      wallet: {
-        title: "Secure Wallet",
-        text: "Mobile-first wallet for holders. Biometric lock, encrypted backup, recovery flow.",
-      },
-      open: {
-        title: "Open & Standards-Based",
-        text: "Built on W3C DIDs and VCs. Open source. No vendor lock-in.",
+      standards: {
+        title: "Built on W3C Standards",
+        text: "Implements DID Core, VC Data Model 2.0, and Data Integrity. Interoperable by design.",
       },
     },
-    cta: {
-      title: "Get started",
+    modules: {
+      title: "Platform Modules",
+      subtitle:
+        "Four community-built components that work together as a decentralized network.",
+      daemon: {
+        title: "Daemon",
+        text: "Network node with gRPC and REST APIs, peer discovery via libp2p, and DID document registry replication.",
+        tech: "Rust · tonic · libp2p · axum",
+      },
+      wallet: {
+        title: "Wallet",
+        text: "Mobile-first identity wallet for holders. Create DIDs, store credentials, biometric auth, cloud backup, and QR exchange.",
+        tech: "Tauri v2 · React · TypeScript",
+      },
+      desktop: {
+        title: "Desktop",
+        text: "Desktop app for issuers and requesters. Monitor the network, manage peers, issue credentials, configure shared storage.",
+        tech: "Tauri v2 · React · TypeScript",
+      },
+      cli: {
+        title: "CLI",
+        text: "Terminal interface to the daemon. Full TUI with network overview, peer management, storage, and logs.",
+        tech: "Rust · ratatui · crossterm",
+      },
+    },
+    community: {
+      title: "Community-Driven, Open Standards",
+      text: "Built in the open by contributors around the world. No vendor lock-in, no paid dependencies. Run your own node, audit every line of code, and help shape the future of decentralized identity.",
       docs: "Documentation",
-      github: "GitHub",
+      github: "Join us on GitHub",
     },
     langSwitch: "Español",
   },
   es: {
-    title: "Almena Network | Plataforma descentralizada",
-    description: "Plataforma descentralizada basada en estándares W3C. Identidad (DIDs, credenciales verificables) y futuras capacidades: aplicaciones, persistencia, mensajería, coordinación y consenso.",
+    title: "Almena Network — Plataforma Descentralizada Open-Source",
+    description:
+      "Proyecto open-source impulsado por la comunidad para identidad descentralizada. DIDs, Credenciales Verificables y red peer-to-peer sobre estándares W3C.",
     hero: {
-      title: "Descentralizado, por diseño",
-      subtitle: "Almena Network es una plataforma descentralizada basada en estándares W3C. La identidad (DIDs, credenciales verificables) es una de sus capacidades centrales—con más por venir: aplicaciones, persistencia, mensajería, coordinación y consenso, tiempo y ordenamiento.",
-    },
-    purpose: {
-      title: "¿Por qué Almena Network?",
-      p1: "Los sistemas tradicionales ponen tus datos en manos de corporaciones y gobiernos. Almena Network está diseñada de otra forma: tú controlas tu identidad y datos.",
-      p2: "Hoy la identidad usa DIDs y Credenciales Verificables (VCs) para crear identidades criptográficas portátiles. La plataforma crecerá con aplicaciones descentralizadas, persistencia, mensajería, coordinación y consenso.",
+      title: "Plataforma Descentralizada Open-Source",
+      subtitle:
+        "Herramientas de identidad descentralizada desarrolladas por la comunidad, basadas en estándares W3C. DIDs, Credenciales Verificables y red peer-to-peer — sin autoridad central.",
     },
     features: {
-      title: "Lo que ofrecemos",
-      did: {
+      title: "Capacidades principales",
+      identity: {
         title: "Identidad autosoberana",
-        text: "Crea y posee tu identificador descentralizado. Sin registro central, sin intermediarios.",
+        text: "Crea y controla tus propios DIDs y Credenciales Verificables. Tu identidad vive en tu dispositivo — ninguna plataforma puede revocarla.",
       },
-      vc: {
-        title: "Credenciales verificables",
-        text: "Recibe, almacena y presenta credenciales a prueba de manipulación de emisores de confianza.",
+      p2p: {
+        title: "Red peer-to-peer",
+        text: "Los nodos se descubren entre sí via libp2p y replican el registro de documentos sin un servidor central.",
       },
-      wallet: {
-        title: "Billetera segura",
-        text: "Billetera mobile-first para titulares. Bloqueo biométrico, respaldo cifrado, flujo de recuperación.",
-      },
-      open: {
-        title: "Abierto y basado en estándares",
-        text: "Construido sobre DIDs y VCs del W3C. Código abierto. Sin dependencia de proveedores.",
+      standards: {
+        title: "Construido sobre estándares W3C",
+        text: "Implementa DID Core, VC Data Model 2.0 y Data Integrity. Interoperable por diseño.",
       },
     },
-    cta: {
-      title: "Empezar",
+    modules: {
+      title: "Módulos de la plataforma",
+      subtitle:
+        "Cuatro componentes construidos por la comunidad que trabajan juntos como una red descentralizada.",
+      daemon: {
+        title: "Daemon",
+        text: "Nodo de red con APIs gRPC y REST, descubrimiento de peers via libp2p y replicación del registro de documentos DID.",
+        tech: "Rust · tonic · libp2p · axum",
+      },
+      wallet: {
+        title: "Wallet",
+        text: "Cartera de identidad mobile-first para holders. Crea DIDs, almacena credenciales, autenticación biométrica, backup en la nube e intercambio por QR.",
+        tech: "Tauri v2 · React · TypeScript",
+      },
+      desktop: {
+        title: "Desktop",
+        text: "Aplicación de escritorio para emisores y solicitantes. Monitorea la red, gestiona peers, emite credenciales y configura almacenamiento compartido.",
+        tech: "Tauri v2 · React · TypeScript",
+      },
+      cli: {
+        title: "CLI",
+        text: "Interfaz de terminal para el daemon. TUI completa con vista de red, gestión de peers, almacenamiento y logs.",
+        tech: "Rust · ratatui · crossterm",
+      },
+    },
+    community: {
+      title: "Hecho por la comunidad, estándares abiertos",
+      text: "Construido de forma abierta por contribuidores de todo el mundo. Sin vendor lock-in, sin dependencias de pago. Ejecuta tu propio nodo, audita cada línea de código y ayuda a dar forma al futuro de la identidad descentralizada.",
       docs: "Documentación",
-      github: "GitHub",
+      github: "Únete en GitHub",
     },
     langSwitch: "English",
   },
