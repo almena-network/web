@@ -43,7 +43,8 @@ tasks:
       - "{{.PKG_MGR}} run preview"
 
   clean:
-    desc: Remove build artifacts (dist)
+    desc: Remove build artifacts (dist) and node_modules
     cmds:
-      - echo "Removing web build artifacts (dist)..."
+      - echo "Removing web build artifacts (dist, node_modules)..."
       - rm -rf dist
+      - rm -rf node_modules
