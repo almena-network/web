@@ -48,3 +48,10 @@ tasks:
       - echo "Removing web build artifacts (dist, node_modules)..."
       - rm -rf dist
       - rm -rf node_modules
+
+  clean:all:
+    desc: Run clean and remove local .env
+    deps: [clean]
+    cmds:
+      - echo "Removing web .env if present..."
+      - rm -f .env
