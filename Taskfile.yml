@@ -1,4 +1,5 @@
 version: '3'
+silent: true
 
 # Web — Almena Network landing/marketing site (Astro)
 # Run: task (lists options) or task <name>
@@ -43,7 +44,15 @@ tasks:
       - "{{.PKG_MGR}} run preview"
 
   clean:
-    desc: Remove build artifacts (dist)
+    desc: Remove build artifacts (dist) and node_modules
     cmds:
-      - echo "Removing web build artifacts (dist)..."
+      - echo "Removing web build artifacts (dist, node_modules)..."
       - rm -rf dist
+      - rm -rf node_modules
+
+  clean:all:
+    desc: Run clean and remove local .env
+    deps: [clean]
+    cmds:
+      - echo "Removing web .env if present..."
+      - rm -f .env

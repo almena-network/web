@@ -43,6 +43,23 @@ const otherHref = lang === "en" ? "/es/" : "/";
         <h3 class="landing-feature__title">{t.features.standards.title}</h3>
         <p class="landing-feature__text">{t.features.standards.text}</p>
       </article>
+      <article class="landing-feature">
+        <h3 class="landing-feature__title">{t.features.didcomm.title}</h3>
+        <p class="landing-feature__text">{t.features.didcomm.text}</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="landing-advantages" aria-labelledby="advantages-heading">
+    <h2 id="advantages-heading" class="landing-section-title">{t.advantages.title}</h2>
+    <p class="landing-section-subtitle">{t.advantages.subtitle}</p>
+    <div class="landing-advantages-grid">
+      {t.advantages.items.map((item) => (
+        <article class="landing-advantage landing-glass">
+          <h3 class="landing-advantage__title">{item.title}</h3>
+          <p class="landing-advantage__text">{item.text}</p>
+        </article>
+      ))}
     </div>
   </section>
 
@@ -87,7 +104,10 @@ const otherHref = lang === "en" ? "/es/" : "/";
 </main>
 
 <footer class="landing-footer">
-  <p>Almena Network {lang === "en" ? "is a community project" : "es un proyecto comunitario"} · {new Date().getFullYear()}</p>
+  <p>
+    Almena Network {t.footer.tagline} · {new Date().getFullYear()}
+    · <a href={`mailto:${t.footer.email}`} class="landing-footer__link">{t.footer.email}</a>
+  </p>
 </footer>
 
 <style>
@@ -179,7 +199,7 @@ const otherHref = lang === "en" ? "/es/" : "/";
 
   .landing-features-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 24px;
   }
 
@@ -217,6 +237,42 @@ const otherHref = lang === "en" ? "/es/" : "/";
     margin: 0 auto 20px;
     text-align: center;
     max-width: 48ch;
+  }
+
+  /* Advantages — 3 columns */
+  .landing-advantages {
+    margin-bottom: 40px;
+  }
+
+  .landing-advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .landing-advantage {
+    padding: 20px;
+    border-radius: var(--radius);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .landing-advantage:hover {
+    border-color: rgba(139, 92, 246, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .landing-advantage__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--color-secondary);
+  }
+
+  .landing-advantage__text {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.45;
   }
 
   /* Modules grid — 4 columns */
@@ -369,8 +425,27 @@ const otherHref = lang === "en" ? "/es/" : "/";
     margin: 0;
   }
 
+  .landing-footer__link {
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .landing-footer__link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
   /* Responsive */
   @media screen and (max-width: 996px) {
+    .landing-features-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .landing-advantages-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .landing-modules-grid {
       grid-template-columns: repeat(2, 1fr);
     }
@@ -388,6 +463,10 @@ const otherHref = lang === "en" ? "/es/" : "/";
     .landing-features-row {
       grid-template-columns: 1fr;
       gap: 16px;
+    }
+
+    .landing-advantages-grid {
+      grid-template-columns: 1fr;
     }
 
     .landing-modules-grid {
