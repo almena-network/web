@@ -27,14 +27,45 @@ export const landing = {
         text: "Standard protocol for encrypted, decentralized messaging between DIDs — exchange messages, credentials, and proofs without a central message broker.",
       },
     },
+    diagram: {
+      title: "How it works, in plain words",
+      subtitle:
+        "Your app holds your identity and sends secure, end-to-end messages to other people. The network behind it is a group of shared servers, spread across your area, your region, and the world. Ask any of them — you get the same trusted answer, because they keep each other in sync.",
+      svgDesc:
+        "Diagram: two personal apps exchanging secure messages; each app can ask any of several network helpers spread near the user, in their region, and worldwide; helpers stay in sync with each other.",
+      wallet: "Your app",
+      walletRole: "Sends & receives securely",
+      didcommBetween: "Encrypted, end-to-end messages",
+      tierLocal: "Near you",
+      tierRegional: "In your region",
+      tierGlobal: "Worldwide",
+      node: "Helper",
+      nodeShort: "H",
+      nodeRole: "Store info · relay messages",
+      meshCaption: "Shared, always-in-sync network",
+      queryHint: "Ask any one — same trusted answer",
+    },
+    availability: {
+      title: "Availability: centralized vs. decentralized",
+      subtitle:
+        "A centralized service goes offline when its server does. A decentralized network keeps serving as long as any node stays up.",
+      centralizedTitle: "Centralized",
+      centralizedStatus: "Server down — everyone offline",
+      centralizedServer: "Single server",
+      decentralizedTitle: "Decentralized",
+      decentralizedStatus: "Some nodes down — network still up",
+      up: "Up",
+      down: "Down",
+      userLabel: "User",
+    },
     advantages: {
       title: "Why a decentralized platform",
       subtitle:
         "Decentralized identity spreads trust across peers and standards — not a single company or server.",
       items: [
         {
-          title: "Resilience",
-          text: "Peer replication and many nodes reduce a single point of failure. The network keeps working when individual hosts or regions go offline.",
+          title: "Always-on availability",
+          text: "Centralized services go down whenever their servers do. Here there is no single point of failure: as long as any node in the network is up — in your area, your region, or the world — the service keeps running.",
         },
         {
           title: "Control & censorship resistance",
@@ -123,14 +154,45 @@ export const landing = {
         text: "Protocolo estándar para mensajería cifrada y descentralizada entre DIDs — intercambia mensajes, credenciales y pruebas sin un broker de mensajes central.",
       },
     },
+    diagram: {
+      title: "Cómo funciona, en palabras sencillas",
+      subtitle:
+        "Tu app guarda tu identidad y envía mensajes cifrados de extremo a extremo a otras personas. Detrás hay un grupo de servidores compartidos repartidos cerca de ti, en tu región y por todo el mundo. Pregunta a cualquiera: todos te dan la misma respuesta fiable porque están sincronizados entre sí.",
+      svgDesc:
+        "Diagrama: dos apps personales se envían mensajes seguros; cada app puede preguntar a cualquiera de varios servidores de la red cerca del usuario, en su región y en el mundo; los servidores se mantienen sincronizados entre ellos.",
+      wallet: "Tu app",
+      walletRole: "Envía y recibe de forma segura",
+      didcommBetween: "Mensajes cifrados de extremo a extremo",
+      tierLocal: "Cerca de ti",
+      tierRegional: "En tu región",
+      tierGlobal: "En el mundo",
+      node: "Servidor",
+      nodeShort: "S",
+      nodeRole: "Guardan información · retransmiten mensajes",
+      meshCaption: "Red compartida y siempre sincronizada",
+      queryHint: "Pregunta a cualquiera — misma respuesta fiable",
+    },
+    availability: {
+      title: "Disponibilidad: centralizado vs. descentralizado",
+      subtitle:
+        "Un servicio centralizado se cae cuando cae su servidor. Una red descentralizada sigue sirviendo mientras haya cualquier nodo en pie.",
+      centralizedTitle: "Centralizado",
+      centralizedStatus: "Servidor caído — todos sin servicio",
+      centralizedServer: "Servidor único",
+      decentralizedTitle: "Descentralizado",
+      decentralizedStatus: "Algunos nodos caídos — red sigue activa",
+      up: "Activo",
+      down: "Caído",
+      userLabel: "Usuario",
+    },
     advantages: {
       title: "Por qué una plataforma descentralizada",
       subtitle:
         "La identidad descentralizada reparte la confianza entre pares y estándares — no en una sola empresa ni un solo servidor.",
       items: [
         {
-          title: "Resiliencia",
-          text: "La replicación entre peers y muchos nodos reduce el punto único de fallo. La red sigue operativa cuando caen hosts o regiones concretas.",
+          title: "Disponibilidad siempre activa",
+          text: "Los servicios centralizados se caen cuando cae su servidor. Aquí no hay punto único de fallo: mientras quede cualquier nodo en pie — cerca de ti, en tu región o en el mundo — el servicio sigue funcionando.",
         },
         {
           title: "Control y resistencia a la censura",
