@@ -10,10 +10,7 @@ const { lang } = Astro.props;
 const a = landing[lang].availability;
 ---
 
-<section class="landing-availability" aria-labelledby="availability-heading">
-  <h2 id="availability-heading" class="landing-section-title">{a.title}</h2>
-  <p class="landing-section-subtitle landing-availability__intro">{a.subtitle}</p>
-
+<section class="landing-availability" aria-label={a.title}>
   <div class="landing-availability-grid">
     <!-- Centralized panel -->
     <figure class="landing-availability__panel landing-availability__panel--down">
@@ -141,10 +138,6 @@ const a = landing[lang].availability;
 <style>
   .landing-availability {
     margin-bottom: 40px;
-  }
-
-  .landing-availability__intro {
-    max-width: 64ch;
   }
 
   .landing-availability-grid {
