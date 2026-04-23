@@ -2,11 +2,11 @@ export const landing = {
   en: {
     title: "Almena Network — Open-Source Decentralized Platform",
     description:
-      "Community-driven open-source project for decentralized identity. DIDs, Verifiable Credentials, peer-to-peer networking, and DIDComm v2 messaging — built on W3C standards.",
+      "Community-driven open-source project for decentralized identity. DIDs, Verifiable Credentials, IPv6-first peer-to-peer networking, and DIDComm v2 messaging — built on W3C standards.",
     hero: {
       title: "Open-Source Decentralized Platform",
       subtitle:
-        "Community-driven tools for decentralized identity based on W3C standards. DIDs, Verifiable Credentials, peer-to-peer networking, and DIDComm v2 for decentralized messaging — no central authority required.",
+        "Community-driven tools for decentralized identity based on W3C standards. DIDs, Verifiable Credentials, IPv6-first peer-to-peer mesh, and DIDComm v2 for decentralized messaging — no central authority required.",
     },
     features: {
       title: "Core Capabilities",
@@ -15,8 +15,8 @@ export const landing = {
         text: "Create and control your own DIDs and Verifiable Credentials. Your identity lives on your device — no platform can revoke it.",
       },
       p2p: {
-        title: "Peer-to-Peer Network",
-        text: "Nodes discover each other via libp2p and replicate the document registry without a central server.",
+        title: "IPv6-first P2P mesh",
+        text: "Nodes discover each other with libp2p and keep the DID document registry in sync with no central server. IPv6 is the default for peer addressing and reachability; IPv4 remains as a compatibility path for legacy networks, not the long-term design center.",
       },
       standards: {
         title: "Built on W3C Standards",
@@ -76,16 +76,16 @@ export const landing = {
           text: "W3C DIDs and Verifiable Credentials let other systems verify and exchange data without proprietary, closed APIs.",
         },
         {
+          title: "IPv6 over IPv4 by design",
+          text: "A decentralized mesh needs truly reachable peers. The stack treats IPv6 as the primary path for libp2p multiaddrs and discovery, cutting through NAT pain at global scale. IPv4 is still supported, but the architecture assumes IPv4 as a legacy fallback—not the end state of the network.",
+        },
+        {
           title: "Sovereignty & deployment",
           text: "Run your own node, choose your infrastructure, and align with internal policy or jurisdiction — without mandatory reliance on our cloud.",
         },
         {
           title: "Transparency & trust",
           text: "Open-source code and public standards mean behavior can be reviewed and audited instead of taken on faith alone.",
-        },
-        {
-          title: "Less vendor lock-in",
-          text: "Portable identity and open protocols reduce switching costs. You are not permanently tied to one vendor to keep using your identifiers.",
         },
       ],
     },
@@ -95,7 +95,7 @@ export const landing = {
         "Four community-built components that work together as a decentralized network.",
       daemon: {
         title: "Daemon",
-        text: "Network node with gRPC and REST APIs, peer discovery via libp2p, and DID document registry replication.",
+        text: "Network node with gRPC and REST, libp2p peer discovery, and DID document replication. Exposes and prefers IPv6 listeners and announced addresses; IPv4 is available where the environment still requires it.",
         tech: "Rust · tonic · libp2p · axum",
       },
       wallet: {
@@ -129,11 +129,11 @@ export const landing = {
   es: {
     title: "Almena Network — Plataforma Descentralizada Open-Source",
     description:
-      "Proyecto open-source impulsado por la comunidad para identidad descentralizada. DIDs, Credenciales Verificables, red peer-to-peer y mensajería DIDComm v2 — sobre estándares W3C.",
+      "Proyecto open-source impulsado por la comunidad para identidad descentralizada. DIDs, Credenciales Verificables, malla P2P con IPv6 prioritaria y mensajería DIDComm v2 — sobre estándares W3C.",
     hero: {
       title: "Plataforma Descentralizada Open-Source",
       subtitle:
-        "Herramientas de identidad descentralizada desarrolladas por la comunidad, basadas en estándares W3C. DIDs, Credenciales Verificables, red peer-to-peer y DIDComm v2 para comunicación descentralizada — sin autoridad central.",
+        "Herramientas de identidad descentralizada desarrolladas por la comunidad, basadas en estándares W3C. DIDs, Credenciales Verificables, malla P2P con IPv6 prioritaria y DIDComm v2 para comunicación descentralizada — sin autoridad central.",
     },
     features: {
       title: "Capacidades principales",
@@ -142,8 +142,8 @@ export const landing = {
         text: "Crea y controla tus propios DIDs y Credenciales Verificables. Tu identidad vive en tu dispositivo — ninguna plataforma puede revocarla.",
       },
       p2p: {
-        title: "Red peer-to-peer",
-        text: "Los nodos se descubren entre sí via libp2p y replican el registro de documentos sin un servidor central.",
+        title: "Malla P2P con IPv6 prioritaria",
+        text: "Los nodos se descubren con libp2p y mantienen el registro de documentos DID en sincronía sin servidor central. IPv6 es la opción predeterminada para direccionar y alcanzar peers; IPv4 se mantiene como compatibilidad con redes aún ancladas a legacy, no como eje de diseño a largo plazo.",
       },
       standards: {
         title: "Construido sobre estándares W3C",
@@ -203,16 +203,16 @@ export const landing = {
           text: "Los DIDs y Credenciales Verificables W3C permiten que otros sistemas verifiquen e intercambien datos sin APIs propietarias cerradas.",
         },
         {
+          title: "IPv6 frente a IPv4, por diseño",
+          text: "Una malla descentralizada necesita peers realmente alcanzables. El stack trata IPv6 como ruta principal para multiaddrs y descubrimiento libp2p, reduciendo el dolor del NAT a escala global. IPv4 se sigue soportando, pero la arquitectura lo entiende como capa de compatibilidad, no como destino de la red.",
+        },
+        {
           title: "Soberanía y despliegue",
           text: "Ejecuta tu propio nodo, elige tu infraestructura y alinea políticas internas o jurisdicción — sin depender obligatoriamente de un cloud concreto.",
         },
         {
           title: "Transparencia y confianza",
           text: "Código abierto y estándares públicos permiten revisar y auditar el comportamiento en lugar de confiar solo en la marca.",
-        },
-        {
-          title: "Menos vendor lock-in",
-          text: "Identidad portable y protocolos abiertos reducen el coste de cambio. No quedas atado para siempre a un proveedor para seguir usando tus identificadores.",
         },
       ],
     },
@@ -222,7 +222,7 @@ export const landing = {
         "Cuatro componentes construidos por la comunidad que trabajan juntos como una red descentralizada.",
       daemon: {
         title: "Daemon",
-        text: "Nodo de red con APIs gRPC y REST, descubrimiento de peers via libp2p y replicación del registro de documentos DID.",
+        text: "Nodo de red con gRPC y REST, descubrimiento libp2p y réplica del registro DID. Anuncia y prioriza escucha en IPv6; IPv4 queda disponible cuando el entorno aún lo exige.",
         tech: "Rust · tonic · libp2p · axum",
       },
       wallet: {
