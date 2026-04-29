@@ -1,0 +1,215 @@
+---
+import type { Lang } from "../data/landing";
+import { landing } from "../data/landing";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const d = landing[lang].diagram;
+---
+
+<section class="landing-diagram" aria-label={d.title}>
+  <figure class="landing-diagram__figure">
+    <svg
+      class="landing-diagram__svg"
+      viewBox="0 0 840 340"
+      xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-labelledby="diagram-svg-title diagram-svg-desc"
+    >
+      <title id="diagram-svg-title">{d.title}</title>
+      <desc id="diagram-svg-desc">{d.svgDesc}</desc>
+      <defs>
+        <marker id="ld-qry" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+          <polygon points="0 0, 6 3, 0 6" fill="#FB923C" />
+        </marker>
+      </defs>
+
+      <style>
+        .ld-phone {
+          fill: rgba(251, 146, 60, 0.08);
+          stroke: rgba(251, 146, 60, 0.55);
+          stroke-width: 1.5;
+        }
+        .ld-phone-screen {
+          fill: rgba(255, 255, 255, 0.04);
+          stroke: rgba(255, 255, 255, 0.12);
+          stroke-width: 1;
+        }
+        .ld-zone {
+          fill: rgba(139, 92, 246, 0.04);
+          stroke: rgba(139, 92, 246, 0.2);
+          stroke-width: 1;
+        }
+        .ld-node {
+          fill: rgba(139, 92, 246, 0.14);
+          stroke: #8B5CF6;
+          stroke-width: 1.5;
+        }
+        .ld-cap {
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          font-size: 12px;
+          font-weight: 600;
+          fill: #fafafa;
+        }
+        .ld-node-cap {
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          font-size: 10px;
+          font-weight: 700;
+          fill: #fafafa;
+        }
+        .ld-cap-sm {
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          font-size: 10px;
+          font-weight: 500;
+          fill: #a3a3a3;
+        }
+        .ld-lab {
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          font-size: 11px;
+          fill: #a3a3a3;
+        }
+        .ld-tier {
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          font-size: 10px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
+          fill: #8B5CF6;
+        }
+        .ld-hint {
+          font-family: Inter, system-ui, -apple-system, sans-serif;
+          font-size: 11px;
+          font-weight: 500;
+          fill: #a3a3a3;
+        }
+        .ld-line-didcomm {
+          stroke: #FB923C;
+          stroke-width: 2;
+          fill: none;
+          stroke-dasharray: 6 4;
+        }
+        .ld-line-query {
+          stroke: rgba(251, 146, 60, 0.6);
+          stroke-width: 1.2;
+          fill: none;
+          stroke-dasharray: 4 4;
+          marker-end: url(#ld-qry);
+        }
+        .ld-line-mesh {
+          stroke: rgba(139, 92, 246, 0.45);
+          stroke-width: 1;
+          fill: none;
+        }
+      </style>
+
+      <!-- Network zone -->
+      <rect class="ld-zone" x="80" y="128" width="680" height="192" rx="16" />
+      <text class="ld-hint" x="420" y="148" text-anchor="middle">{d.meshCaption}</text>
+
+      <!-- Tier labels -->
+      <text class="ld-tier" x="96" y="180" text-anchor="start">{d.tierLocal}</text>
+      <text class="ld-tier" x="96" y="238" text-anchor="start">{d.tierRegional}</text>
+      <text class="ld-tier" x="96" y="296" text-anchor="start">{d.tierGlobal}</text>
+
+      <!-- Mesh links between nodes (kept minimal, representative) -->
+      <g aria-hidden="true">
+        <line class="ld-line-mesh" x1="288" y1="180" x2="420" y2="180" />
+        <line class="ld-line-mesh" x1="420" y1="180" x2="552" y2="180" />
+        <line class="ld-line-mesh" x1="336" y1="238" x2="504" y2="238" />
+        <line class="ld-line-mesh" x1="384" y1="296" x2="456" y2="296" />
+        <line class="ld-line-mesh" x1="288" y1="180" x2="336" y2="238" />
+        <line class="ld-line-mesh" x1="420" y1="180" x2="504" y2="238" />
+        <line class="ld-line-mesh" x1="552" y1="180" x2="504" y2="238" />
+        <line class="ld-line-mesh" x1="336" y1="238" x2="384" y2="296" />
+        <line class="ld-line-mesh" x1="504" y1="238" x2="456" y2="296" />
+      </g>
+
+      <!-- Nodes: near you (3) -->
+      <circle class="ld-node" cx="288" cy="180" r="18" />
+      <text class="ld-node-cap" x="288" y="184" text-anchor="middle">{d.nodeShort}</text>
+      <circle class="ld-node" cx="420" cy="180" r="18" />
+      <text class="ld-node-cap" x="420" y="184" text-anchor="middle">{d.nodeShort}</text>
+      <circle class="ld-node" cx="552" cy="180" r="18" />
+      <text class="ld-node-cap" x="552" y="184" text-anchor="middle">{d.nodeShort}</text>
+
+      <!-- In your region (2) -->
+      <circle class="ld-node" cx="336" cy="238" r="18" />
+      <text class="ld-node-cap" x="336" y="242" text-anchor="middle">{d.nodeShort}</text>
+      <circle class="ld-node" cx="504" cy="238" r="18" />
+      <text class="ld-node-cap" x="504" y="242" text-anchor="middle">{d.nodeShort}</text>
+
+      <!-- Worldwide (2) -->
+      <circle class="ld-node" cx="384" cy="296" r="18" />
+      <text class="ld-node-cap" x="384" y="300" text-anchor="middle">{d.nodeShort}</text>
+      <circle class="ld-node" cx="456" cy="296" r="18" />
+      <text class="ld-node-cap" x="456" y="300" text-anchor="middle">{d.nodeShort}</text>
+
+      <text class="ld-cap-sm" x="420" y="324" text-anchor="middle">{d.nodeRole}</text>
+
+      <!-- Wallets as phones -->
+      <text class="ld-lab" x="420" y="26" text-anchor="middle">{d.didcommBetween}</text>
+
+      <!-- Left phone -->
+      <rect class="ld-phone" x="60" y="40" width="72" height="60" rx="10" />
+      <rect class="ld-phone-screen" x="68" y="48" width="56" height="38" rx="5" />
+      <text class="ld-cap" x="96" y="72" text-anchor="middle">{d.wallet}</text>
+      <text class="ld-cap-sm" x="96" y="116" text-anchor="middle">{d.walletRole}</text>
+
+      <!-- Right phone -->
+      <rect class="ld-phone" x="708" y="40" width="72" height="60" rx="10" />
+      <rect class="ld-phone-screen" x="716" y="48" width="56" height="38" rx="5" />
+      <text class="ld-cap" x="744" y="72" text-anchor="middle">{d.wallet}</text>
+      <text class="ld-cap-sm" x="744" y="116" text-anchor="middle">{d.walletRole}</text>
+
+      <line class="ld-line-didcomm" x1="138" y1="60" x2="702" y2="60" />
+
+      <!-- Query any node: two illustrative arrows per side, to different tiers -->
+      <line class="ld-line-query" x1="96" y1="104" x2="288" y2="168" />
+      <line class="ld-line-query" x1="96" y1="104" x2="336" y2="226" />
+      <line class="ld-line-query" x1="744" y1="104" x2="552" y2="168" />
+      <line class="ld-line-query" x1="744" y1="104" x2="456" y2="284" />
+
+      <!-- Bottom hint -->
+      <text class="ld-hint" x="420" y="336" text-anchor="middle">{d.queryHint}</text>
+    </svg>
+  </figure>
+</section>
+
+<style>
+  .landing-diagram {
+    margin-bottom: 40px;
+  }
+
+  .landing-diagram__figure {
+    margin: 0;
+    padding: 16px 12px 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
+    border: 1px solid var(--color-glass-border);
+  }
+
+  .landing-diagram__svg {
+    width: 100%;
+    max-width: 840px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    min-height: 240px;
+  }
+
+  @media screen and (max-width: 640px) {
+    .landing-diagram__figure {
+      padding: 12px 8px 16px;
+    }
+
+    .landing-diagram__svg {
+      min-height: 220px;
+    }
+  }
+</style>

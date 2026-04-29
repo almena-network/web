@@ -1,0 +1,11 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import Landing from '../../components/Landing.astro';
+import { landing } from '../../data/landing';
+
+const t = landing.es;
+---
+
+<LandingLayout title={t.title} description={t.description} lang="es">
+  <Landing lang="es" />
+</LandingLayout>

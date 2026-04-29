@@ -1,0 +1,76 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  lang: "en" | "es";
+}
+
+const { title, description, lang } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <meta name="description" content={description} />
+    <link rel="alternate" hreflang="en" href={`${Astro.url.origin}/`} />
+    <link rel="alternate" hreflang="es" href={`${Astro.url.origin}/es/`} />
+    <link rel="alternate" hreflang="x-default" href={`${Astro.url.origin}/`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    color-scheme: dark;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    --color-primary: #FB923C;
+    --color-primary-hover: #FDBA74;
+    --color-secondary: #8B5CF6;
+    --color-bg: #0c0a09;
+    --color-bg-gradient: linear-gradient(
+      160deg,
+      #0c0a09 0%,
+      #141210 25%,
+      #1e1b4b 60%,
+      #0f0e14 90%,
+      #0c0a09 100%
+    );
+    --color-glass-bg: rgba(255, 255, 255, 0.04);
+    --color-glass-border: rgba(255, 255, 255, 0.08);
+    --color-text: #fafafa;
+    --color-text-muted: #a3a3a3;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --blur: 20px;
+    --transition: 200ms ease-out;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--color-text);
+    background: var(--color-bg-gradient);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+</style>
