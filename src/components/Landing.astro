@@ -3,6 +3,7 @@ import type { Lang } from "../data/landing";
 import { landing } from "../data/landing";
 import NetworkDiagram from "./NetworkDiagram.astro";
 import AvailabilityDiagram from "./AvailabilityDiagram.astro";
+import UseCasesSection from "./UseCasesSection.astro";
 
 interface Props {
   lang: Lang;
@@ -55,6 +56,8 @@ const otherHref = lang === "en" ? "/es/" : "/";
   <NetworkDiagram lang={lang} />
 
   <AvailabilityDiagram lang={lang} />
+
+  <UseCasesSection lang={lang} />
 
   <section class="landing-advantages" aria-labelledby="advantages-heading">
     <h2 id="advantages-heading" class="landing-section-title">{t.advantages.title}</h2>

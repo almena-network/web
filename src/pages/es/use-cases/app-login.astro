@@ -1,0 +1,11 @@
+---
+import LandingLayout from "../../../layouts/LandingLayout.astro";
+import UseCaseAppLogin from "../../../components/UseCaseAppLogin.astro";
+import { useCaseAppLogin } from "../../../data/landing";
+
+const t = useCaseAppLogin.es;
+---
+
+<LandingLayout title={`${t.title} — Almena Network`} description={t.description} lang="es">
+  <UseCaseAppLogin lang="es" />
+</LandingLayout>

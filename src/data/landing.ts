@@ -115,6 +115,22 @@ export const landing = {
       docs: "Documentation",
       github: "Join us on GitHub",
     },
+    useCases: {
+      title: "Use cases",
+      subtitle:
+        "Concrete experiences the platform enables. Click any card to read the full flow and architecture.",
+      readMore: "Read the use case",
+      items: [
+        {
+          slug: "app-login",
+          href: "/use-cases/app-login/",
+          title: "Sign in with Almena",
+          summary:
+            "An OAuth-style button that lets users log into any integrated application by scanning a QR with the Almena Wallet and approving on their phone — no passwords, no central identity provider.",
+          tags: ["Authentication", "DIDComm v2", "Wallet"],
+        },
+      ],
+    },
     footer: {
       tagline: "is a community project",
       email: "develop@almena.network",
@@ -237,6 +253,22 @@ export const landing = {
       docs: "Documentación",
       github: "Únete en GitHub",
     },
+    useCases: {
+      title: "Casos de uso",
+      subtitle:
+        "Experiencias concretas que la plataforma habilita. Pulsa cualquier tarjeta para leer el flujo y la arquitectura completos.",
+      readMore: "Leer el caso de uso",
+      items: [
+        {
+          slug: "app-login",
+          href: "/es/use-cases/app-login/",
+          title: "Inicio de sesión con Almena",
+          summary:
+            "Un botón estilo OAuth que permite a los usuarios iniciar sesión en cualquier aplicación integrada escaneando un QR con la Almena Wallet y aprobando desde el móvil — sin contraseñas y sin proveedor de identidad central.",
+          tags: ["Autenticación", "DIDComm v2", "Wallet"],
+        },
+      ],
+    },
     footer: {
       tagline: "es un proyecto comunitario",
       email: "develop@almena.network",
@@ -246,3 +278,232 @@ export const landing = {
 } as const;
 
 export type Lang = keyof typeof landing;
+
+export const useCaseAppLogin = {
+  en: {
+    title: "Sign in with Almena",
+    eyebrow: "Use case · Authentication",
+    description:
+      "An OAuth-style flow that lets any application authenticate users with Almena. The user scans a QR with the Almena Wallet, picks a public node, and approves on their phone. No passwords, no central identity provider, and the application never sees the user's keys.",
+    backToHome: "Back to home",
+    sections: {
+      problem: {
+        title: "What it solves",
+        text: "Today, most apps either build their own password system — with all the breach risk that implies — or delegate login to a single corporate identity provider. Both options give one party full control over millions of accounts. With Almena, the user holds their own DID and credentials in the Wallet; the application only receives a verifiable proof of authentication signed by the user, not their secrets.",
+      },
+      experience: {
+        title: "What the user sees",
+        steps: [
+          {
+            title: "1. The integrated app",
+            text: "An application — web, desktop or mobile — embeds a 'Sign in with Almena' button next to its other login options.",
+          },
+          {
+            title: "2. QR with public-node selector",
+            text: "Pressing the button opens a screen with a QR code and a selector listing public Almena nodes. The user can change the node; the QR is regenerated for the chosen node.",
+          },
+          {
+            title: "3. Scan from the Wallet",
+            text: "On the phone, the user scans the QR with the Almena Wallet. The wallet shows which application is requesting access and what it will know about them.",
+          },
+          {
+            title: "4. Biometric approval",
+            text: "The user approves with Face ID, Touch ID or device PIN. The wallet signs the authentication challenge with the user's DID key (post-quantum, ML-DSA-87). If the user taps Reject instead, the wallet sends a signed cancellation back to the node and the integrated app immediately shows a 'Login rejected' message — no waiting for the QR to expire.",
+          },
+          {
+            title: "5. Logged in",
+            text: "The chosen public node resolves the user's DID document from the Almena mesh, verifies the signature against the public key declared in that document, and the integrated app — which has been polling for the result — receives the user's DID and mints its own session token. The login screen turns into the app's authenticated home.",
+          },
+        ],
+      },
+      flow: {
+        title: "Flow diagram",
+        subtitle:
+          "Happy path between the integrated application, the user's wallet and the chosen public Almena node. If the user rejects on the wallet, the node flips the challenge to 'rejected' and the app's next poll surfaces it — same path, terminal at step 9.",
+      },
+      elements: {
+        title: "Elements diagram",
+        subtitle:
+          "The pieces involved and how they relate. Public nodes are interchangeable: the wallet talks to the one the user picked in the QR screen.",
+      },
+      security: {
+        title: "Security notes",
+        items: [
+          "The application never receives the user's private key — only a verifiable signature on the challenge.",
+          "Signatures use post-quantum primitives (ML-DSA-87, NIST FIPS 204) and the verifying key is read from the DID document published on the Almena mesh — not just the DID literal. Even a malicious node cannot substitute a different signing key: the daemon cross-checks the document key against the multibase-encoded key inside the DID identifier and refuses any mismatch.",
+          "The user picks which public node mediates the exchange. The node never holds long-term secrets: every authentication is cryptographically bound to the user's DID, not to the node.",
+          "The challenge is single-use and short-lived (60 s default, 300 s ceiling). Replays are rejected by the node and the wallet; the second proof for the same id returns 409 Conflict.",
+          "If the user has not yet published their DID document, the node refuses the proof with a clear error rather than silently trusting the DID literal — login requires a published, network-resolvable identity.",
+          "Reject on the wallet is also authenticated: the wallet sends back the QR's nonce so the node can confirm the rejecter actually scanned the QR before flipping the challenge state. The integrator's UI surfaces the rejection on its next poll without waiting for the timeout.",
+        ],
+      },
+    },
+    flowDiagram: {
+      svgDesc:
+        "Sequence diagram: the integrated app requests an authentication challenge from a public node, shows a QR; the wallet scans the QR, the user approves or rejects, the wallet signs the response (or a cancellation) and sends it to the node, which verifies it against the DID document on the Almena mesh; the app polls and on approval mints its own session token.",
+      lanes: {
+        app: "Integrated app",
+        node: "Public node",
+        wallet: "Almena Wallet",
+        mesh: "Almena network",
+      },
+      steps: [
+        "1. User clicks 'Sign in with Almena'",
+        "2. Request auth challenge",
+        "3. Session id + challenge",
+        "4. Show QR + node selector",
+        "5. Scan QR",
+        "6. Display app + scope · biometric approval",
+        "7. Sign challenge (ML-DSA-87)",
+        "8. Resolve DID document from mesh",
+        "9. Verify signature with published key",
+        "10. App polls · receives DID + mints token",
+        "11. User logged in",
+      ],
+    },
+    elementsDiagram: {
+      svgDesc:
+        "Architecture diagram: the integrated app on the left shows a QR screen with a node selector; the user's wallet on the right scans the QR and signs the challenge; in the middle a public node mediates the exchange and resolves the user's DID document on the Almena mesh.",
+      app: {
+        title: "Integrated app",
+        role: "Embeds the login button. Displays the QR and node selector. Receives the authentication result.",
+      },
+      qr: {
+        title: "QR + node selector",
+        role: "Encodes the session, the challenge and the chosen public node URL.",
+      },
+      wallet: {
+        title: "Almena Wallet",
+        role: "Holds the user's DID and private key. Scans the QR, asks for biometrics, signs the challenge.",
+      },
+      node: {
+        title: "Public node",
+        role: "Mediates the exchange. Verifies the signature against the DID document.",
+      },
+      mesh: {
+        title: "Almena network",
+        role: "P2P mesh of nodes that keep DID documents in sync. Any node returns the same document.",
+      },
+      labels: {
+        challenge: "Challenge",
+        signed: "Signed proof",
+        result: "Auth result",
+        resolve: "Resolve DID",
+        scan: "Scan QR",
+      },
+    },
+  },
+  es: {
+    title: "Inicio de sesión con Almena",
+    eyebrow: "Caso de uso · Autenticación",
+    description:
+      "Un flujo estilo OAuth que permite a cualquier aplicación autenticar a sus usuarios con Almena. El usuario escanea un QR con la Almena Wallet, elige un nodo público y aprueba desde el móvil. Sin contraseñas, sin proveedor de identidad central y la aplicación nunca ve las claves del usuario.",
+    backToHome: "Volver al inicio",
+    sections: {
+      problem: {
+        title: "Qué resuelve",
+        text: "Hoy la mayoría de las apps o construyen su propio sistema de contraseñas — con el riesgo de filtraciones que eso implica — o delegan el login en un único proveedor de identidad corporativo. Las dos opciones ponen el control de millones de cuentas en una sola parte. Con Almena, el usuario tiene su DID y sus credenciales en la Wallet; la aplicación solo recibe una prueba verificable de autenticación firmada por el usuario, no sus secretos.",
+      },
+      experience: {
+        title: "Lo que ve el usuario",
+        steps: [
+          {
+            title: "1. La aplicación integrada",
+            text: "Una aplicación — web, escritorio o móvil — incluye un botón 'Iniciar sesión con Almena' junto al resto de opciones de login.",
+          },
+          {
+            title: "2. QR con selector de nodo público",
+            text: "Al pulsar el botón se abre una pantalla con un QR y un selector con nodos Almena públicos. El usuario puede cambiar de nodo; el QR se regenera para el nodo elegido.",
+          },
+          {
+            title: "3. Escaneo desde la Wallet",
+            text: "Desde el móvil, el usuario escanea el QR con la Almena Wallet. La wallet muestra qué aplicación está pidiendo acceso y qué va a saber sobre él.",
+          },
+          {
+            title: "4. Aprobación biométrica",
+            text: "El usuario aprueba con Face ID, Touch ID o el PIN del dispositivo. La wallet firma el reto de autenticación con la clave de su DID (post-cuántico, ML-DSA-87). Si el usuario pulsa Rechazar, la wallet envía una cancelación firmada al nodo y la aplicación integrada muestra inmediatamente un mensaje de 'Login rechazado' — sin esperar a que el QR caduque.",
+          },
+          {
+            title: "5. Sesión iniciada",
+            text: "El nodo público elegido resuelve el documento DID del usuario en la malla Almena, verifica la firma contra la clave pública declarada en ese documento, y la aplicación integrada — que está poleando el resultado — recibe el DID del usuario y emite su propio token de sesión. La pantalla de login se convierte en la pantalla autenticada de la app.",
+          },
+        ],
+      },
+      flow: {
+        title: "Diagrama de flujo",
+        subtitle:
+          "Camino feliz entre la aplicación integrada, la wallet del usuario y el nodo público elegido. Si el usuario rechaza en la wallet, el nodo marca el reto como 'rechazado' y el siguiente sondeo de la app lo refleja — mismo camino, terminal en el paso 9.",
+      },
+      elements: {
+        title: "Diagrama de elementos",
+        subtitle:
+          "Las piezas implicadas y cómo se relacionan. Los nodos públicos son intercambiables: la wallet habla con el que el usuario eligió en la pantalla del QR.",
+      },
+      security: {
+        title: "Notas de seguridad",
+        items: [
+          "La aplicación nunca recibe la clave privada del usuario — solo una firma verificable sobre el reto.",
+          "Las firmas usan primitivas post-cuánticas (ML-DSA-87, NIST FIPS 204) y la clave verificadora se lee del documento DID publicado en la malla Almena — no solo del literal del DID. Aunque un nodo malicioso intentase servir un documento manipulado, el daemon hace cross-check contra la clave codificada en el propio identificador DID y rechaza cualquier discrepancia.",
+          "El usuario elige qué nodo público media el intercambio. El nodo no guarda secretos a largo plazo: toda autenticación está ligada criptográficamente al DID del usuario, no al nodo.",
+          "El reto es de un solo uso y corta duración (60 s por defecto, máximo 300 s). El nodo y la wallet rechazan los replays; una segunda prueba para el mismo id devuelve 409 Conflict.",
+          "Si el usuario aún no ha publicado su documento DID, el nodo rechaza la prueba con un error claro en lugar de confiar silenciosamente en el literal del DID — el login exige una identidad publicada y resoluble en la red.",
+          "El rechazo en la wallet también está autenticado: la wallet envía el nonce del QR para que el nodo confirme que quien rechaza realmente escaneó el código antes de cerrar el reto. El UI del integrador muestra el rechazo en su siguiente sondeo, sin esperar al timeout.",
+        ],
+      },
+    },
+    flowDiagram: {
+      svgDesc:
+        "Diagrama de secuencia: la app integrada solicita un reto de autenticación a un nodo público, muestra un QR; la wallet escanea el QR, el usuario aprueba o rechaza, la wallet firma la respuesta (o una cancelación) y la envía al nodo, que la verifica contra el documento DID en la malla Almena; la app sondea y al aprobarse genera su propio token de sesión.",
+      lanes: {
+        app: "App integrada",
+        node: "Nodo público",
+        wallet: "Almena Wallet",
+        mesh: "Red Almena",
+      },
+      steps: [
+        "1. El usuario pulsa 'Iniciar sesión con Almena'",
+        "2. Solicitar reto de autenticación",
+        "3. Id de sesión + reto",
+        "4. Mostrar QR + selector de nodo",
+        "5. Escanear QR",
+        "6. Mostrar app + permisos · aprobación biométrica",
+        "7. Firmar reto (ML-DSA-87)",
+        "8. Resolver documento DID en la malla",
+        "9. Verificar firma con clave publicada",
+        "10. La app sondea · recibe DID + emite token",
+        "11. Usuario autenticado",
+      ],
+    },
+    elementsDiagram: {
+      svgDesc:
+        "Diagrama de arquitectura: a la izquierda la app integrada con la pantalla de QR y el selector de nodo; a la derecha la wallet del usuario que escanea el QR y firma el reto; en el medio un nodo público media el intercambio y resuelve el documento DID del usuario en la malla Almena.",
+      app: {
+        title: "App integrada",
+        role: "Incluye el botón de login. Muestra el QR y el selector de nodo. Recibe el resultado de la autenticación.",
+      },
+      qr: {
+        title: "QR + selector de nodo",
+        role: "Codifica la sesión, el reto y la URL del nodo público elegido.",
+      },
+      wallet: {
+        title: "Almena Wallet",
+        role: "Guarda el DID y la clave privada del usuario. Escanea el QR, pide biometría y firma el reto.",
+      },
+      node: {
+        title: "Nodo público",
+        role: "Media el intercambio. Verifica la firma contra el documento DID.",
+      },
+      mesh: {
+        title: "Red Almena",
+        role: "Malla P2P de nodos que mantienen los documentos DID sincronizados. Cualquier nodo devuelve el mismo documento.",
+      },
+      labels: {
+        challenge: "Reto",
+        signed: "Prueba firmada",
+        result: "Resultado",
+        resolve: "Resolver DID",
+        scan: "Escanear QR",
+      },
+    },
+  },
+} as const;
