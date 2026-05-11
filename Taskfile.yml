@@ -1,8 +1,8 @@
 version: '3'
 silent: true
 
-# Web — Almena Network landing/marketing site (Astro)
-# Run: task (lists options) or task <name>
+# Astro site: `dir` + `pnpm --dir` keep the package root at `web/` so `.env` (if present)
+# loads from this directory. Task does not support `dotenv:` in included Taskfiles.
 
 vars:
   PKG_MGR: pnpm
@@ -10,41 +10,48 @@ vars:
 tasks:
   default:
     desc: List available tasks
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - task --list
 
   install:
     desc: Install dependencies
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Installing web dependencies (pnpm)..."
-      - "{{.PKG_MGR}} install"
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" install'
 
   build:
     desc: Build static site
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Building web static site (Astro)..."
-      - "{{.PKG_MGR}} run build"
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run build'
 
   dev:
     desc: Run dev server with hot reload
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Starting web dev server with hot reload..."
-      - "{{.PKG_MGR}} run dev"
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run dev'
 
   preview:
     desc: Serve built site locally
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Previewing built web site locally..."
-      - "{{.PKG_MGR}} run preview"
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run preview'
 
   serve:
     desc: Serve built site (run build first if needed)
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Serving built web site locally..."
-      - "{{.PKG_MGR}} run preview"
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run preview'
 
   clean:
     desc: Remove build artifacts (dist) and node_modules
+    dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Removing web build artifacts (dist, node_modules)..."
       - rm -rf dist
@@ -52,6 +59,7 @@ tasks:
 
   clean:all:
     desc: Run clean and remove local .env
+    dir: "{{.TASKFILE_DIR}}"
     deps: [clean]
     cmds:
       - echo "Removing web .env if present..."
