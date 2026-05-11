@@ -1,6 +1,7 @@
 ---
 import type { Lang } from "../data/landing";
 import { landing } from "../data/landing";
+import TrustTriangle from "./TrustTriangle.astro";
 import NetworkDiagram from "./NetworkDiagram.astro";
 import AvailabilityDiagram from "./AvailabilityDiagram.astro";
 import UseCasesSection from "./UseCasesSection.astro";
@@ -31,6 +32,8 @@ const otherHref = lang === "en" ? "/es/" : "/";
       <a href="https://github.com/almena-network" class="landing-btn landing-btn--outline" target="_blank" rel="noopener">{t.community.github}</a>
     </div>
   </section>
+
+  <TrustTriangle lang={lang} />
 
   <section class="landing-features">
     <div class="landing-features-row">

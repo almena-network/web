@@ -27,6 +27,29 @@ export const landing = {
         text: "Standard protocol for encrypted, decentralized messaging between DIDs — exchange messages, credentials, and proofs without a central message broker.",
       },
     },
+    trustTriangle: {
+      title: "The trust triangle (VCs)",
+      subtitle:
+        "W3C Verifiable Credentials involve three roles. The holder sits at the center of control: they receive credentials, store them in a wallet, and choose what to show a verifier.",
+      svgTitle: "Verifiable Credentials trust triangle",
+      svgDesc:
+        "Triangle with holder at the top vertex, issuer at bottom left, verifier at bottom right. Arrows: issuer to holder (issues credential), holder to verifier (presents), verifier to issuer (trusts or resolves the issuer).",
+      edgeIssue: "Issues",
+      edgePresent: "Presents",
+      edgeTrust: "Trusts issuer",
+      holder: {
+        title: "Holder",
+        text: "The person or organization the credential is about. They keep the credential in their wallet, control when it leaves the device, and share only what is needed—often as a verifiable presentation.",
+      },
+      issuer: {
+        title: "Issuer",
+        text: "The authority that creates and cryptographically signs the credential. Verifiers check those signatures and policies against the issuer’s published keys and metadata.",
+      },
+      verifier: {
+        title: "Verifier",
+        text: "The relying party—an app, service, or gate—that receives a presentation, validates proofs and status (such as revocation), and decides whether to trust the claims.",
+      },
+    },
     diagram: {
       title: "How it works, in plain words",
       subtitle:
@@ -163,6 +186,29 @@ export const landing = {
       didcomm: {
         title: "DIDComm v2",
         text: "Protocolo estándar para mensajería cifrada y descentralizada entre DIDs — intercambia mensajes, credenciales y pruebas sin un broker de mensajes central.",
+      },
+    },
+    trustTriangle: {
+      title: "El triángulo de confianza (VC)",
+      subtitle:
+        "Las credenciales verificables W3C involucran tres roles. El titular está en el centro del control: recibe credenciales, las guarda en una wallet y decide qué muestra al verificador.",
+      svgTitle: "Triángulo de confianza de credenciales verificables",
+      svgDesc:
+        "Triángulo con el titular arriba, el emisor abajo a la izquierda y el verificador abajo a la derecha. Flechas: emisor hacia titular (emite credencial), titular hacia verificador (presenta), verificador hacia emisor (confía o resuelve al emisor).",
+      edgeIssue: "Emite",
+      edgePresent: "Presenta",
+      edgeTrust: "Confía en emisor",
+      holder: {
+        title: "Titular",
+        text: "La persona u organización sobre la que trata la credencial. Guarda la credencial en su wallet, controla cuándo sale del dispositivo y solo comparte lo necesario—a menudo como presentación verificable.",
+      },
+      issuer: {
+        title: "Emisor",
+        text: "La autoridad que crea y firma la credencial. Los verificadores comprueban esas firmas y políticas frente a las claves y metadatos publicados por el emisor.",
+      },
+      verifier: {
+        title: "Verificador",
+        text: "La parte de confianza—app, servicio o control de acceso—que recibe una presentación, valida pruebas y estado (por ejemplo revocación) y decide si confía en las afirmaciones.",
       },
     },
     diagram: {
