@@ -1,0 +1,165 @@
+---
+import type { Lang } from "../data/landing";
+import { site } from "../data/landing";
+
+interface Props {
+  lang: Lang;
+  page: "home" | "network";
+}
+
+const { lang, page } = Astro.props;
+const t = site[lang].nav;
+
+const prefix = lang === "es" ? "/es" : "";
+const homeHref = lang === "es" ? "/es/" : "/";
+const networkHref = `${prefix}/network/`;
+
+// Language switch keeps the user on the equivalent page.
+const otherLangHref =
+  lang === "en"
+    ? page === "network"
+      ? "/es/network/"
+      : "/es/"
+    : page === "network"
+      ? "/network/"
+      : "/";
+---
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href={homeHref} class="nav__logo" aria-label="Almena">
+      <img src="/logo.svg" alt="" width="30" height="30" />
+      <span>Almena</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a href={homeHref} class={`nav__link${page === "home" ? " nav__link--active" : ""}`}>{t.messenger}</a>
+      <a href={networkHref} class={`nav__link${page === "network" ? " nav__link--active" : ""}`}>{t.network}</a>
+      <a href="https://docs.almena.network" class="nav__link" target="_blank" rel="noopener">{t.docs}</a>
+      <a href="https://github.com/almena-network" class="nav__link" target="_blank" rel="noopener">{t.github}</a>
+    </nav>
+
+    <div class="nav__actions">
+      <a href={otherLangHref} class="nav__lang">{t.langSwitch}</a>
+      <a href="https://github.com/almena-network" class="nav__cta" target="_blank" rel="noopener">{t.download}</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8, 8, 8, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    flex-shrink: 0;
+    transition: color var(--transition);
+  }
+
+  .nav__logo:hover {
+    color: var(--brand-primary);
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .nav__link {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav__link:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__link--active {
+    color: var(--brand-primary);
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .nav__lang {
+    padding: 6px 12px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav__lang:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0d0d0d;
+    background: var(--brand-primary);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background var(--transition), transform var(--transition);
+  }
+
+  .nav__cta:hover {
+    background: var(--brand-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 760px) {
+    .nav__links {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav__inner {
+      padding: 0 16px;
+      gap: 12px;
+    }
+  }
+</style>

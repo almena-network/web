@@ -1,485 +1,676 @@
 ---
 import type { Lang } from "../data/landing";
-import { landing } from "../data/landing";
-import TrustTriangle from "./TrustTriangle.astro";
-import NetworkDiagram from "./NetworkDiagram.astro";
-import AvailabilityDiagram from "./AvailabilityDiagram.astro";
-import UseCasesSection from "./UseCasesSection.astro";
+import { home } from "../data/landing";
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+import OnionPathDiagram from "./OnionPathDiagram.astro";
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
-const t = landing[lang];
-const otherHref = lang === "en" ? "/es/" : "/";
+const t = home[lang];
+const networkHref = lang === "es" ? "/es/network/" : "/network/";
+
+// Icons for the six privacy benefits, in order.
+const benefitIcons = ["id", "onion", "server", "lock", "device", "code"];
+
+const ic = (path: string) =>
+  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
+// Inline SVG for each privacy-benefit icon (keyed by stable id, not localized text).
+function icon(name: string): string {
+  switch (name) {
+    case "id":
+      return ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.2"/><line x1="14" y1="10.5" x2="18" y2="10.5"/><line x1="14" y1="14" x2="17" y2="14"/>');
+    case "onion":
+      return ic('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="2"/>');
+    case "server":
+      return ic('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><line x1="7" y1="7.5" x2="7" y2="7.5"/><line x1="7" y1="16.5" x2="7" y2="16.5"/>');
+    case "lock":
+      return ic('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>');
+    case "device":
+      return ic('<rect x="3" y="4" width="13" height="10" rx="2"/><rect x="15" y="9" width="6" height="11" rx="1.6"/><line x1="7" y1="18" x2="11" y2="18"/>');
+    case "code":
+      return ic('<polyline points="8 7 3 12 8 17"/><polyline points="16 7 21 12 16 17"/>');
+    default:
+      return ic('<circle cx="12" cy="12" r="9"/>');
+  }
+}
+
+// Decorative art for each feature row, keyed by index (tag text is localized).
+function featureArt(index: number): string {
+  if (index === 0) {
+    // Identity card
+    return `<svg width="220" height="150" viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="22" width="180" height="106" rx="14" fill="rgba(255,140,0,0.05)" stroke="#FF8C00" stroke-width="1.4"/>
+      <circle cx="56" cy="58" r="16" fill="rgba(255,140,0,0.12)" stroke="#FF8C00" stroke-width="1.4"/>
+      <path d="M40 92c0-9 7-15 16-15s16 6 16 15" stroke="#FF8C00" stroke-width="1.4" fill="none"/>
+      <rect x="90" y="48" width="92" height="9" rx="4.5" fill="rgba(255,255,255,0.12)"/>
+      <rect x="90" y="66" width="64" height="9" rx="4.5" fill="rgba(255,255,255,0.08)"/>
+      <text x="40" y="116" font-family="ui-monospace, monospace" font-size="11" fill="#FF8C00">05a3f…9c2</text>
+    </svg>`;
+  }
+  if (index === 1) {
+    // Anonymity / IP hidden
+    return `<svg width="220" height="150" viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="75" r="14" fill="rgba(255,140,0,0.12)" stroke="#FF8C00" stroke-width="1.4"/>
+      <circle cx="110" cy="75" r="13" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.25)" stroke-width="1.3"/>
+      <circle cx="180" cy="75" r="14" fill="rgba(255,140,0,0.12)" stroke="#FF8C00" stroke-width="1.4"/>
+      <line x1="54" y1="75" x2="97" y2="75" stroke="#FF8C00" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <line x1="123" y1="75" x2="166" y2="75" stroke="#FF8C00" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <text x="40" y="110" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#888" text-anchor="middle">IP</text>
+      <text x="180" y="110" font-family="Inter, sans-serif" font-size="10" font-weight="600" fill="#888" text-anchor="middle">?</text>
+    </svg>`;
+  }
+  // Control / multi-device
+  return `<svg width="220" height="150" viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="24" y="40" width="74" height="50" rx="8" fill="rgba(255,140,0,0.05)" stroke="#FF8C00" stroke-width="1.4"/>
+    <rect x="132" y="34" width="40" height="64" rx="8" fill="rgba(255,140,0,0.05)" stroke="#FF8C00" stroke-width="1.4"/>
+    <path d="M98 65h34" stroke="#FF8C00" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <circle cx="115" cy="65" r="3" fill="#FF8C00"/>
+    <rect x="36" y="54" width="40" height="6" rx="3" fill="rgba(255,255,255,0.12)"/>
+    <rect x="36" y="68" width="28" height="6" rx="3" fill="rgba(255,255,255,0.08)"/>
+    <rect x="142" y="48" width="20" height="5" rx="2.5" fill="rgba(255,255,255,0.12)"/>
+    <rect x="142" y="60" width="14" height="5" rx="2.5" fill="rgba(255,255,255,0.08)"/>
+  </svg>`;
+}
 ---
 
-<header class="landing-header">
-  <a href={lang === "en" ? "/" : "/es/"} class="landing-logo" aria-label="Almena Network">
-    <img src="/logo.svg" alt="" width="36" height="36" />
-    <span>Almena Network</span>
-  </a>
-  <a href={otherHref} class="landing-lang">{t.langSwitch}</a>
-</header>
+<SiteHeader lang={lang} page="home" />
 
-<main class="landing-main">
-  <section class="landing-hero">
-    <h1 class="landing-hero__title">{t.hero.title}</h1>
-    <p class="landing-hero__subtitle">{t.hero.subtitle}</p>
-    <div class="landing-hero__actions">
-      <a href="https://docs.almena.network" class="landing-btn landing-btn--primary" target="_blank" rel="noopener">{t.community.docs}</a>
-      <a href="https://github.com/almena-network" class="landing-btn landing-btn--outline" target="_blank" rel="noopener">{t.community.github}</a>
+<main class="page">
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <span class="hero__eyebrow">{t.hero.eyebrow}</span>
+    <h1 class="hero__title">{t.hero.title}</h1>
+    <p class="hero__subtitle">{t.hero.subtitle}</p>
+    <div class="hero__actions">
+      <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.hero.ctaPrimary}</a>
+      <a href={networkHref} class="btn btn--ghost">{t.hero.ctaSecondary}</a>
     </div>
   </section>
 
-  <TrustTriangle lang={lang} />
-
-  <section class="landing-features">
-    <div class="landing-features-row">
-      <article class="landing-feature">
-        <h3 class="landing-feature__title">{t.features.identity.title}</h3>
-        <p class="landing-feature__text">{t.features.identity.text}</p>
-      </article>
-      <article class="landing-feature">
-        <h3 class="landing-feature__title">{t.features.p2p.title}</h3>
-        <p class="landing-feature__text">{t.features.p2p.text}</p>
-      </article>
-      <article class="landing-feature">
-        <h3 class="landing-feature__title">{t.features.standards.title}</h3>
-        <p class="landing-feature__text">{t.features.standards.text}</p>
-      </article>
-      <article class="landing-feature">
-        <h3 class="landing-feature__title">{t.features.didcomm.title}</h3>
-        <p class="landing-feature__text">{t.features.didcomm.text}</p>
-      </article>
-    </div>
+  <!-- ── Platforms ── -->
+  <section class="platforms">
+    <h2 class="platforms__title">{t.platforms.title}</h2>
+    <p class="platforms__subtitle">{t.platforms.subtitle}</p>
+    <ul class="platforms__list">
+      {t.platforms.items.map((p) => (
+        <li class="platform-chip">
+          <span class="platform-chip__name">{p.name}</span>
+          <span class="platform-chip__kind">{p.kind}</span>
+        </li>
+      ))}
+    </ul>
   </section>
 
-  <NetworkDiagram lang={lang} />
+  <!-- ── What is Almena ── -->
+  <section class="what">
+    <h2 class="what__title">{t.what.title}</h2>
+    <p class="what__text">{t.what.text}</p>
+  </section>
 
-  <AvailabilityDiagram lang={lang} />
-
-  <UseCasesSection lang={lang} />
-
-  <section class="landing-advantages" aria-labelledby="advantages-heading">
-    <h2 id="advantages-heading" class="landing-section-title">{t.advantages.title}</h2>
-    <p class="landing-section-subtitle">{t.advantages.subtitle}</p>
-    <div class="landing-advantages-grid">
-      {t.advantages.items.map((item) => (
-        <article class="landing-advantage landing-glass">
-          <h3 class="landing-advantage__title">{item.title}</h3>
-          <p class="landing-advantage__text">{item.text}</p>
+  <!-- ── Privacy benefits ── -->
+  <section class="benefits" aria-labelledby="benefits-heading">
+    <div class="section-head">
+      <h2 id="benefits-heading" class="section-head__title">{t.benefits.title}</h2>
+      <p class="section-head__subtitle">{t.benefits.subtitle}</p>
+    </div>
+    <div class="benefits__grid">
+      {t.benefits.items.map((item, i) => (
+        <article class="benefit-card">
+          <div class="benefit-card__icon" aria-hidden="true" set:html={icon(benefitIcons[i])} />
+          <h3 class="benefit-card__title">{item.title}</h3>
+          <p class="benefit-card__text">{item.text}</p>
         </article>
       ))}
     </div>
   </section>
 
-  <section class="landing-modules">
-    <h2 class="landing-section-title">{t.modules.title}</h2>
-    <p class="landing-section-subtitle">{t.modules.subtitle}</p>
-    <div class="landing-modules-grid">
-      <article class="landing-module landing-glass">
-        <div class="landing-module__icon" data-module="almena"></div>
-        <h3 class="landing-module__title">{t.modules.almena.title}</h3>
-        <p class="landing-module__text">{t.modules.almena.text}</p>
-        <code class="landing-module__tech">{t.modules.almena.tech}</code>
-      </article>
-      <article class="landing-module landing-glass">
-        <div class="landing-module__icon" data-module="wallet"></div>
-        <h3 class="landing-module__title">{t.modules.wallet.title}</h3>
-        <p class="landing-module__text">{t.modules.wallet.text}</p>
-        <code class="landing-module__tech">{t.modules.wallet.tech}</code>
-      </article>
-      <article class="landing-module landing-glass">
-        <div class="landing-module__icon" data-module="cli"></div>
-        <h3 class="landing-module__title">{t.modules.cli.title}</h3>
-        <p class="landing-module__text">{t.modules.cli.text}</p>
-        <code class="landing-module__tech">{t.modules.cli.tech}</code>
-      </article>
+  <!-- ── Onion routing diagram ── -->
+  <section class="diagram-section">
+    <OnionPathDiagram lang={lang} />
+  </section>
+
+  <!-- ── Feature blocks (alternating) ── -->
+  <section class="features" aria-labelledby="features-heading">
+    <div class="section-head">
+      <h2 id="features-heading" class="section-head__title">{t.features.title}</h2>
+    </div>
+    <div class="features__list">
+      {t.features.items.map((f, i) => (
+        <article class={`feature-row${i % 2 === 1 ? " feature-row--reverse" : ""}`}>
+          <div class="feature-row__body">
+            <span class="feature-row__tag">{f.tag}</span>
+            <h3 class="feature-row__title">{f.title}</h3>
+            <p class="feature-row__text">{f.text}</p>
+            <ul class="feature-row__points">
+              {f.points.map((pt) => (
+                <li>
+                  <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  {pt}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="feature-row__visual" aria-hidden="true">
+            <div class="feature-row__visual-inner" set:html={featureArt(i)} />
+          </div>
+        </article>
+      ))}
     </div>
   </section>
 
-  <section class="landing-community landing-glass">
-    <h2 class="landing-section-title">{t.community.title}</h2>
-    <p class="landing-community__text">{t.community.text}</p>
-    <div class="landing-community__actions">
-      <a href="https://github.com/almena-network" class="landing-btn landing-btn--primary" target="_blank" rel="noopener">{t.community.github}</a>
+  <!-- ── Network teaser ── -->
+  <section class="teaser">
+    <div class="teaser__glow" aria-hidden="true"></div>
+    <div class="teaser__content">
+      <span class="teaser__eyebrow">{t.networkTeaser.eyebrow}</span>
+      <h2 class="teaser__title">{t.networkTeaser.title}</h2>
+      <p class="teaser__text">{t.networkTeaser.text}</p>
+      <a href={networkHref} class="btn btn--primary">{t.networkTeaser.cta}</a>
+    </div>
+  </section>
+
+  <!-- ── Community CTA ── -->
+  <section class="community">
+    <h2 class="community__title">{t.community.title}</h2>
+    <p class="community__text">{t.community.text}</p>
+    <div class="community__actions">
+      <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.community.ctaPrimary}</a>
+      <a href="https://github.com/almena-network" class="btn btn--ghost" target="_blank" rel="noopener">{t.community.ctaSecondary}</a>
     </div>
   </section>
 </main>
 
-<footer class="landing-footer">
-  <p>
-    Almena Network {t.footer.tagline} · {new Date().getFullYear()}
-    · <a href={`mailto:${t.footer.email}`} class="landing-footer__link">{t.footer.email}</a>
-  </p>
-</footer>
+<SiteFooter lang={lang} />
 
 <style>
-  /* Header */
-  .landing-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 24px;
-    padding-top: max(12px, env(safe-area-inset-top));
-  }
-
-  .landing-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--color-text);
-    text-decoration: none;
-    font-weight: 700;
-    font-size: 1.15rem;
-  }
-
-  .landing-logo img {
-    width: 32px;
-    height: 32px;
-  }
-
-  .landing-logo:hover {
-    color: var(--color-primary);
-  }
-
-  .landing-lang {
-    color: var(--color-text-muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    padding: 6px 14px;
-    border-radius: var(--radius-sm);
-    transition: color var(--transition), background var(--transition);
-  }
-
-  .landing-lang:hover {
-    color: var(--color-primary);
-    background: var(--color-glass-bg);
-  }
-
-  /* Main — full width */
-  .landing-main {
-    max-width: 1200px;
+  .page {
+    max-width: 1160px;
     margin: 0 auto;
-    padding: 24px 24px 48px;
+    padding: 0 24px;
   }
 
-  /* Hero */
-  .landing-hero {
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 26px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
+    cursor: pointer;
+  }
+
+  .btn--primary {
+    background: var(--brand-primary);
+    color: #0d0d0d;
+    border: 1px solid transparent;
+  }
+
+  .btn--primary:hover {
+    background: var(--brand-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  /* ── Section heads ── */
+  .section-head {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 44px;
   }
 
-  .landing-hero__title {
-    font-size: clamp(1.75rem, 4.5vw, 2.75rem);
+  .section-head__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
     font-weight: 700;
+    letter-spacing: -0.015em;
     margin: 0 0 12px;
-    line-height: 1.15;
-    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-muted) 100%);
+    color: var(--color-text);
+  }
+
+  .section-head__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto;
+    max-width: 54ch;
+    line-height: 1.6;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 110px 0 90px;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: -80px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 400px;
+    max-width: 100%;
+    background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.14) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hero__eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    margin-bottom: 24px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--brand-primary);
+    background: var(--brand-primary-subtle);
+    border: 1px solid rgba(255, 140, 0, 0.22);
+    border-radius: 100px;
+  }
+
+  .hero__title {
+    font-size: clamp(2.4rem, 6.5vw, 4.25rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 22px;
+    background: linear-gradient(170deg, #ffffff 0%, rgba(255, 255, 255, 0.72) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .landing-hero__subtitle {
-    font-size: clamp(0.95rem, 2vw, 1.1rem);
+  .hero__subtitle {
+    font-size: clamp(1rem, 2vw, 1.1875rem);
     color: var(--color-text-muted);
-    margin: 0 auto 20px;
-    line-height: 1.5;
-    max-width: 64ch;
+    margin: 0 auto 36px;
+    max-width: 58ch;
+    line-height: 1.65;
   }
 
-  .landing-hero__actions {
+  .hero__actions {
     display: flex;
     gap: 12px;
     justify-content: center;
     flex-wrap: wrap;
   }
 
-  /* Features row — 3 inline, no cards */
-  .landing-features {
-    margin-bottom: 40px;
-  }
-
-  .landing-features-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-  }
-
-  .landing-feature {
+  /* ── Platforms ── */
+  .platforms {
     text-align: center;
-    padding: 0 8px;
+    padding: 0 0 90px;
   }
 
-  .landing-feature__title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 6px;
-    color: var(--color-primary);
-  }
-
-  .landing-feature__text {
-    font-size: 0.875rem;
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* Section titles */
-  .landing-section-title {
-    font-size: 1.35rem;
-    font-weight: 600;
-    margin: 0 0 6px;
-    color: var(--color-primary);
-    text-align: center;
-  }
-
-  .landing-section-subtitle {
-    font-size: 0.9375rem;
-    color: var(--color-text-muted);
-    margin: 0 auto 20px;
-    text-align: center;
-    max-width: 48ch;
-  }
-
-  /* Advantages — 3 columns */
-  .landing-advantages {
-    margin-bottom: 40px;
-  }
-
-  .landing-advantages-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  .landing-advantage {
-    padding: 20px;
-    border-radius: var(--radius);
-    transition: border-color var(--transition), transform var(--transition);
-  }
-
-  .landing-advantage:hover {
-    border-color: rgba(139, 92, 246, 0.25);
-    transform: translateY(-2px);
-  }
-
-  .landing-advantage__title {
-    font-size: 1rem;
-    font-weight: 600;
+  .platforms__title {
+    font-size: 1.375rem;
+    font-weight: 700;
     margin: 0 0 8px;
-    color: var(--color-secondary);
-  }
-
-  .landing-advantage__text {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.45;
-  }
-
-  /* Modules grid — 3 columns */
-  .landing-modules {
-    margin-bottom: 40px;
-  }
-
-  .landing-modules-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  .landing-glass {
-    background: var(--color-glass-bg);
-    backdrop-filter: blur(var(--blur));
-    -webkit-backdrop-filter: blur(var(--blur));
-    border: 1px solid var(--color-glass-border);
-  }
-
-  .landing-module {
-    padding: 20px;
-    border-radius: var(--radius);
-    display: flex;
-    flex-direction: column;
-    transition: border-color var(--transition), transform var(--transition);
-  }
-
-  .landing-module:hover {
-    border-color: rgba(251, 146, 60, 0.3);
-    transform: translateY(-2px);
-  }
-
-  .landing-module__icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, rgba(251, 146, 60, 0.2), rgba(139, 92, 246, 0.15));
-    border: 1px solid rgba(251, 146, 60, 0.2);
-    position: relative;
-  }
-
-  .landing-module__icon::after {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.05rem;
-    line-height: 1;
-  }
-
-  .landing-module__icon[data-module="almena"]::after { content: "\1F5A5\FE0F"; }
-  .landing-module__icon[data-module="wallet"]::after { content: "\1F4B3"; }
-  .landing-module__icon[data-module="cli"]::after { content: "\2328\FE0F"; }
-
-  .landing-module__title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 6px;
     color: var(--color-text);
   }
 
-  .landing-module__text {
-    flex: 1;
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    margin: 0 0 10px;
-    line-height: 1.45;
-  }
-
-  .landing-module__tech {
-    font-size: 0.6875rem;
-    color: #78716c;
-    background: rgba(255, 255, 255, 0.04);
-    padding: 3px 8px;
-    border-radius: 4px;
-    align-self: flex-start;
-  }
-
-  /* Community banner */
-  .landing-community {
-    padding: 28px 32px;
-    border-radius: var(--radius);
-    text-align: center;
-  }
-
-  .landing-community__text {
+  .platforms__subtitle {
     font-size: 0.9375rem;
     color: var(--color-text-muted);
-    margin: 8px auto 20px;
-    max-width: 64ch;
-    line-height: 1.5;
+    margin: 0 auto 28px;
+    max-width: 50ch;
   }
 
-  .landing-community__actions {
+  .platforms__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     gap: 12px;
     justify-content: center;
+    flex-wrap: wrap;
   }
 
-  /* Buttons */
-  .landing-btn {
-    display: inline-flex;
+  .platform-chip {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 10px 24px;
+    gap: 2px;
+    padding: 14px 26px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .platform-chip:hover {
+    border-color: rgba(255, 140, 0, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .platform-chip__name {
     font-size: 0.9375rem;
     font-weight: 600;
-    font-family: inherit;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: background var(--transition), color var(--transition), transform var(--transition);
-  }
-
-  .landing-btn--primary {
-    background: var(--color-primary);
-    color: #0c0a09;
-    border: none;
-  }
-
-  .landing-btn--primary:hover {
-    background: var(--color-primary-hover);
-    transform: translateY(-1px);
-  }
-
-  .landing-btn--outline {
-    background: transparent;
     color: var(--color-text);
-    border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
-  .landing-btn--outline:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.35);
-    transform: translateY(-1px);
+  .platform-chip__kind {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-subtle);
   }
 
-  /* Footer */
-  .landing-footer {
+  /* ── What ── */
+  .what {
     text-align: center;
-    padding: 20px 24px;
-    color: var(--color-text-muted);
-    font-size: 0.8125rem;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 0 90px;
   }
 
-  .landing-footer p {
+  .what__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+    color: var(--color-text);
+  }
+
+  .what__text {
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
     margin: 0;
+    line-height: 1.7;
   }
 
-  .landing-footer__link {
+  /* ── Benefits ── */
+  .benefits {
+    padding: 0 0 90px;
+  }
+
+  .benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .benefit-card {
+    padding: 26px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .benefit-card:hover {
+    border-color: rgba(255, 140, 0, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .benefit-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 11px;
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary);
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 140, 0, 0.16);
+  }
+
+  .benefit-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--color-text);
+  }
+
+  .benefit-card__text {
+    font-size: 0.875rem;
     color: var(--color-text-muted);
-    text-decoration: none;
-    transition: color var(--transition);
+    margin: 0;
+    line-height: 1.55;
   }
 
-  .landing-footer__link:hover {
-    color: var(--color-primary);
-    text-decoration: underline;
+  /* ── Diagram ── */
+  .diagram-section {
+    padding: 0 0 90px;
   }
 
-  /* Responsive */
-  @media screen and (max-width: 996px) {
-    .landing-features-row {
+  /* ── Feature rows ── */
+  .features {
+    padding: 0 0 90px;
+  }
+
+  .features__list {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 36px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+  }
+
+  .feature-row--reverse .feature-row__body {
+    order: 2;
+  }
+
+  .feature-row__tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-primary);
+    margin-bottom: 12px;
+  }
+
+  .feature-row__title {
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--color-text);
+  }
+
+  .feature-row__text {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 20px;
+    line-height: 1.65;
+  }
+
+  .feature-row__points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .feature-row__points li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .feature-row__points svg {
+    color: var(--brand-primary);
+    flex-shrink: 0;
+  }
+
+  .feature-row__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    border-radius: var(--radius);
+    background:
+      radial-gradient(ellipse at center, rgba(255, 140, 0, 0.06) 0%, transparent 70%),
+      rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .feature-row__visual-inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ── Teaser ── */
+  .teaser {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 48px;
+    margin: 0 0 90px;
+    text-align: center;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+  }
+
+  .teaser__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 90% at 50% 0%, rgba(255, 140, 0, 0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .teaser__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .teaser__eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand-primary);
+    margin-bottom: 14px;
+  }
+
+  .teaser__title {
+    font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--color-text);
+  }
+
+  .teaser__text {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto 30px;
+    max-width: 60ch;
+    line-height: 1.65;
+  }
+
+  /* ── Community ── */
+  .community {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 0 100px;
+  }
+
+  .community__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 16px;
+    color: var(--color-text);
+  }
+
+  .community__text {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto 30px;
+    line-height: 1.7;
+  }
+
+  .community__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .benefits__grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .landing-advantages-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .feature-row {
+      grid-template-columns: 1fr;
+      gap: 28px;
     }
 
-    .landing-modules-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .feature-row--reverse .feature-row__body {
+      order: 0;
+    }
+
+    .feature-row__visual {
+      min-height: 180px;
+      order: -1;
     }
   }
 
-  @media screen and (max-width: 640px) {
-    .landing-main {
-      padding: 16px 16px 40px;
+  @media (max-width: 640px) {
+    .page {
+      padding: 0 16px;
     }
 
-    .landing-hero {
-      margin-bottom: 32px;
+    .hero {
+      padding: 72px 0 64px;
     }
 
-    .landing-features-row {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .landing-advantages-grid {
+    .benefits__grid {
       grid-template-columns: 1fr;
     }
 
-    .landing-modules-grid {
-      grid-template-columns: 1fr;
+    .feature-row {
+      padding: 24px;
     }
 
-    .landing-community {
-      padding: 24px 20px;
+    .teaser {
+      padding: 48px 24px;
     }
   }
 </style>

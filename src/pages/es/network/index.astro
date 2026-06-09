@@ -1,0 +1,11 @@
+---
+import LandingLayout from '../../../layouts/LandingLayout.astro';
+import NetworkPage from '../../../components/NetworkPage.astro';
+import { network } from '../../../data/landing';
+
+const t = network.es;
+---
+
+<LandingLayout title={t.title} description={t.description} lang="es">
+  <NetworkPage lang="es" />
+</LandingLayout>

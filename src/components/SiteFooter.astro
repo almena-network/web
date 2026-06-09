@@ -1,0 +1,147 @@
+---
+import type { Lang } from "../data/landing";
+import { site } from "../data/landing";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = site[lang].footer;
+
+const prefix = lang === "es" ? "/es" : "";
+const homeHref = lang === "es" ? "/es/" : "/";
+const networkHref = `${prefix}/network/`;
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <a href={homeHref} class="footer__logo">
+        <img src="/logo.svg" alt="" width="28" height="28" />
+        <span>Almena</span>
+      </a>
+      <p class="footer__tagline">{t.tagline}</p>
+    </div>
+
+    <nav class="footer__cols" aria-label="Footer">
+      <div class="footer__col">
+        <h3 class="footer__col-title">{t.messenger}</h3>
+        <a href={homeHref} class="footer__link">{lang === "es" ? "Inicio" : "Home"}</a>
+        <a href={networkHref} class="footer__link">{t.network}</a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__col-title">{t.resources}</h3>
+        <a href="https://docs.almena.network" class="footer__link" target="_blank" rel="noopener">{t.docs}</a>
+        <a href="https://github.com/almena-network" class="footer__link" target="_blank" rel="noopener">{t.github}</a>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__col-title">{lang === "es" ? "Contacto" : "Contact"}</h3>
+        <a href={`mailto:${t.email}`} class="footer__link">{t.email}</a>
+      </div>
+    </nav>
+  </div>
+
+  <div class="footer__bar">
+    <span>Almena Network · {year}</span>
+    <span class="footer__rights">{t.rights}</span>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    margin-top: 40px;
+  }
+
+  .footer__inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 40px;
+  }
+
+  .footer__logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    color: var(--color-text);
+  }
+
+  .footer__tagline {
+    margin: 14px 0 0;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    max-width: 34ch;
+  }
+
+  .footer__cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer__col-title {
+    margin: 0 0 2px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-subtle);
+  }
+
+  .footer__link {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .footer__link:hover {
+    color: var(--brand-primary);
+  }
+
+  .footer__bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.8125rem;
+    color: var(--color-text-subtle);
+  }
+
+  @media (max-width: 760px) {
+    .footer__inner {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .footer__cols {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer__bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

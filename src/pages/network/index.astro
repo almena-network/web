@@ -1,0 +1,14 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import NetworkPage from '../../components/NetworkPage.astro';
+import { network } from '../../data/landing';
+
+import Analytics from '@vercel/analytics/astro'
+
+const t = network.en;
+---
+
+<LandingLayout title={t.title} description={t.description} lang="en">
+  <Analytics/>
+  <NetworkPage lang="en" />
+</LandingLayout>

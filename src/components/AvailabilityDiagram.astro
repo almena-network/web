@@ -1,14 +1,39 @@
 ---
 import type { Lang } from "../data/landing";
-import { landing } from "../data/landing";
 
 interface Props {
   lang: Lang;
 }
 
 const { lang } = Astro.props;
-const a = landing[lang].availability;
+
+const a = {
+  en: {
+    title: "Availability: centralized vs. decentralized",
+    centralizedTitle: "Centralized",
+    centralizedStatus: "Server down — everyone offline",
+    centralizedServer: "Single server",
+    decentralizedTitle: "Decentralized",
+    decentralizedStatus: "Some nodes down — network still up",
+    up: "Up",
+    down: "Down",
+  },
+  es: {
+    title: "Disponibilidad: centralizado vs. descentralizado",
+    centralizedTitle: "Centralizado",
+    centralizedStatus: "Servidor caído — todos sin servicio",
+    centralizedServer: "Servidor único",
+    decentralizedTitle: "Descentralizado",
+    decentralizedStatus: "Algunos nodos caídos — red sigue activa",
+    up: "Activo",
+    down: "Caído",
+  },
+}[lang];
 ---
+
+<div class="avail-head">
+  <h2 class="avail-head__title">{a.title}</h2>
+</div>
 
 <section class="landing-availability" aria-label={a.title}>
   <div class="landing-availability-grid">
@@ -136,8 +161,21 @@ const a = landing[lang].availability;
 </section>
 
 <style>
+  .avail-head {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .avail-head__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0;
+    color: var(--color-text);
+  }
+
   .landing-availability {
-    margin-bottom: 40px;
+    margin-bottom: 0;
   }
 
   .landing-availability-grid {
