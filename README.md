@@ -1,6 +1,6 @@
 # Almena Network Web
 
-Astro-based landing and marketing site for the Almena Network decentralized platform.
+Public-facing marketing and information site for the Almena Network decentralized messenger platform.
 
 ## Prerequisites
 
@@ -12,11 +12,19 @@ Astro-based landing and marketing site for the Almena Network decentralized plat
 
 ## Description
 
-The web project provides the public-facing website for Almena Network. It is a static site built with Astro, suitable for deployment to any static hosting (Vercel, Netlify, etc.).
+Static site built with Astro. Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
+
+### Pages
+
+| Route | Description |
+|-------|-------------|
+| `/` and `/es/` | Almena messenger landing — identity, onion routing, groups, calls, disappearing messages |
+| `/network/` and `/es/network/` | Network infrastructure — service nodes, blockchain node, staking, rewards |
 
 ## Tech Stack
 
-- **Framework**: Astro 5
+- **Framework**: Astro 6
+- **Analytics**: Vercel Analytics
 - **Package manager**: pnpm
 
 ## Tasks (Taskfile)
