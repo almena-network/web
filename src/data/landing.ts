@@ -51,7 +51,6 @@ export const site = {
       identity: "Identity",
       messaging: "Messaging",
       coin: "Coin",
-      docs: "Docs",
       github: "GitHub",
       langSwitch: "Español",
     },
@@ -63,7 +62,6 @@ export const site = {
       messaging: "Messaging",
       coin: "Coin",
       resources: "Resources",
-      docs: "Documentation",
       github: "GitHub",
       email: "info@almena.network",
       rights: "Open source. No company in the middle.",
@@ -75,7 +73,6 @@ export const site = {
       identity: "Identidad",
       messaging: "Mensajería",
       coin: "Moneda",
-      docs: "Docs",
       github: "GitHub",
       langSwitch: "English",
     },
@@ -87,7 +84,6 @@ export const site = {
       messaging: "Mensajería",
       coin: "Moneda",
       resources: "Recursos",
-      docs: "Documentación",
       github: "GitHub",
       email: "info@almena.network",
       rights: "Código abierto. Sin empresa en medio.",
@@ -226,7 +222,6 @@ export const home = {
       text:
         "Almena is built in the open by contributors around the world. No vendor lock-in, no paid dependencies. Read every line, run your own node, and help shape a network that answers to its users — not a company.",
       ctaPrimary: "Contribute on GitHub",
-      ctaSecondary: "Read the docs",
     },
   },
   es: {
@@ -358,7 +353,6 @@ export const home = {
       text:
         "Almena se construye de forma abierta por contribuidores de todo el mundo. Sin vendor lock-in, sin dependencias de pago. Lee cada línea, levanta tu propio nodo y ayuda a dar forma a una red que responde a sus usuarios — no a una empresa.",
       ctaPrimary: "Contribuir en GitHub",
-      ctaSecondary: "Leer la documentación",
     },
   },
 } as const;
@@ -470,7 +464,6 @@ export const identity = {
       title: "Identity you actually own, soon on Almena",
       text: "The network that anchors it is open source and running on a devnet today. Follow the countdown to mainnet, and read how the layers beneath identity work.",
       ctaPrimary: "Follow on GitHub",
-      ctaSecondary: "Read the docs",
     },
   },
   es: {
@@ -576,7 +569,6 @@ export const identity = {
       title: "Una identidad que de verdad es tuya, pronto en Almena",
       text: "La red que la ancla es código abierto y funciona hoy en una devnet. Sigue la cuenta atrás hacia mainnet y lee cómo funcionan las capas bajo la identidad.",
       ctaPrimary: "Seguir en GitHub",
-      ctaSecondary: "Leer la documentación",
     },
   },
 } as const;
@@ -677,7 +669,6 @@ export const messaging = {
       text:
         "The client, the nodes and the protocol are open source today. Follow the countdown to mainnet — and read how the network beneath it works.",
       ctaPrimary: "Follow on GitHub",
-      ctaSecondary: "Read the docs",
     },
   },
   es: {
@@ -774,7 +765,6 @@ export const messaging = {
       text:
         "El cliente, los nodos y el protocolo ya son código abierto. Sigue la cuenta atrás hacia mainnet — y lee cómo funciona la red que hay debajo.",
       ctaPrimary: "Seguir en GitHub",
-      ctaSecondary: "Leer la documentación",
     },
   },
 } as const;
@@ -790,7 +780,7 @@ export const network = {
       title: "The substrate for a decentralized world.",
       subtitle:
         "Behind every Almena use case is a decentralized network of service nodes and a proof-of-work blockchain — run by the community, owned by no one. It runs on a devnet today and goes to mainnet at launch.",
-      ctaPrimary: "Read the docs",
+      ctaPrimary: "Follow the launch",
       ctaSecondary: "About the coin",
     },
     stats: {
@@ -859,8 +849,8 @@ export const network = {
     cta: {
       title: "Become part of the network",
       text:
-        "The node software is open source today. Read the docs, run it against the devnet, and be ready to store, relay and earn when mainnet launches.",
-      ctaPrimary: "Read the documentation",
+        "The node software is open source today. Read the code, run it against the devnet, and be ready to store, relay and earn when mainnet launches.",
+      ctaPrimary: "Contribute on GitHub",
       ctaSecondary: "About the ALMENA coin",
     },
   },
@@ -873,7 +863,7 @@ export const network = {
       title: "El sustrato para un mundo descentralizado.",
       subtitle:
         "Detrás de cada uso de Almena hay una red descentralizada de service nodes y una blockchain de prueba de trabajo — gestionada por la comunidad, propiedad de nadie. Hoy funciona en una devnet y llega a mainnet en el lanzamiento.",
-      ctaPrimary: "Leer la documentación",
+      ctaPrimary: "Sigue el lanzamiento",
       ctaSecondary: "Sobre la moneda",
     },
     stats: {
@@ -942,8 +932,8 @@ export const network = {
     cta: {
       title: "Forma parte de la red",
       text:
-        "El software del nodo ya es código abierto. Lee la documentación, pruébalo contra la devnet y prepárate para almacenar, retransmitir y ganar cuando se lance mainnet.",
-      ctaPrimary: "Leer la documentación",
+        "El software del nodo ya es código abierto. Lee el código, pruébalo contra la devnet y prepárate para almacenar, retransmitir y ganar cuando se lance mainnet.",
+      ctaPrimary: "Contribuir en GitHub",
       ctaSecondary: "Sobre la moneda ALMENA",
     },
   },
@@ -960,7 +950,7 @@ export const coin = {
       title: "The future of privacy is powered by you.",
       subtitle:
         "ALMENA is the coin behind the tech — the proof-of-work currency that pays the community to store, relay and secure the network. Minting begins at the mainnet launch.",
-      ctaPrimary: "Read the docs",
+      ctaPrimary: "Follow the launch",
       ctaSecondary: "Explore the network",
     },
     what: {
@@ -1019,8 +1009,7 @@ export const coin = {
       title: "Be here when ALMENA goes live",
       text:
         "The chain, the pallets and the reward logic are open source today. Read how the coin works, and watch the countdown to the mainnet launch.",
-      ctaPrimary: "Read the documentation",
-      ctaSecondary: "Follow on GitHub",
+      ctaPrimary: "Follow on GitHub",
     },
   },
   es: {
@@ -1032,7 +1021,7 @@ export const coin = {
       title: "El futuro de la privacidad lo impulsas tú.",
       subtitle:
         "ALMENA es la moneda tras la tecnología — la divisa de prueba de trabajo que paga a la comunidad por almacenar, retransmitir y proteger la red. La acuñación empieza con el lanzamiento de mainnet.",
-      ctaPrimary: "Leer la documentación",
+      ctaPrimary: "Sigue el lanzamiento",
       ctaSecondary: "Explorar la red",
     },
     what: {
@@ -1091,8 +1080,7 @@ export const coin = {
       title: "Está aquí cuando ALMENA se active",
       text:
         "La cadena, los pallets y la lógica de recompensas ya son código abierto. Lee cómo funciona la moneda y sigue la cuenta atrás hacia el lanzamiento de mainnet.",
-      ctaPrimary: "Leer la documentación",
-      ctaSecondary: "Seguir en GitHub",
+      ctaPrimary: "Seguir en GitHub",
     },
   },
 } as const;
