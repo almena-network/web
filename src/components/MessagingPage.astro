@@ -1,9 +1,8 @@
 ---
 import type { Lang } from "../data/landing";
-import { home, launch } from "../data/landing";
+import { messaging } from "../data/landing";
 import SiteHeader from "./SiteHeader.astro";
 import SiteFooter from "./SiteFooter.astro";
-import Countdown from "./Countdown.astro";
 import PhoneMockup from "./PhoneMockup.astro";
 import OnionPathDiagram from "./OnionPathDiagram.astro";
 
@@ -12,11 +11,9 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const t = home[lang];
-const l = launch[lang];
+const t = messaging[lang];
 const prefix = lang === "es" ? "/es" : "";
 const networkHref = `${prefix}/network/`;
-const coinHref = `${prefix}/coin/`;
 
 // Icons for the six privacy benefits, in order.
 const benefitIcons = ["id", "onion", "server", "lock", "device", "code"];
@@ -105,77 +102,26 @@ function featureArt(index: number): string {
     <rect x="96" y="112" width="28" height="5" rx="2.5" fill="rgba(255,255,255,0.12)"/>
   </svg>`;
 }
-
-// Roadmap state → dot color class.
-const stateClass: Record<string, string> = {
-  done: "is-done",
-  progress: "is-progress",
-  soon: "is-soon",
-};
 ---
 
-<SiteHeader lang={lang} page="home" />
+<SiteHeader lang={lang} page="messaging" />
 
 <main class="page">
   <!-- ── Hero ── -->
   <section class="hero">
     <div class="hero__glow" aria-hidden="true"></div>
     <div class="hero__copy">
-      <span class="eyebrow">{l.badge}</span>
+      <span class="eyebrow">{t.hero.eyebrow}</span>
       <h1 class="hero__title">{t.hero.title}</h1>
       <p class="hero__subtitle">{t.hero.subtitle}</p>
-      <div class="hero__countdown">
-        <Countdown lang={lang} />
-      </div>
       <div class="hero__actions">
         <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.hero.ctaPrimary}</a>
-        <a href="#roadmap" class="btn btn--ghost">{t.hero.ctaSecondary}</a>
+        <a href={networkHref} class="btn btn--ghost">{t.hero.ctaSecondary}</a>
       </div>
     </div>
     <div class="hero__visual">
       <PhoneMockup lang={lang} />
     </div>
-  </section>
-
-  <!-- ── Roadmap / status ── -->
-  <section class="roadmap" id="roadmap" aria-labelledby="roadmap-heading">
-    <div class="section-head">
-      <h2 id="roadmap-heading" class="section-head__title">{t.roadmap.title}</h2>
-      <p class="section-head__subtitle">{t.roadmap.subtitle}</p>
-    </div>
-    <ol class="roadmap__grid">
-      {t.roadmap.items.map((item) => (
-        <li class={`roadmap-card ${stateClass[item.state] ?? ""}`}>
-          <span class="roadmap-card__label">
-            <span class="roadmap-card__dot" aria-hidden="true"></span>
-            {item.label}
-          </span>
-          <h3 class="roadmap-card__title">{item.title}</h3>
-          <p class="roadmap-card__text">{item.text}</p>
-        </li>
-      ))}
-    </ol>
-  </section>
-
-  <!-- ── Platforms ── -->
-  <section class="platforms">
-    <h2 class="platforms__title">{t.platforms.title}</h2>
-    <p class="platforms__subtitle">{t.platforms.subtitle}</p>
-    <ul class="platforms__list">
-      {t.platforms.items.map((p) => (
-        <li class="platform-chip">
-          <span class="platform-chip__name">{p.name}</span>
-          <span class="platform-chip__kind">{p.kind}</span>
-        </li>
-      ))}
-    </ul>
-    <span class="platforms__note">{t.platforms.note}</span>
-  </section>
-
-  <!-- ── What is Almena ── -->
-  <section class="what">
-    <h2 class="what__title">{t.what.title}</h2>
-    <p class="what__text">{t.what.text}</p>
   </section>
 
   <!-- ── Privacy benefits ── -->
@@ -229,29 +175,31 @@ const stateClass: Record<string, string> = {
     </div>
   </section>
 
-  <!-- ── Network + Coin teasers ── -->
-  <section class="teasers">
-    <a href={networkHref} class="teaser-card">
-      <span class="teaser-card__eyebrow">{t.networkTeaser.eyebrow}</span>
-      <h2 class="teaser-card__title">{t.networkTeaser.title}</h2>
-      <p class="teaser-card__text">{t.networkTeaser.text}</p>
-      <span class="teaser-card__cta">{t.networkTeaser.cta} →</span>
-    </a>
-    <a href={coinHref} class="teaser-card teaser-card--coin">
-      <span class="teaser-card__eyebrow">{t.coinTeaser.eyebrow}</span>
-      <h2 class="teaser-card__title">{t.coinTeaser.title}</h2>
-      <p class="teaser-card__text">{t.coinTeaser.text}</p>
-      <span class="teaser-card__cta">{t.coinTeaser.cta} →</span>
-    </a>
+  <!-- ── Platforms ── -->
+  <section class="platforms">
+    <h2 class="platforms__title">{t.platforms.title}</h2>
+    <p class="platforms__subtitle">{t.platforms.subtitle}</p>
+    <ul class="platforms__list">
+      {t.platforms.items.map((p) => (
+        <li class="platform-chip">
+          <span class="platform-chip__name">{p.name}</span>
+          <span class="platform-chip__kind">{p.kind}</span>
+        </li>
+      ))}
+    </ul>
+    <span class="platforms__note">{t.platforms.note}</span>
   </section>
 
-  <!-- ── Community CTA ── -->
-  <section class="community">
-    <h2 class="community__title">{t.community.title}</h2>
-    <p class="community__text">{t.community.text}</p>
-    <div class="community__actions">
-      <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.community.ctaPrimary}</a>
-      <a href="https://docs.almena.network" class="btn btn--ghost" target="_blank" rel="noopener">{t.community.ctaSecondary}</a>
+  <!-- ── Final CTA ── -->
+  <section class="cta">
+    <div class="cta__glow" aria-hidden="true"></div>
+    <div class="cta__content">
+      <h2 class="cta__title">{t.cta.title}</h2>
+      <p class="cta__text">{t.cta.text}</p>
+      <div class="cta__actions">
+        <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.cta.ctaPrimary}</a>
+        <a href="https://docs.almena.network" class="btn btn--ghost" target="_blank" rel="noopener">{t.cta.ctaSecondary}</a>
+      </div>
     </div>
   </section>
 </main>
@@ -302,18 +250,9 @@ const stateClass: Record<string, string> = {
   .hero__subtitle {
     font-size: clamp(1rem, 2vw, 1.1875rem);
     color: var(--color-text-muted);
-    margin: 0 0 32px;
+    margin: 0 0 30px;
     max-width: 52ch;
     line-height: 1.65;
-  }
-
-  .hero__countdown {
-    align-self: stretch;
-    margin-bottom: 32px;
-  }
-
-  .hero__countdown :global(.countdown) {
-    align-items: flex-start;
   }
 
   .hero__actions {
@@ -325,164 +264,6 @@ const stateClass: Record<string, string> = {
   .hero__visual {
     display: flex;
     justify-content: center;
-  }
-
-  /* ── Roadmap ── */
-  .roadmap {
-    padding: 0 0 90px;
-  }
-
-  .roadmap__grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-
-  .roadmap-card {
-    padding: 24px;
-    background: var(--color-surface);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius);
-  }
-
-  .roadmap-card__label {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    font-size: 0.6875rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-muted);
-    margin-bottom: 14px;
-  }
-
-  .roadmap-card__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-text-subtle);
-  }
-
-  .roadmap-card.is-done .roadmap-card__dot { background: var(--semantic-success); }
-  .roadmap-card.is-done .roadmap-card__label { color: var(--semantic-success); }
-  .roadmap-card.is-progress .roadmap-card__dot { background: var(--semantic-warning); }
-  .roadmap-card.is-progress .roadmap-card__label { color: var(--semantic-warning); }
-  .roadmap-card.is-soon .roadmap-card__dot { background: var(--brand-primary); }
-  .roadmap-card.is-soon .roadmap-card__label { color: var(--brand-primary); }
-
-  .roadmap-card__title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 0 0 8px;
-    color: var(--color-text);
-  }
-
-  .roadmap-card__text {
-    font-size: 0.8125rem;
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.55;
-  }
-
-  /* ── Platforms ── */
-  .platforms {
-    text-align: center;
-    padding: 0 0 90px;
-  }
-
-  .platforms__title {
-    font-size: 1.375rem;
-    font-weight: 700;
-    margin: 0 0 8px;
-    color: var(--color-text);
-  }
-
-  .platforms__subtitle {
-    font-size: 0.9375rem;
-    color: var(--color-text-muted);
-    margin: 0 auto 28px;
-    max-width: 52ch;
-  }
-
-  .platforms__list {
-    list-style: none;
-    margin: 0 0 20px;
-    padding: 0;
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .platform-chip {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    padding: 14px 26px;
-    background: var(--color-surface);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius);
-    transition: border-color var(--transition), transform var(--transition);
-  }
-
-  .platform-chip:hover {
-    border-color: rgba(255, 140, 0, 0.3);
-    transform: translateY(-2px);
-  }
-
-  .platform-chip__name {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--color-text);
-  }
-
-  .platform-chip__kind {
-    font-size: 0.6875rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--color-text-subtle);
-  }
-
-  .platforms__note {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--brand-primary);
-    padding: 5px 12px;
-    border: 1px solid rgba(255, 140, 0, 0.22);
-    border-radius: 100px;
-    background: var(--brand-primary-subtle);
-  }
-
-  /* ── What ── */
-  .what {
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto;
-    padding: 0 0 90px;
-  }
-
-  .what__title {
-    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    margin: 0 0 18px;
-    color: var(--color-text);
-  }
-
-  .what__text {
-    font-size: 1.0625rem;
-    color: var(--color-text-muted);
-    margin: 0;
-    line-height: 1.7;
   }
 
   /* ── Benefits ── */
@@ -634,104 +415,121 @@ const stateClass: Record<string, string> = {
     justify-content: center;
   }
 
-  /* ── Teasers ── */
-  .teasers {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  /* ── Platforms ── */
+  .platforms {
+    text-align: center;
     padding: 0 0 90px;
   }
 
-  .teaser-card {
-    position: relative;
-    overflow: hidden;
+  .platforms__title {
+    font-size: 1.375rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    color: var(--color-text);
+  }
+
+  .platforms__subtitle {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 auto 28px;
+    max-width: 52ch;
+  }
+
+  .platforms__list {
+    list-style: none;
+    margin: 0 0 20px;
+    padding: 0;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .platform-chip {
     display: flex;
     flex-direction: column;
-    padding: 40px;
-    text-decoration: none;
+    align-items: center;
+    gap: 2px;
+    padding: 14px 26px;
     background: var(--color-surface);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius);
     transition: border-color var(--transition), transform var(--transition);
   }
 
-  .teaser-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 70% at 50% 0%, rgba(255, 140, 0, 0.1) 0%, transparent 65%);
-    opacity: 0.6;
-    pointer-events: none;
-  }
-
-  .teaser-card--coin::before {
-    background: radial-gradient(ellipse 80% 70% at 50% 100%, rgba(255, 140, 0, 0.14) 0%, transparent 65%);
-  }
-
-  .teaser-card:hover {
+  .platform-chip:hover {
     border-color: rgba(255, 140, 0, 0.3);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
   }
 
-  .teaser-card > * {
-    position: relative;
+  .platform-chip__name {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-text);
   }
 
-  .teaser-card__eyebrow {
+  .platform-chip__kind {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-subtle);
+  }
+
+  .platforms__note {
+    display: inline-block;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     color: var(--brand-primary);
-    margin-bottom: 12px;
+    padding: 5px 12px;
+    border: 1px solid rgba(255, 140, 0, 0.22);
+    border-radius: 100px;
+    background: var(--brand-primary-subtle);
   }
 
-  .teaser-card__title {
-    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    margin: 0 0 12px;
-    color: var(--color-text);
-  }
-
-  .teaser-card__text {
-    font-size: 0.9375rem;
-    color: var(--color-text-muted);
-    margin: 0 0 22px;
-    line-height: 1.6;
-  }
-
-  .teaser-card__cta {
-    margin-top: auto;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--brand-primary);
-  }
-
-  /* ── Community ── */
-  .community {
+  /* ── Final CTA ── */
+  .cta {
+    position: relative;
+    overflow: hidden;
+    padding: 76px 48px;
+    margin: 0 0 100px;
     text-align: center;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 0 0 100px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
   }
 
-  .community__title {
-    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+  .cta__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 90% at 50% 100%, rgba(255, 140, 0, 0.13) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .cta__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta__title {
+    font-size: clamp(1.6rem, 3.4vw, 2.25rem);
     font-weight: 700;
     letter-spacing: -0.015em;
-    margin: 0 0 16px;
+    margin: 0 0 14px;
     color: var(--color-text);
   }
 
-  .community__text {
+  .cta__text {
     font-size: 1rem;
     color: var(--color-text-muted);
     margin: 0 auto 30px;
-    line-height: 1.7;
+    max-width: 56ch;
+    line-height: 1.65;
   }
 
-  .community__actions {
+  .cta__actions {
     display: flex;
     gap: 12px;
     justify-content: center;
@@ -755,16 +553,8 @@ const stateClass: Record<string, string> = {
       margin-inline: auto;
     }
 
-    .hero__countdown :global(.countdown) {
-      align-items: center;
-    }
-
     .hero__visual {
       order: -1;
-    }
-
-    .roadmap__grid {
-      grid-template-columns: repeat(2, 1fr);
     }
   }
 
@@ -786,17 +576,9 @@ const stateClass: Record<string, string> = {
       min-height: 180px;
       order: -1;
     }
-
-    .teasers {
-      grid-template-columns: 1fr;
-    }
   }
 
   @media (max-width: 640px) {
-    .roadmap__grid {
-      grid-template-columns: 1fr;
-    }
-
     .benefits__grid {
       grid-template-columns: 1fr;
     }
@@ -805,8 +587,8 @@ const stateClass: Record<string, string> = {
       padding: 24px;
     }
 
-    .teaser-card {
-      padding: 28px;
+    .cta {
+      padding: 48px 24px;
     }
   }
 </style>

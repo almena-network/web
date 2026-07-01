@@ -1,24 +1,21 @@
 // Content model for the Almena Network portal.
 //
-// Three pages mirror the structure of the real platform:
-//   • home    — the Almena messenger (private P2P client)        → "/"        and "/es/"
-//   • network — the network that powers it (service nodes + PoW) → "/network/" and "/es/network/"
-//   • coin    — the ALMENA coin (consensus / staking token)      → "/coin/"    and "/es/coin/"
+// Priority is THE NETWORK. Almena is a general-purpose decentralized platform; messaging is one
+// use case among many (see .cursor/rules/almena-platform-vision.mdc). The site reflects that:
+//   • home      — the Almena network / platform            → "/"          and "/es/"
+//   • messaging — messaging, one use case on the platform  → "/messaging/" and "/es/messaging/"
+//   • network   — the network in depth (nodes, run a node) → "/network/"   and "/es/network/"
+//   • coin      — the ALMENA coin                          → "/coin/"      and "/es/coin/"
 //
-// The site is PRE-LAUNCH: the private-messenger core and the node network run on a devnet today,
-// and mainnet is coming. The whole site is framed around a launch-date countdown. Copy is honest
-// about the stage of development — see `roadmap` (what's done / in progress / at launch):
-//   - Shipped on devnet: 1:1 E2E messaging, Account IDs, onion routing, groups, disappearing
-//     messages, service-node storage + relay + 7-node swarm, PoW BLAKE2b chain, on-chain node
-//     registry, staking bond, uptime proofs, block rewards.
-//   - In development / testing: live voice & video calls (media relay wired; two-GUI call unverified).
-//   - At launch (mainnet): ALMENA market/price and staking-reward economics go live; not tradable yet.
+// PRE-LAUNCH: the platform runs on a devnet today; mainnet is coming (countdown from `launch.date`).
+// Copy is honest about the stage of development — see `home.roadmap`. The ALMENA coin's economics
+// are still being designed, so the site shows NO coin amounts, values, splits or figures anywhere;
+// the coin page states that market/economics arrive at mainnet.
 
 export type Lang = "en" | "es";
 
 // ── Launch config ────────────────────────────────────────────────────────────
-// SINGLE SOURCE OF TRUTH for the countdown. Replace `date` with the confirmed
-// mainnet launch date/time (ISO 8601, UTC). Everything else derives from it.
+// SINGLE SOURCE OF TRUTH for the countdown. Replace `date` to move the launch.
 export const launch = {
   // Confirmed mainnet launch: 11 November 2026.
   date: "2026-11-11T12:00:00Z",
@@ -50,59 +47,66 @@ export function launchLabel(lang: Lang): string {
 export const site = {
   en: {
     nav: {
-      messenger: "Messenger",
       network: "Network",
+      identity: "Identity",
+      messaging: "Messaging",
       coin: "Coin",
       docs: "Docs",
       github: "GitHub",
       langSwitch: "Español",
     },
     footer: {
-      tagline: "A community-built, decentralized private messenger. Launching soon.",
-      messenger: "Messenger",
+      tagline: "An open, decentralized platform for many uses. Launching soon.",
+      platform: "Platform",
       network: "Network",
+      identity: "Identity",
+      messaging: "Messaging",
       coin: "Coin",
       resources: "Resources",
       docs: "Documentation",
       github: "GitHub",
-      email: "develop@almena.network",
+      email: "info@almena.network",
       rights: "Open source. No company in the middle.",
     },
   },
   es: {
     nav: {
-      messenger: "Mensajería",
       network: "Red",
+      identity: "Identidad",
+      messaging: "Mensajería",
       coin: "Moneda",
       docs: "Docs",
       github: "GitHub",
       langSwitch: "English",
     },
     footer: {
-      tagline: "Un mensajero privado y descentralizado, hecho por la comunidad. Muy pronto.",
-      messenger: "Mensajería",
+      tagline: "Una plataforma abierta y descentralizada para muchos usos. Muy pronto.",
+      platform: "Plataforma",
       network: "Red",
+      identity: "Identidad",
+      messaging: "Mensajería",
       coin: "Moneda",
       resources: "Recursos",
       docs: "Documentación",
       github: "GitHub",
-      email: "develop@almena.network",
+      email: "info@almena.network",
       rights: "Código abierto. Sin empresa en medio.",
     },
   },
 } as const;
 
+// ── Home = the Almena network / platform ─────────────────────────────────────
 export const home = {
   en: {
-    title: "Almena — Send messages, not metadata",
+    title: "Almena — The open, decentralized platform",
     description:
-      "Almena is a decentralized, end-to-end encrypted messenger launching soon. No phone numbers, no central server — your messages travel through onion paths over a community-run node network.",
+      "Almena is an open, decentralized platform — a community-run network of nodes and a proof-of-work chain that can power storage, voting, document signing, traceability, messaging and more. Mainnet launches soon.",
     hero: {
-      title: "Send messages, not metadata.",
+      title: "One network. Every use. No middleman.",
       subtitle:
-        "Almena is a decentralized, end-to-end encrypted messenger. No phone number, no email, no central server — just private conversations that travel through onion paths over a community-run network. Mainnet is almost here.",
+        "Almena is an open, decentralized platform. A community-run network of nodes and a proof-of-work chain — the shared substrate for storage, voting, signing, traceability, private messaging and more. No company owns it, no server can take it down.",
       ctaPrimary: "Follow the launch",
-      ctaSecondary: "How it works",
+      ctaSecondary: "How the network works",
     },
     roadmap: {
       title: "Where Almena is today",
@@ -111,14 +115,14 @@ export const home = {
         {
           state: "done",
           label: "Live on devnet",
-          title: "The private messenger works",
-          text: "1:1 end-to-end encrypted chats, Account IDs, onion routing, encrypted groups and disappearing messages all run today on the developer network.",
+          title: "The node network runs",
+          text: "Service nodes store and relay data in swarms, and a proof-of-work blockchain keeps the on-chain node registry, stakes and uptime proofs. The substrate every use case builds on.",
         },
         {
           state: "done",
           label: "Live on devnet",
-          title: "The node network runs",
-          text: "Service nodes store and relay messages in 7-node swarms, and a proof-of-work blockchain keeps the on-chain node registry, stakes and uptime proofs.",
+          title: "The first use works",
+          text: "Private messaging — end-to-end encrypted chats, Account IDs, onion routing, encrypted groups and disappearing messages — runs today on the developer network.",
         },
         {
           state: "progress",
@@ -129,10 +133,467 @@ export const home = {
         {
           state: "soon",
           label: "At mainnet",
-          title: "ALMENA economics go live",
-          text: "Block rewards, the staking-reward pool and the ALMENA coin's market arrive with the mainnet launch. See the Coin page for the design.",
+          title: "ALMENA economics & new uses",
+          text: "The coin's economics activate at mainnet, and the roadmap opens the network to more uses — storage, voting, document signing, traceability and beyond.",
         },
       ],
+    },
+    what: {
+      title: "What is Almena?",
+      text:
+        "Almena is a decentralized platform for services that don't depend on any company's servers. It's powered by a community-run network of nodes and a proof-of-work blockchain — anyone can run a node, and the network keeps working even as individual nodes come and go. Private messaging is the first app to ship; the same network is designed to carry many more.",
+    },
+    uses: {
+      title: "One platform, many uses",
+      subtitle:
+        "The same network — an open node layer and a proof-of-work chain — is built to power many decentralized services. Messaging is the first to ship.",
+      note: "Messaging launches first · other uses are on the roadmap",
+      items: [
+        {
+          icon: "chat",
+          layer: "Network + Chain",
+          status: "launching",
+          title: "Private messaging",
+          text: "End-to-end encrypted conversations with no central server to censor them or leak metadata. The first Almena app.",
+          href: "messaging",
+        },
+        {
+          icon: "storage",
+          layer: "Network",
+          status: "roadmap",
+          title: "Storage & backups",
+          text: "Distributed file storage and redundant backups spread across the node network — no single provider to trust or lose.",
+        },
+        {
+          icon: "cpu",
+          layer: "Network",
+          status: "roadmap",
+          title: "Compute & bandwidth",
+          text: "Open nodes offering raw resources — shared compute, bandwidth and data oracles the network can pay for.",
+        },
+        {
+          icon: "vote",
+          layer: "Chain",
+          status: "roadmap",
+          title: "Voting & DAOs",
+          text: "Tamper-evident voting and collective governance, tallied on-chain with certified finality — no central authority counting the ballots.",
+        },
+        {
+          icon: "sign",
+          layer: "Chain",
+          status: "roadmap",
+          title: "Document signing",
+          text: "Sign documents and timestamp hashes on-chain: verifiable proof of what existed, and when, with certified authority.",
+        },
+        {
+          icon: "trace",
+          layer: "Chain",
+          status: "roadmap",
+          title: "Traceability",
+          text: "Chain of custody and supply-chain tracking with an immutable, auditable history from origin to destination.",
+        },
+        {
+          icon: "id",
+          layer: "Network + Chain",
+          status: "roadmap",
+          title: "Identity & zero-knowledge",
+          text: "Self-sovereign identity and verifiable credentials — prove a fact (age, residency, a diploma) without revealing the underlying data.",
+          href: "identity",
+        },
+        {
+          icon: "coin",
+          layer: "Chain",
+          status: "roadmap",
+          title: "Payments & value",
+          text: "Peer-to-peer payments settled in ALMENA, the network's own coin — no bank in the middle. See the Coin page.",
+        },
+      ],
+    },
+    how: {
+      title: "How the network works",
+      subtitle: "Every Almena node runs two cooperating services — the substrate every use case is built on.",
+      cta: "Explore the network in depth",
+    },
+    coinTeaser: {
+      eyebrow: "The coin",
+      title: "ALMENA — the future of privacy, powered by you",
+      text:
+        "The network runs on ALMENA: the proof-of-work coin that rewards the miners and service nodes keeping it alive. Its economics are being designed and go live at mainnet.",
+      cta: "Discover ALMENA",
+    },
+    community: {
+      title: "A network is a team effort",
+      text:
+        "Almena is built in the open by contributors around the world. No vendor lock-in, no paid dependencies. Read every line, run your own node, and help shape a network that answers to its users — not a company.",
+      ctaPrimary: "Contribute on GitHub",
+      ctaSecondary: "Read the docs",
+    },
+  },
+  es: {
+    title: "Almena — La plataforma abierta y descentralizada",
+    description:
+      "Almena es una plataforma abierta y descentralizada — una red comunitaria de nodos y una cadena de prueba de trabajo capaz de impulsar almacenamiento, votaciones, firma de documentos, trazabilidad, mensajería y más. La mainnet llega pronto.",
+    hero: {
+      title: "Una red. Cada uso. Sin intermediarios.",
+      subtitle:
+        "Almena es una plataforma abierta y descentralizada. Una red comunitaria de nodos y una cadena de prueba de trabajo — el sustrato compartido para almacenamiento, votaciones, firma, trazabilidad, mensajería privada y más. Nadie la posee, ningún servidor puede tirarla abajo.",
+      ctaPrimary: "Sigue el lanzamiento",
+      ctaSecondary: "Cómo funciona la red",
+    },
+    roadmap: {
+      title: "En qué punto está Almena",
+      subtitle: "Construido en abierto, funcionando en una devnet, con la cuenta atrás hacia mainnet.",
+      items: [
+        {
+          state: "done",
+          label: "Activo en devnet",
+          title: "La red de nodos funciona",
+          text: "Los service nodes almacenan y retransmiten datos en swarms, y una blockchain de prueba de trabajo mantiene el registro de nodos, los stakes y las pruebas de uptime on-chain. El sustrato sobre el que se construye cada uso.",
+        },
+        {
+          state: "done",
+          label: "Activo en devnet",
+          title: "El primer uso funciona",
+          text: "La mensajería privada — chats cifrados de extremo a extremo, Account IDs, onion routing, grupos cifrados y mensajes efímeros — ya funciona hoy en la red de desarrollo.",
+        },
+        {
+          state: "progress",
+          label: "En pruebas",
+          title: "Llamadas de voz y vídeo",
+          text: "Llamadas cifradas y enrutadas onion sobre una capa de media-relay. El relay y el registro de media on-chain ya están integrados; ahora verificamos la calidad de llamada de extremo a extremo antes del lanzamiento.",
+        },
+        {
+          state: "soon",
+          label: "En mainnet",
+          title: "Economía de ALMENA y nuevos usos",
+          text: "La economía de la moneda se activa en mainnet, y el roadmap abre la red a más usos — almacenamiento, votaciones, firma de documentos, trazabilidad y más allá.",
+        },
+      ],
+    },
+    what: {
+      title: "¿Qué es Almena?",
+      text:
+        "Almena es una plataforma descentralizada para servicios que no dependen de los servidores de ninguna empresa. La impulsan una red comunitaria de nodos y una blockchain de prueba de trabajo — cualquiera puede levantar un nodo, y la red sigue funcionando aunque nodos concretos entren y salgan. La mensajería privada es la primera app en llegar; la misma red está diseñada para llevar muchas más.",
+    },
+    uses: {
+      title: "Una plataforma, muchos usos",
+      subtitle:
+        "La misma red — una capa de nodos abierta y una cadena de prueba de trabajo — está hecha para impulsar muchos servicios descentralizados. La mensajería es el primero en llegar.",
+      note: "La mensajería se lanza primero · el resto de usos están en el roadmap",
+      items: [
+        {
+          icon: "chat",
+          layer: "Red + Cadena",
+          status: "launching",
+          title: "Mensajería privada",
+          text: "Conversaciones cifradas de extremo a extremo sin servidor central que las censure o filtre metadatos. La primera app de Almena.",
+          href: "messaging",
+        },
+        {
+          icon: "storage",
+          layer: "Red",
+          status: "roadmap",
+          title: "Almacenamiento y backups",
+          text: "Almacenamiento de ficheros distribuido y copias redundantes repartidas por la red de nodos — sin un único proveedor que confiar o perder.",
+        },
+        {
+          icon: "cpu",
+          layer: "Red",
+          status: "roadmap",
+          title: "Cómputo y ancho de banda",
+          text: "Nodos abiertos que ofrecen recursos en bruto — cómputo, ancho de banda y oráculos de datos que la red puede pagar.",
+        },
+        {
+          icon: "vote",
+          layer: "Cadena",
+          status: "roadmap",
+          title: "Votaciones y DAOs",
+          text: "Votaciones a prueba de manipulación y gobernanza colectiva, contadas on-chain con finalidad certificada — sin autoridad central escrutando.",
+        },
+        {
+          icon: "sign",
+          layer: "Cadena",
+          status: "roadmap",
+          title: "Firma de documentos",
+          text: "Firma documentos y sella hashes on-chain: prueba verificable de qué existía, y cuándo, con autoridad certificada.",
+        },
+        {
+          icon: "trace",
+          layer: "Cadena",
+          status: "roadmap",
+          title: "Trazabilidad",
+          text: "Cadena de custodia y trazabilidad de suministro con un historial inmutable y auditable, del origen al destino.",
+        },
+        {
+          icon: "id",
+          layer: "Red + Cadena",
+          status: "roadmap",
+          title: "Identidad y conocimiento cero",
+          text: "Identidad soberana y credenciales verificables — demuestra un hecho (edad, residencia, un título) sin revelar el dato en sí.",
+          href: "identity",
+        },
+        {
+          icon: "coin",
+          layer: "Cadena",
+          status: "roadmap",
+          title: "Pagos y valor",
+          text: "Pagos entre pares liquidados en ALMENA, la moneda propia de la red — sin banco en medio. Consulta la página de la Moneda.",
+        },
+      ],
+    },
+    how: {
+      title: "Cómo funciona la red",
+      subtitle: "Cada nodo de Almena ejecuta dos servicios que cooperan — el sustrato sobre el que se construye cada uso.",
+      cta: "Explora la red en detalle",
+    },
+    coinTeaser: {
+      eyebrow: "La moneda",
+      title: "ALMENA — el futuro de la privacidad lo impulsas tú",
+      text:
+        "La red funciona con ALMENA: la moneda de prueba de trabajo que recompensa a los mineros y service nodes que la mantienen viva. Su economía se está diseñando y se activa en mainnet.",
+      cta: "Descubre ALMENA",
+    },
+    community: {
+      title: "Una red es cosa de todos",
+      text:
+        "Almena se construye de forma abierta por contribuidores de todo el mundo. Sin vendor lock-in, sin dependencias de pago. Lee cada línea, levanta tu propio nodo y ayuda a dar forma a una red que responde a sus usuarios — no a una empresa.",
+      ctaPrimary: "Contribuir en GitHub",
+      ctaSecondary: "Leer la documentación",
+    },
+  },
+} as const;
+
+// ── Decentralized identity = a use case with its own page ────────────────────
+// Single source for identity content: feeds both the /identity/ page and the
+// home teaser. IdentityDiagram reads `identity[lang].diagram`.
+export const identity = {
+  en: {
+    title: "Almena Identity — Own your identity, prove anything",
+    description:
+      "Decentralized, self-sovereign identity on the Almena network: hold your own verifiable credentials and prove any claim without revealing the data behind it. One of many uses of the platform.",
+    hero: {
+      eyebrow: "Use case · Identity",
+      title: "Own your identity. Prove anything.",
+      subtitle:
+        "Self-sovereign identity replaces the central identity provider with verifiable credentials you hold yourself. Prove you're over 18, a resident, or a degree holder — without handing over the data behind it.",
+      ctaPrimary: "Follow the launch",
+      ctaSecondary: "How the network works",
+    },
+    teaser: {
+      eyebrow: "Use case in focus",
+      title: "Decentralized identity",
+      text:
+        "Self-sovereign identity replaces the central identity provider with three roles and a shared source of trust. You hold your own credentials and prove what you need — nothing more.",
+      cta: "Explore Almena Identity",
+    },
+    what: {
+      title: "What is decentralized identity?",
+      text:
+        "Today a handful of companies own your login and decide what you can prove and to whom. Self-sovereign identity (SSI) flips that: credentials are issued to you, held by you, and checked by anyone — with a shared, tamper-evident source of trust instead of a central identity provider. Almena anchors that trust on-chain and hands the data back to you.",
+    },
+    roles: [
+      {
+        key: "issuer",
+        title: "Issuers",
+        text: "Trusted organizations — a university, a government, an employer — issue verifiable credentials signed with their own keys.",
+      },
+      {
+        key: "holder",
+        title: "Holders",
+        text: "You hold your credentials in your own wallet and decide who sees them. No identity provider sits in the middle, and nothing can be revoked out from under you without a trace.",
+      },
+      {
+        key: "verifier",
+        title: "Verifiers",
+        text: "Anyone can check a credential is authentic and unrevoked — without phoning home to the issuer, and without learning more than you choose to reveal.",
+      },
+    ],
+    note:
+      "Almena anchors the trust — the issuer registry and revocation — on-chain, so no central identity provider can track, gate or deplatform you.",
+    diagram: {
+      issuer: "Issuer",
+      holder: "Holder",
+      verifier: "Verifier",
+      issues: "issues credential",
+      presents: "presents proof",
+      trusts: "trusts (on-chain registry)",
+    },
+    disclosure: {
+      tag: "Zero-knowledge",
+      title: "Prove it. Don't reveal it.",
+      text: "With zero-knowledge proofs you demonstrate a claim is true without exposing the data behind it — minimal disclosure, one interaction at a time. It's what separates a real identity layer from a shared database.",
+      points: [
+        "Prove you're over 18 — not your birth date",
+        "Prove residency — not your address",
+        "Prove you hold a credential — not the document",
+      ],
+    },
+    capabilities: {
+      title: "What you can do with Almena Identity",
+      items: [
+        {
+          title: "Self-sovereign identity (DID/SSI)",
+          text: "A portable identity you control — not a login owned by a platform that can lock you out.",
+        },
+        {
+          title: "Verifiable credentials",
+          text: "Diplomas, certifications, licenses, work history — cryptographically signed and instantly checkable.",
+        },
+        {
+          title: "Reusable KYC",
+          text: "Verify once, reuse across services — without repeating the process or resharing documents each time.",
+        },
+        {
+          title: "Minimal disclosure",
+          text: "Share only the single fact each interaction needs, and nothing else about you.",
+        },
+        {
+          title: "Revocation you can see",
+          text: "Issuers can revoke a credential — but only on a public on-chain registry, never silently.",
+        },
+        {
+          title: "No identity provider",
+          text: "No third-party login in the middle that can profile you, gate access, or deplatform you.",
+        },
+      ],
+    },
+    layer: {
+      title: "Where identity lives on Almena",
+      text:
+        "Identity spans both layers. The BLOCKCHAIN layer (permissioned, certified finality) anchors the issuer registry and revocation; the NETWORK layer stores and moves credentials privately. You keep the credentials themselves.",
+    },
+    roadmap: {
+      label: "On the roadmap",
+      text: "Identity is a post-launch use case. The network and its on-chain registries — the trust anchor identity needs — go live at mainnet; identity is built on top.",
+    },
+    cta: {
+      title: "Identity you actually own, soon on Almena",
+      text: "The network that anchors it is open source and running on a devnet today. Follow the countdown to mainnet, and read how the layers beneath identity work.",
+      ctaPrimary: "Follow on GitHub",
+      ctaSecondary: "Read the docs",
+    },
+  },
+  es: {
+    title: "Almena Identidad — Sé dueño de tu identidad, demuestra cualquier cosa",
+    description:
+      "Identidad soberana y descentralizada sobre la red Almena: custodia tus credenciales verificables y demuestra cualquier afirmación sin revelar el dato que hay detrás. Uno de los muchos usos de la plataforma.",
+    hero: {
+      eyebrow: "Caso de uso · Identidad",
+      title: "Sé dueño de tu identidad. Demuestra cualquier cosa.",
+      subtitle:
+        "La identidad soberana sustituye al proveedor de identidad central por credenciales verificables que custodias tú. Demuestra que eres mayor de edad, residente o titulado — sin entregar el dato que hay detrás.",
+      ctaPrimary: "Sigue el lanzamiento",
+      ctaSecondary: "Cómo funciona la red",
+    },
+    teaser: {
+      eyebrow: "Un caso de uso en detalle",
+      title: "Identidad descentralizada",
+      text:
+        "La identidad soberana sustituye al proveedor de identidad central por tres roles y una fuente de confianza compartida. Tú custodias tus credenciales y demuestras solo lo que hace falta — nada más.",
+      cta: "Explora Almena Identidad",
+    },
+    what: {
+      title: "¿Qué es la identidad descentralizada?",
+      text:
+        "Hoy un puñado de empresas son dueñas de tu login y deciden qué puedes demostrar y ante quién. La identidad soberana (SSI) le da la vuelta: las credenciales se te emiten a ti, las custodias tú y las verifica cualquiera — con una fuente de confianza compartida y a prueba de manipulación, en vez de un proveedor de identidad central. Almena ancla esa confianza on-chain y te devuelve el control del dato.",
+    },
+    roles: [
+      {
+        key: "issuer",
+        title: "Emisores",
+        text: "Organizaciones de confianza — una universidad, un gobierno, una empresa — emiten credenciales verificables firmadas con sus propias claves.",
+      },
+      {
+        key: "holder",
+        title: "Titulares",
+        text: "Tú custodias tus credenciales en tu propia cartera y decides quién las ve. Ningún proveedor de identidad se interpone, y nada puede revocarse a tus espaldas sin dejar rastro.",
+      },
+      {
+        key: "verifier",
+        title: "Verificadores",
+        text: "Cualquiera puede comprobar que una credencial es auténtica y no está revocada — sin llamar al emisor y sin aprender más de lo que decides revelar.",
+      },
+    ],
+    note:
+      "Almena ancla la confianza — el registro de emisores y la revocación — on-chain, así que ningún proveedor de identidad central puede rastrearte, bloquearte o expulsarte.",
+    diagram: {
+      issuer: "Emisor",
+      holder: "Titular",
+      verifier: "Verificador",
+      issues: "emite credencial",
+      presents: "presenta prueba",
+      trusts: "confía (registro on-chain)",
+    },
+    disclosure: {
+      tag: "Conocimiento cero",
+      title: "Demuéstralo. No lo reveles.",
+      text: "Con pruebas de conocimiento cero demuestras que una afirmación es cierta sin exponer el dato que hay detrás — divulgación mínima, interacción a interacción. Es lo que separa una capa de identidad real de una simple base de datos.",
+      points: [
+        "Demuestra que eres mayor de edad — no tu fecha de nacimiento",
+        "Demuestra tu residencia — no tu dirección",
+        "Demuestra que posees una credencial — no el documento",
+      ],
+    },
+    capabilities: {
+      title: "Qué puedes hacer con Almena Identidad",
+      items: [
+        {
+          title: "Identidad soberana (DID/SSI)",
+          text: "Una identidad portable que controlas tú — no un login propiedad de una plataforma que puede dejarte fuera.",
+        },
+        {
+          title: "Credenciales verificables",
+          text: "Títulos, certificaciones, licencias, historial laboral — firmados criptográficamente y comprobables al instante.",
+        },
+        {
+          title: "KYC reutilizable",
+          text: "Verifícate una vez, reutilízalo entre servicios — sin repetir el proceso ni reenviar documentos cada vez.",
+        },
+        {
+          title: "Divulgación mínima",
+          text: "Comparte solo el dato que cada interacción necesita, y nada más sobre ti.",
+        },
+        {
+          title: "Revocación que puedes ver",
+          text: "Los emisores pueden revocar una credencial — pero solo en un registro público on-chain, nunca en silencio.",
+        },
+        {
+          title: "Sin proveedor de identidad",
+          text: "Ningún login de terceros en medio que pueda perfilarte, restringir tu acceso o expulsarte.",
+        },
+      ],
+    },
+    layer: {
+      title: "Dónde vive la identidad en Almena",
+      text:
+        "La identidad abarca ambas capas. La capa BLOCKCHAIN (permisionada, con finalidad certificada) ancla el registro de emisores y la revocación; la capa NETWORK almacena y mueve las credenciales de forma privada. Las credenciales, las guardas tú.",
+    },
+    roadmap: {
+      label: "En el roadmap",
+      text: "La identidad es un caso de uso posterior al lanzamiento. La red y sus registros on-chain — el ancla de confianza que la identidad necesita — se activan en mainnet; la identidad se construye encima.",
+    },
+    cta: {
+      title: "Una identidad que de verdad es tuya, pronto en Almena",
+      text: "La red que la ancla es código abierto y funciona hoy en una devnet. Sigue la cuenta atrás hacia mainnet y lee cómo funcionan las capas bajo la identidad.",
+      ctaPrimary: "Seguir en GitHub",
+      ctaSecondary: "Leer la documentación",
+    },
+  },
+} as const;
+
+// ── Messaging = one use case on the platform ─────────────────────────────────
+export const messaging = {
+  en: {
+    title: "Almena Messaging — Send messages, not metadata",
+    description:
+      "Private messaging is the first app on the Almena network: decentralized, end-to-end encrypted, no phone number and no central server. One of many uses the platform will carry.",
+    hero: {
+      eyebrow: "Use case · Messaging",
+      title: "Send messages, not metadata.",
+      subtitle:
+        "Almena's first app is a decentralized, end-to-end encrypted messenger. No phone number, no email, no central server — private conversations that travel through onion paths over the community-run network.",
+      ctaPrimary: "Follow the launch",
+      ctaSecondary: "How the network works",
     },
     platforms: {
       title: "One account, every device",
@@ -145,11 +606,6 @@ export const home = {
         { name: "Android", kind: "Mobile" },
         { name: "iOS", kind: "Mobile" },
       ],
-    },
-    what: {
-      title: "What is Almena?",
-      text:
-        "Almena is a private messenger that doesn't depend on any company's servers. When you create an account you get a random Account ID — not tied to a phone number or email. Messages are end-to-end encrypted and routed through onion paths, so no one, not even the nodes carrying your traffic, can link who you are to who you talk to.",
     },
     benefits: {
       title: "Privacy, by default",
@@ -216,68 +672,25 @@ export const home = {
         },
       ],
     },
-    networkTeaser: {
-      eyebrow: "The network",
-      title: "Powered by a community-run network",
+    cta: {
+      title: "Private messaging, launching soon",
       text:
-        "Almena has no servers of its own. Your messages are stored and relayed by a decentralized network of service nodes, kept honest by a proof-of-work blockchain. Anyone can run a node, stake into it, and earn rewards for keeping the network alive.",
-      cta: "Explore the network",
-    },
-    coinTeaser: {
-      eyebrow: "The coin",
-      title: "ALMENA — the future of privacy, powered by you",
-      text:
-        "The network runs on ALMENA: the proof-of-work coin that rewards miners and service nodes for keeping your messages private and available. Rewards, staking and the coin's market go live at mainnet.",
-      cta: "Discover ALMENA",
-    },
-    community: {
-      title: "Privacy is a team effort",
-      text:
-        "Almena is built in the open by contributors around the world. No vendor lock-in, no paid dependencies. Read every line, run your own node, and help shape a messenger that answers to its users — not a company.",
-      ctaPrimary: "Contribute on GitHub",
+        "The client, the nodes and the protocol are open source today. Follow the countdown to mainnet — and read how the network beneath it works.",
+      ctaPrimary: "Follow on GitHub",
       ctaSecondary: "Read the docs",
     },
   },
   es: {
-    title: "Almena — Envía mensajes, no metadatos",
+    title: "Almena Mensajería — Envía mensajes, no metadatos",
     description:
-      "Almena es un mensajero descentralizado y cifrado de extremo a extremo, muy pronto disponible. Sin números de teléfono, sin servidor central — tus mensajes viajan por rutas onion sobre una red de nodos de la comunidad.",
+      "La mensajería privada es la primera app de la red Almena: descentralizada, cifrada de extremo a extremo, sin número de teléfono ni servidor central. Uno de los muchos usos que llevará la plataforma.",
     hero: {
+      eyebrow: "Caso de uso · Mensajería",
       title: "Envía mensajes, no metadatos.",
       subtitle:
-        "Almena es un mensajero descentralizado y cifrado de extremo a extremo. Sin número de teléfono, sin email, sin servidor central — solo conversaciones privadas que viajan por rutas onion sobre una red comunitaria. La mainnet está a punto de llegar.",
+        "La primera app de Almena es un mensajero descentralizado y cifrado de extremo a extremo. Sin número de teléfono, sin email, sin servidor central — conversaciones privadas que viajan por rutas onion sobre la red comunitaria.",
       ctaPrimary: "Sigue el lanzamiento",
-      ctaSecondary: "Cómo funciona",
-    },
-    roadmap: {
-      title: "En qué punto está Almena",
-      subtitle: "Construido en abierto, funcionando en una devnet, con la cuenta atrás hacia mainnet.",
-      items: [
-        {
-          state: "done",
-          label: "Activo en devnet",
-          title: "El mensajero privado funciona",
-          text: "Chats 1:1 cifrados de extremo a extremo, Account IDs, onion routing, grupos cifrados y mensajes efímeros ya funcionan hoy en la red de desarrollo.",
-        },
-        {
-          state: "done",
-          label: "Activo en devnet",
-          title: "La red de nodos funciona",
-          text: "Los service nodes almacenan y retransmiten mensajes en swarms de 7 nodos, y una blockchain de prueba de trabajo mantiene el registro de nodos, los stakes y las pruebas de uptime on-chain.",
-        },
-        {
-          state: "progress",
-          label: "En pruebas",
-          title: "Llamadas de voz y vídeo",
-          text: "Llamadas cifradas y enrutadas onion sobre una capa de media-relay. El relay y el registro de media on-chain ya están integrados; ahora verificamos la calidad de llamada de extremo a extremo antes del lanzamiento.",
-        },
-        {
-          state: "soon",
-          label: "En mainnet",
-          title: "La economía de ALMENA se activa",
-          text: "Las recompensas por bloque, el pool de staking y el mercado de la moneda ALMENA llegan con el lanzamiento de mainnet. Consulta la página de la Moneda para ver el diseño.",
-        },
-      ],
+      ctaSecondary: "Cómo funciona la red",
     },
     platforms: {
       title: "Una cuenta, todos tus dispositivos",
@@ -290,11 +703,6 @@ export const home = {
         { name: "Android", kind: "Móvil" },
         { name: "iOS", kind: "Móvil" },
       ],
-    },
-    what: {
-      title: "¿Qué es Almena?",
-      text:
-        "Almena es un mensajero privado que no depende de los servidores de ninguna empresa. Al crear una cuenta obtienes un Account ID aleatorio — sin vínculo con un teléfono o un email. Los mensajes se cifran de extremo a extremo y se enrutan por rutas onion, de modo que nadie, ni siquiera los nodos que transportan tu tráfico, puede relacionar quién eres con quién hablas.",
     },
     benefits: {
       title: "Privacidad por defecto",
@@ -350,7 +758,7 @@ export const home = {
         {
           tag: "Grupos",
           title: "Conversaciones de grupo cifradas",
-          text: "Crea chats grupales con amigos o únete a canales comunitarios. Cada grupo usa el mismo cifrado de extremo a extremo que los chats 1:1 — los miembros se pueden añadir o eliminar en cualquier momento y el historial de mensajes permanece sellado para el conjunto de miembros actual.",
+          text: "Crea chats grupales con amigos o únete a canales comunitarios. Cada grupo usa el mismo cifrado de extremo a extremo que los chats 1:1 — los miembros se pueden añadir o eliminar en cualquier momento y el historial permanece sellado para el conjunto de miembros actual.",
           points: ["Crear y gestionar grupos", "Añadir o eliminar miembros", "Canales comunitarios"],
         },
         {
@@ -361,40 +769,27 @@ export const home = {
         },
       ],
     },
-    networkTeaser: {
-      eyebrow: "La red",
-      title: "Impulsado por una red comunitaria",
+    cta: {
+      title: "Mensajería privada, muy pronto",
       text:
-        "Almena no tiene servidores propios. Tus mensajes los almacenan y retransmiten una red descentralizada de service nodes, mantenida honesta por una blockchain de prueba de trabajo. Cualquiera puede levantar un nodo, hacer staking en él y ganar recompensas por mantener la red viva.",
-      cta: "Explorar la red",
-    },
-    coinTeaser: {
-      eyebrow: "La moneda",
-      title: "ALMENA — el futuro de la privacidad lo impulsas tú",
-      text:
-        "La red funciona con ALMENA: la moneda de prueba de trabajo que recompensa a mineros y service nodes por mantener tus mensajes privados y disponibles. Las recompensas, el staking y el mercado de la moneda se activan en mainnet.",
-      cta: "Descubre ALMENA",
-    },
-    community: {
-      title: "La privacidad es cosa de todos",
-      text:
-        "Almena se construye de forma abierta por contribuidores de todo el mundo. Sin vendor lock-in, sin dependencias de pago. Lee cada línea, levanta tu propio nodo y ayuda a dar forma a un mensajero que responde a sus usuarios — no a una empresa.",
-      ctaPrimary: "Contribuir en GitHub",
+        "El cliente, los nodos y el protocolo ya son código abierto. Sigue la cuenta atrás hacia mainnet — y lee cómo funciona la red que hay debajo.",
+      ctaPrimary: "Seguir en GitHub",
       ctaSecondary: "Leer la documentación",
     },
   },
 } as const;
 
+// ── Network in depth (nodes, run a node) ─────────────────────────────────────
 export const network = {
   en: {
     title: "Almena Network — Powered by you",
     description:
-      "The Almena Network is a decentralized mesh of service nodes and a proof-of-work blockchain that store and relay private messages. Run a node, stake into it, and earn rewards for keeping the network alive.",
+      "The Almena Network is a decentralized mesh of service nodes and a proof-of-work blockchain. Run a node, stake into it, and earn rewards for keeping the network alive.",
     hero: {
       eyebrow: "The network",
-      title: "Making private messaging possible.",
+      title: "The substrate for a decentralized world.",
       subtitle:
-        "Behind every Almena message is a decentralized network of service nodes and a proof-of-work blockchain — run by the community, owned by no one. It runs on a devnet today and goes to mainnet at launch.",
+        "Behind every Almena use case is a decentralized network of service nodes and a proof-of-work blockchain — run by the community, owned by no one. It runs on a devnet today and goes to mainnet at launch.",
       ctaPrimary: "Read the docs",
       ctaSecondary: "About the coin",
     },
@@ -403,15 +798,15 @@ export const network = {
       note: "Protocol design parameters — live on the developer network today.",
       items: [
         { value: "~5s", label: "Target block time" },
-        { value: "50", label: "Coins minted per block" },
-        { value: "7", label: "Nodes per message swarm" },
+        { value: "7", label: "Nodes per data swarm" },
+        { value: "3-hop", label: "Onion routing paths" },
         { value: "PoW", label: "BLAKE2b consensus" },
       ],
     },
     what: {
       title: "What is the Almena Network?",
       text:
-        "Almena has no central servers. Instead, a global network of independent service nodes stores encrypted messages and relays onion-routed traffic, while a proof-of-work blockchain keeps a public registry of which nodes are online and trusted. There's no company that can read your messages, take the network down, or shut you out — because no single party runs it.",
+        "Almena has no central servers. Instead, a global network of independent service nodes stores encrypted data and relays onion-routed traffic, while a proof-of-work blockchain keeps a public registry of which nodes are online and trusted. There's no company that can read your data, take the network down, or shut you out — because no single party runs it.",
     },
     pillars: {
       title: "Two daemons, one network",
@@ -419,10 +814,10 @@ export const network = {
       items: [
         {
           tag: "Service Node",
-          title: "Stores and relays your messages",
-          text: "Service nodes hold encrypted messages until you fetch them and relay onion-routed requests hop by hop. Each account is served by a deterministic swarm of seven nodes, so your messages are replicated and stay available even if some nodes go offline.",
+          title: "Stores and relays data",
+          text: "Service nodes hold encrypted data until it's fetched and relay onion-routed requests hop by hop. Each account is served by a deterministic swarm of seven nodes, so data is replicated and stays available even if some nodes go offline.",
           points: [
-            "Encrypted message storage with TTL expiry",
+            "Encrypted storage with TTL expiry",
             "Onion routing relay (no node sees both ends)",
             "7-node swarm replication for availability",
           ],
@@ -457,7 +852,7 @@ export const network = {
         {
           step: "03",
           title: "Earn every block",
-          text: "Each block mints 50 ALMENA: half to the miner, half to an elected service node. Keep your node honest and online, and the network pays you back.",
+          text: "Each block rewards the miner that secured it and an elected, staked service node — so the people doing the work are paid. Keep your node honest and online, and the network pays you back.",
         },
       ],
     },
@@ -472,12 +867,12 @@ export const network = {
   es: {
     title: "Almena Network — Impulsada por ti",
     description:
-      "La Red Almena es una malla descentralizada de service nodes y una blockchain de prueba de trabajo que almacenan y retransmiten mensajes privados. Levanta un nodo, haz staking y gana recompensas por mantener la red viva.",
+      "La Red Almena es una malla descentralizada de service nodes y una blockchain de prueba de trabajo. Levanta un nodo, haz staking y gana recompensas por mantener la red viva.",
     hero: {
       eyebrow: "La red",
-      title: "Hacemos posible la mensajería privada.",
+      title: "El sustrato para un mundo descentralizado.",
       subtitle:
-        "Detrás de cada mensaje de Almena hay una red descentralizada de service nodes y una blockchain de prueba de trabajo — gestionada por la comunidad, propiedad de nadie. Hoy funciona en una devnet y llega a mainnet en el lanzamiento.",
+        "Detrás de cada uso de Almena hay una red descentralizada de service nodes y una blockchain de prueba de trabajo — gestionada por la comunidad, propiedad de nadie. Hoy funciona en una devnet y llega a mainnet en el lanzamiento.",
       ctaPrimary: "Leer la documentación",
       ctaSecondary: "Sobre la moneda",
     },
@@ -486,15 +881,15 @@ export const network = {
       note: "Parámetros de diseño del protocolo — activos hoy en la red de desarrollo.",
       items: [
         { value: "~5s", label: "Tiempo de bloque objetivo" },
-        { value: "50", label: "Monedas por bloque" },
-        { value: "7", label: "Nodos por swarm de mensajes" },
+        { value: "7", label: "Nodos por swarm de datos" },
+        { value: "3 saltos", label: "Rutas de onion routing" },
         { value: "PoW", label: "Consenso BLAKE2b" },
       ],
     },
     what: {
       title: "¿Qué es la Red Almena?",
       text:
-        "Almena no tiene servidores centrales. En su lugar, una red global de service nodes independientes almacena mensajes cifrados y retransmite tráfico enrutado onion, mientras una blockchain de prueba de trabajo mantiene un registro público de qué nodos están en línea y son de confianza. No hay empresa que pueda leer tus mensajes, tirar la red abajo o dejarte fuera — porque nadie la gestiona en solitario.",
+        "Almena no tiene servidores centrales. En su lugar, una red global de service nodes independientes almacena datos cifrados y retransmite tráfico enrutado onion, mientras una blockchain de prueba de trabajo mantiene un registro público de qué nodos están en línea y son de confianza. No hay empresa que pueda leer tus datos, tirar la red abajo o dejarte fuera — porque nadie la gestiona en solitario.",
     },
     pillars: {
       title: "Dos daemons, una red",
@@ -502,8 +897,8 @@ export const network = {
       items: [
         {
           tag: "Service Node",
-          title: "Almacena y retransmite tus mensajes",
-          text: "Los service nodes guardan los mensajes cifrados hasta que los recoges y retransmiten las peticiones onion salto a salto. Cada cuenta la sirve un swarm determinista de siete nodos, así tus mensajes se replican y siguen disponibles aunque algunos nodos se caigan.",
+          title: "Almacena y retransmite datos",
+          text: "Los service nodes guardan los datos cifrados hasta que se recogen y retransmiten las peticiones onion salto a salto. Cada cuenta la sirve un swarm determinista de siete nodos, así los datos se replican y siguen disponibles aunque algunos nodos se caigan.",
           points: [
             "Almacenamiento cifrado con expiración (TTL)",
             "Relay de onion routing (ningún nodo ve los dos extremos)",
@@ -540,7 +935,7 @@ export const network = {
         {
           step: "03",
           title: "Gana en cada bloque",
-          text: "Cada bloque acuña 50 ALMENA: la mitad para el minero, la mitad para un service node elegido. Mantén tu nodo honesto y en línea, y la red te recompensa.",
+          text: "Cada bloque recompensa al minero que lo aseguró y a un service node en stake elegido — así, quienes hacen el trabajo cobran. Mantén tu nodo honesto y en línea, y la red te recompensa.",
         },
       ],
     },
@@ -554,36 +949,37 @@ export const network = {
   },
 } as const;
 
+// ── The ALMENA coin (no amounts/values — economics still being designed) ─────
 export const coin = {
   en: {
-    title: "ALMENA — The coin that powers private messaging",
+    title: "ALMENA — The coin that powers the network",
     description:
-      "ALMENA is the proof-of-work coin behind the Almena Network. It rewards miners and service nodes for keeping messages private and available. Market, staking and rewards go live at mainnet.",
+      "ALMENA is the proof-of-work coin behind the Almena Network. It rewards miners and service nodes for keeping the network running. Its economics are being designed; market and rewards go live at mainnet.",
     hero: {
       eyebrow: "The coin",
       title: "The future of privacy is powered by you.",
       subtitle:
-        "ALMENA is the coin behind the tech — the proof-of-work currency that pays the community to store, relay and secure your messages. Minting begins at the mainnet launch.",
+        "ALMENA is the coin behind the tech — the proof-of-work currency that pays the community to store, relay and secure the network. Minting begins at the mainnet launch.",
       ctaPrimary: "Read the docs",
       ctaSecondary: "Explore the network",
     },
     what: {
       title: "What is ALMENA?",
       text:
-        "ALMENA is the native coin of the Almena Network's blockchain. It has one job: align incentives so a leaderless network keeps working. Miners secure the chain with proof-of-work, service nodes stake ALMENA to register and stay honest, and both are paid in ALMENA every block for keeping your private messages flowing.",
+        "ALMENA is the native coin of the Almena Network's blockchain. It has one job: align incentives so a leaderless network keeps working. Miners secure the chain with proof-of-work, service nodes stake ALMENA to register and stay honest, and both are rewarded in ALMENA for keeping the network alive.",
     },
     cards: {
       title: "The coin behind the tech",
       items: [
         {
           tag: "Rewards",
-          title: "Paid to keep you private",
-          text: "Every block mints 50 ALMENA, split between the miner that secured it and an elected service node that stores and relays messages. Doing the work that protects your privacy is what earns coins.",
+          title: "Paid to run the network",
+          text: "Each block rewards the miner that secured it and an elected service node that stores and relays data. Doing the work that keeps the network alive is what earns coins.",
         },
         {
           tag: "Tokenomics",
           title: "Utility tied to the network",
-          text: "ALMENA isn't a coin bolted onto a chat app — it's the mechanism that makes a people-powered network possible. Staking gates who can run a node; block rewards pay for the storage and relay you rely on.",
+          text: "ALMENA isn't a coin bolted onto an app — it's the mechanism that makes a people-powered network possible. Staking gates who can run a node; block rewards pay for the storage and relay everyone relies on.",
         },
         {
           tag: "Staking",
@@ -592,42 +988,32 @@ export const coin = {
         },
       ],
     },
-    stats: {
-      title: "ALMENA at a glance",
-      note: "Design parameters, live on the developer network. Final economics are set at mainnet.",
-      items: [
-        { value: "50", label: "ALMENA minted per block" },
-        { value: "50 / 50", label: "Miner / service-node split" },
-        { value: "~5s", label: "Block time" },
-        { value: "PoW", label: "BLAKE2b, no pre-mine bias" },
-      ],
-    },
     flow: {
       title: "How a coin is earned",
-      subtitle: "Proof-of-work secures the chain; service nodes keep messages alive. Both get paid.",
+      subtitle: "Proof-of-work secures the chain; service nodes keep the network alive. Both get paid.",
       items: [
         {
           step: "01",
           title: "Miners find a block",
-          text: "Miners race to solve a BLAKE2b proof-of-work puzzle roughly every five seconds. The winner appends the next block and earns half of its freshly minted coins.",
+          text: "Miners race to solve a BLAKE2b proof-of-work puzzle roughly every few seconds. The winner appends the next block and earns a share of the coins it mints.",
         },
         {
           step: "02",
           title: "A service node is elected",
-          text: "For each block, a staked and provably-live service node is selected. It has been storing and relaying encrypted messages — and it earns the other half of the block reward.",
+          text: "For each block, a staked and provably-live service node is selected. It has been storing and relaying encrypted data — and it earns a share of the same block's reward.",
         },
         {
           step: "03",
           title: "The network pays out",
-          text: "50 ALMENA per block flow to the people doing the work. No company takes a cut, because there is no company — just miners, nodes and their stakers.",
+          text: "Fresh coins flow to the people doing the work — miners, service nodes and their stakers. No company takes a cut, because there is no company.",
         },
       ],
     },
     market: {
-      title: "Market & rewards go live at mainnet",
+      title: "Economics go live at mainnet",
       text:
-        "We won't fake numbers before they're real. ALMENA is not tradable yet, and the staking-reward pool activates with mainnet. Live price, market cap and reward figures will appear here once the network launches — and not a moment before.",
-      badge: "Coming at launch",
+        "We won't show numbers before they're real. ALMENA's economics — supply, rewards, staking — are still being designed, and the coin is not tradable yet. Live figures will appear here once the network launches, and not a moment before.",
+      badge: "Being designed · live at launch",
     },
     cta: {
       title: "Be here when ALMENA goes live",
@@ -638,34 +1024,34 @@ export const coin = {
     },
   },
   es: {
-    title: "ALMENA — La moneda que impulsa la mensajería privada",
+    title: "ALMENA — La moneda que impulsa la red",
     description:
-      "ALMENA es la moneda de prueba de trabajo tras la Red Almena. Recompensa a mineros y service nodes por mantener los mensajes privados y disponibles. El mercado, el staking y las recompensas se activan en mainnet.",
+      "ALMENA es la moneda de prueba de trabajo tras la Red Almena. Recompensa a mineros y service nodes por mantener la red en marcha. Su economía se está diseñando; el mercado y las recompensas se activan en mainnet.",
     hero: {
       eyebrow: "La moneda",
       title: "El futuro de la privacidad lo impulsas tú.",
       subtitle:
-        "ALMENA es la moneda tras la tecnología — la divisa de prueba de trabajo que paga a la comunidad por almacenar, retransmitir y proteger tus mensajes. La acuñación empieza con el lanzamiento de mainnet.",
+        "ALMENA es la moneda tras la tecnología — la divisa de prueba de trabajo que paga a la comunidad por almacenar, retransmitir y proteger la red. La acuñación empieza con el lanzamiento de mainnet.",
       ctaPrimary: "Leer la documentación",
       ctaSecondary: "Explorar la red",
     },
     what: {
       title: "¿Qué es ALMENA?",
       text:
-        "ALMENA es la moneda nativa de la blockchain de la Red Almena. Tiene un solo cometido: alinear incentivos para que una red sin líder siga funcionando. Los mineros aseguran la cadena con prueba de trabajo, los service nodes hacen staking de ALMENA para registrarse y mantenerse honestos, y ambos cobran en ALMENA en cada bloque por mantener tus mensajes privados en circulación.",
+        "ALMENA es la moneda nativa de la blockchain de la Red Almena. Tiene un solo cometido: alinear incentivos para que una red sin líder siga funcionando. Los mineros aseguran la cadena con prueba de trabajo, los service nodes hacen staking de ALMENA para registrarse y mantenerse honestos, y ambos se recompensan en ALMENA por mantener la red viva.",
     },
     cards: {
       title: "La moneda tras la tecnología",
       items: [
         {
           tag: "Recompensas",
-          title: "Pagada por protegerte",
-          text: "Cada bloque acuña 50 ALMENA, repartidas entre el minero que lo aseguró y un service node elegido que almacena y retransmite mensajes. Hacer el trabajo que protege tu privacidad es lo que genera monedas.",
+          title: "Pagada por sostener la red",
+          text: "Cada bloque recompensa al minero que lo aseguró y a un service node elegido que almacena y retransmite datos. Hacer el trabajo que mantiene la red viva es lo que genera monedas.",
         },
         {
           tag: "Tokenomics",
           title: "Utilidad ligada a la red",
-          text: "ALMENA no es una moneda pegada a una app de chat — es el mecanismo que hace posible una red impulsada por la gente. El staking regula quién puede levantar un nodo; las recompensas por bloque pagan el almacenamiento y el relay del que dependes.",
+          text: "ALMENA no es una moneda pegada a una app — es el mecanismo que hace posible una red impulsada por la gente. El staking regula quién puede levantar un nodo; las recompensas por bloque pagan el almacenamiento y el relay del que todos dependen.",
         },
         {
           tag: "Staking",
@@ -674,42 +1060,32 @@ export const coin = {
         },
       ],
     },
-    stats: {
-      title: "ALMENA de un vistazo",
-      note: "Parámetros de diseño, activos en la red de desarrollo. La economía final se fija en mainnet.",
-      items: [
-        { value: "50", label: "ALMENA por bloque" },
-        { value: "50 / 50", label: "Reparto minero / service node" },
-        { value: "~5s", label: "Tiempo de bloque" },
-        { value: "PoW", label: "BLAKE2b, sin sesgo de pre-minado" },
-      ],
-    },
     flow: {
       title: "Cómo se gana una moneda",
-      subtitle: "La prueba de trabajo asegura la cadena; los service nodes mantienen los mensajes vivos. Ambos cobran.",
+      subtitle: "La prueba de trabajo asegura la cadena; los service nodes mantienen la red viva. Ambos cobran.",
       items: [
         {
           step: "01",
           title: "Los mineros encuentran un bloque",
-          text: "Los mineros compiten por resolver un reto de prueba de trabajo BLAKE2b cada cinco segundos aproximadamente. El ganador añade el siguiente bloque y gana la mitad de sus monedas recién acuñadas.",
+          text: "Los mineros compiten por resolver un reto de prueba de trabajo BLAKE2b cada pocos segundos. El ganador añade el siguiente bloque y gana una parte de las monedas que acuña.",
         },
         {
           step: "02",
           title: "Se elige un service node",
-          text: "En cada bloque se selecciona un service node en stake y demostrablemente vivo. Ha estado almacenando y retransmitiendo mensajes cifrados — y gana la otra mitad de la recompensa del bloque.",
+          text: "En cada bloque se selecciona un service node en stake y demostrablemente vivo. Ha estado almacenando y retransmitiendo datos cifrados — y gana una parte de la recompensa del mismo bloque.",
         },
         {
           step: "03",
           title: "La red reparte",
-          text: "50 ALMENA por bloque van a la gente que hace el trabajo. Ninguna empresa se lleva una comisión, porque no hay empresa — solo mineros, nodos y quienes hacen staking en ellos.",
+          text: "Las monedas nuevas van a la gente que hace el trabajo — mineros, service nodes y quienes hacen staking en ellos. Ninguna empresa se lleva una comisión, porque no hay empresa.",
         },
       ],
     },
     market: {
-      title: "El mercado y las recompensas se activan en mainnet",
+      title: "La economía se activa en mainnet",
       text:
-        "No vamos a inventar cifras antes de que sean reales. ALMENA todavía no es negociable, y el pool de recompensas de staking se activa con mainnet. El precio, la capitalización y las recompensas en vivo aparecerán aquí en cuanto se lance la red — ni un momento antes.",
-      badge: "Disponible en el lanzamiento",
+        "No mostraremos cifras antes de que sean reales. La economía de ALMENA — emisión, recompensas, staking — todavía se está diseñando, y la moneda aún no es negociable. Las cifras en vivo aparecerán aquí en cuanto se lance la red, ni un momento antes.",
+      badge: "En diseño · activa en el lanzamiento",
     },
     cta: {
       title: "Está aquí cuando ALMENA se active",

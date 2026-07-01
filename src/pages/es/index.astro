@@ -1,11 +1,11 @@
 ---
 import LandingLayout from '../../layouts/LandingLayout.astro';
-import Landing from '../../components/Landing.astro';
+import Home from '../../components/Home.astro';
 import { home } from '../../data/landing';
 
 const t = home.es;
 ---
 
 <LandingLayout title={t.title} description={t.description} lang="es">
-  <Landing lang="es" />
+  <Home lang="es" />
 </LandingLayout>

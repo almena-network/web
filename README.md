@@ -26,11 +26,15 @@ export const launch = { date: "2026-11-11T12:00:00Z", /* … */ };
 
 ### Pages
 
+The network is the product; messaging is one use case. The pages reflect that priority:
+
 | Route | Description |
 |-------|-------------|
-| `/` and `/es/` | Almena messenger landing — launch countdown, development roadmap, identity, onion routing, groups, disappearing messages, calls (in development) |
-| `/network/` and `/es/network/` | Network infrastructure — service nodes, blockchain node, staking, rewards |
-| `/coin/` and `/es/coin/` | The ALMENA coin — proof-of-work rewards, tokenomics, staking; market goes live at mainnet |
+| `/` and `/es/` | The Almena network / platform — launch countdown, what it is, "one platform, many uses", identity in focus, how the network works, development roadmap |
+| `/identity/` and `/es/identity/` | Decentralized identity as a use case — issuers/holders/verifiers, zero-knowledge / minimal disclosure, verifiable credentials, reusable KYC |
+| `/messaging/` and `/es/messaging/` | Messaging as a use case — onion routing, groups, disappearing messages, calls (in development) |
+| `/network/` and `/es/network/` | The network in depth — service nodes, blockchain node, staking, run a node |
+| `/coin/` and `/es/coin/` | The ALMENA coin — how it's earned; economics still being designed, so **no amounts/values** are shown (they go live at mainnet) |
 
 ## Tech Stack
 

@@ -1,0 +1,11 @@
+---
+import LandingLayout from '../../../layouts/LandingLayout.astro';
+import IdentityPage from '../../../components/IdentityPage.astro';
+import { identity } from '../../../data/landing';
+
+const t = identity.es;
+---
+
+<LandingLayout title={t.title} description={t.description} lang="es">
+  <IdentityPage lang="es" />
+</LandingLayout>

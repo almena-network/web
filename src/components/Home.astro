@@ -1,0 +1,864 @@
+---
+import type { Lang } from "../data/landing";
+import { home, network, identity, launch } from "../data/landing";
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+import Countdown from "./Countdown.astro";
+import IdentityDiagram from "./IdentityDiagram.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = home[lang];
+const l = launch[lang];
+const net = network[lang];
+const idt = identity[lang];
+const prefix = lang === "es" ? "/es" : "";
+const messagingHref = `${prefix}/messaging/`;
+const identityHref = `${prefix}/identity/`;
+const networkHref = `${prefix}/network/`;
+const coinHref = `${prefix}/coin/`;
+
+const ic = (path: string) =>
+  `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
+// Icons for the use-case cards.
+function useIcon(name: string): string {
+  switch (name) {
+    case "chat":
+      return ic('<path d="M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.9-.9L3 21l1.9-5.6a8.5 8.5 0 0 1-.9-3.9A8.38 8.38 0 0 1 12.5 3 8.38 8.38 0 0 1 21 11.5Z"/>');
+    case "storage":
+      return ic('<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>');
+    case "cpu":
+      return ic('<rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3"/>');
+    case "vote":
+      return ic('<path d="M9 12l2 2 4-4"/><rect x="3" y="4" width="18" height="16" rx="2"/>');
+    case "sign":
+      return ic('<path d="M3 17c3 0 3-4 6-4s3 4 6 4 3-2 6-2"/><path d="M14 6l4 4-8 8-4 1 1-4Z"/>');
+    case "trace":
+      return ic('<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.5 6H15a3 3 0 0 1 0 6H9a3 3 0 0 0 0 6h6.5"/>');
+    case "id":
+      return ic('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2.2"/><line x1="14" y1="10.5" x2="18" y2="10.5"/><line x1="14" y1="14" x2="17" y2="14"/>');
+    case "coin":
+      return ic('<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5A2.5 2.5 0 0 1 12 8c1.4 0 2.5.9 2.5 2M14.5 14.5A2.5 2.5 0 0 1 12 16c-1.4 0-2.5-.9-2.5-2M12 6.5v11"/>');
+    default:
+      return ic('<circle cx="12" cy="12" r="9"/>');
+  }
+}
+
+// Icons for the two node services.
+function pillarIcon(name: string): string {
+  const p = (path: string) =>
+    `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+  if (name === "service") {
+    return p('<rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><circle cx="7" cy="7.5" r="0.9" fill="currentColor"/><circle cx="7" cy="16.5" r="0.9" fill="currentColor"/>');
+  }
+  return p('<rect x="3" y="9" width="6" height="6" rx="1.4"/><rect x="15" y="4" width="6" height="6" rx="1.4"/><rect x="15" y="14" width="6" height="6" rx="1.4"/><path d="M9 12h3M15 7h-1.5a1.5 1.5 0 0 0-1.5 1.5v7A1.5 1.5 0 0 0 13.5 17H15"/>');
+}
+const pillarIcons = ["service", "chain"];
+
+// Icons for the three SSI roles.
+function roleIcon(name: string): string {
+  switch (name) {
+    case "issuer":
+      return ic('<path d="M6 3h8l4 4v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><circle cx="12" cy="12" r="2.4"/><path d="M10.2 13.8 9.5 19l2.5-1.4 2.5 1.4-.7-5.2"/>');
+    case "holder":
+      return ic('<circle cx="12" cy="8" r="3.4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>');
+    case "verifier":
+      return ic('<path d="M12 3l7 3v5c0 4.6-3 7.6-7 9-4-1.4-7-4.4-7-9V6Z"/><path d="M9 12l2 2 4-4"/>');
+    default:
+      return ic('<circle cx="12" cy="12" r="9"/>');
+  }
+}
+
+// Use-case status → localized short label.
+const useStatusLabel: Record<string, string> =
+  lang === "es"
+    ? { launching: "Al lanzar", roadmap: "Roadmap" }
+    : { launching: "At launch", roadmap: "Roadmap" };
+
+// Roadmap state → dot color class.
+const stateClass: Record<string, string> = {
+  done: "is-done",
+  progress: "is-progress",
+  soon: "is-soon",
+};
+---
+
+<SiteHeader lang={lang} page="home" />
+
+<main class="page">
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__copy">
+      <span class="eyebrow">{l.badge}</span>
+      <h1 class="hero__title">{t.hero.title}</h1>
+      <p class="hero__subtitle">{t.hero.subtitle}</p>
+      <div class="hero__countdown">
+        <Countdown lang={lang} />
+      </div>
+      <div class="hero__actions">
+        <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.hero.ctaPrimary}</a>
+        <a href="#how" class="btn btn--ghost">{t.hero.ctaSecondary}</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <svg class="mesh" viewBox="0 0 320 320" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="mesh-glow-a" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,140,0,0.16)" />
+            <stop offset="100%" stop-color="transparent" />
+          </radialGradient>
+        </defs>
+        <!-- ambient glow spread across the field (not a single hub) -->
+        <ellipse cx="130" cy="130" rx="150" ry="130" fill="url(#mesh-glow-a)" />
+        <ellipse cx="220" cy="220" rx="120" ry="110" fill="url(#mesh-glow-a)" opacity="0.7" />
+
+        <!-- peer-to-peer links: irregular mesh, no central hub -->
+        <g stroke="rgba(255,255,255,0.13)" stroke-width="1.2" fill="none">
+          <line x1="60" y1="90" x2="40" y2="175" />
+          <line x1="60" y1="90" x2="110" y2="150" />
+          <line x1="210" y1="80" x2="275" y2="55" />
+          <line x1="210" y1="80" x2="185" y2="165" />
+          <line x1="275" y1="55" x2="260" y2="140" />
+          <line x1="40" y1="175" x2="75" y2="250" />
+          <line x1="185" y1="165" x2="245" y2="235" />
+          <line x1="75" y1="250" x2="160" y2="260" />
+          <line x1="245" y1="235" x2="290" y2="200" />
+        </g>
+        <g stroke="rgba(255,140,0,0.42)" stroke-width="1.4" stroke-dasharray="5 5" fill="none">
+          <line x1="60" y1="90" x2="130" y2="45" />
+          <line x1="130" y1="45" x2="210" y2="80" />
+          <line x1="130" y1="45" x2="110" y2="150" />
+          <line x1="210" y1="80" x2="260" y2="140" />
+          <line x1="40" y1="175" x2="110" y2="150" />
+          <line x1="110" y1="150" x2="185" y2="165" />
+          <line x1="110" y1="150" x2="75" y2="250" />
+          <line x1="110" y1="150" x2="160" y2="260" />
+          <line x1="185" y1="165" x2="260" y2="140" />
+          <line x1="185" y1="165" x2="160" y2="260" />
+          <line x1="260" y1="140" x2="290" y2="200" />
+          <line x1="260" y1="140" x2="245" y2="235" />
+          <line x1="160" y1="260" x2="245" y2="235" />
+        </g>
+
+        <!-- neutral nodes (same type, irregular sizes/positions) -->
+        <g fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.28)" stroke-width="1.3">
+          <circle cx="60" cy="90" r="9" />
+          <circle cx="210" cy="80" r="10" />
+          <circle cx="275" cy="55" r="7" />
+          <circle cx="40" cy="175" r="8" />
+          <circle cx="185" cy="165" r="11" />
+          <circle cx="75" cy="250" r="9" />
+          <circle cx="245" cy="235" r="9" />
+          <circle cx="290" cy="200" r="6" />
+        </g>
+
+        <!-- accent nodes (peers, scattered — no hub) -->
+        <g fill="rgba(255,140,0,0.16)" stroke="#FF8C00" stroke-width="1.6">
+          <circle cx="130" cy="45" r="13" />
+          <circle cx="110" cy="150" r="14" />
+          <circle cx="260" cy="140" r="13" />
+          <circle cx="160" cy="260" r="12" />
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- ── What is Almena (platform) ── -->
+  <section class="what">
+    <h2 class="what__title">{t.what.title}</h2>
+    <p class="what__text">{t.what.text}</p>
+  </section>
+
+  <!-- ── One platform, many uses ── -->
+  <section class="uses" aria-labelledby="uses-heading">
+    <div class="section-head">
+      <h2 id="uses-heading" class="section-head__title">{t.uses.title}</h2>
+      <p class="section-head__subtitle">{t.uses.subtitle}</p>
+    </div>
+    <div class="uses__grid">
+      {t.uses.items.map((u) => {
+        const useHref = u.href === "messaging" ? messagingHref : u.href === "identity" ? identityHref : undefined;
+        const Tag = useHref ? "a" : "article";
+        return (
+          <Tag
+            href={useHref}
+            class={`use-card ${u.status === "launching" ? "is-launching" : "is-roadmap"}${useHref ? " use-card--link" : ""}`}
+          >
+            <div class="use-card__icon" aria-hidden="true" set:html={useIcon(u.icon)} />
+            <h3 class="use-card__title">{u.title}</h3>
+            <p class="use-card__text">{u.text}</p>
+            <div class="use-card__meta">
+              <span class="use-card__layer">{u.layer}</span>
+              <span class="use-card__status">{useStatusLabel[u.status]}</span>
+            </div>
+          </Tag>
+        );
+      })}
+    </div>
+    <p class="uses__note">{t.uses.note}</p>
+  </section>
+
+  <!-- ── Decentralized identity (use case in focus) ── -->
+  <section class="identity" aria-labelledby="identity-heading">
+    <div class="section-head">
+      <span class="eyebrow">{idt.teaser.eyebrow}</span>
+      <h2 id="identity-heading" class="section-head__title identity__title">{idt.teaser.title}</h2>
+      <p class="section-head__subtitle">{idt.teaser.text}</p>
+    </div>
+    <div class="identity__layout">
+      <IdentityDiagram lang={lang} />
+      <div class="identity__roles">
+        {idt.roles.map((r) => (
+          <article class="role-card">
+            <div class="role-card__icon" aria-hidden="true" set:html={roleIcon(r.key)} />
+            <div class="role-card__body">
+              <h3 class="role-card__title">{r.title}</h3>
+              <p class="role-card__text">{r.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+    <p class="identity__note">{idt.note}</p>
+    <div class="identity__cta">
+      <a href={identityHref} class="btn btn--ghost">{idt.teaser.cta}</a>
+    </div>
+  </section>
+
+  <!-- ── How the network works ── -->
+  <section class="how" id="how" aria-labelledby="how-heading">
+    <div class="section-head">
+      <h2 id="how-heading" class="section-head__title">{t.how.title}</h2>
+      <p class="section-head__subtitle">{t.how.subtitle}</p>
+    </div>
+    <div class="how__grid">
+      {net.pillars.items.map((p, i) => (
+        <article class="pillar-card">
+          <div class="pillar-card__icon" aria-hidden="true" set:html={pillarIcon(pillarIcons[i])} />
+          <span class="pillar-card__tag">{p.tag}</span>
+          <h3 class="pillar-card__title">{p.title}</h3>
+          <p class="pillar-card__text">{p.text}</p>
+        </article>
+      ))}
+    </div>
+    <div class="how__cta">
+      <a href={networkHref} class="btn btn--ghost">{t.how.cta}</a>
+    </div>
+  </section>
+
+  <!-- ── Roadmap / status ── -->
+  <section class="roadmap" aria-labelledby="roadmap-heading">
+    <div class="section-head">
+      <h2 id="roadmap-heading" class="section-head__title">{t.roadmap.title}</h2>
+      <p class="section-head__subtitle">{t.roadmap.subtitle}</p>
+    </div>
+    <ol class="roadmap__grid">
+      {t.roadmap.items.map((item) => (
+        <li class={`roadmap-card ${stateClass[item.state] ?? ""}`}>
+          <span class="roadmap-card__label">
+            <span class="roadmap-card__dot" aria-hidden="true"></span>
+            {item.label}
+          </span>
+          <h3 class="roadmap-card__title">{item.title}</h3>
+          <p class="roadmap-card__text">{item.text}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <!-- ── Coin teaser ── -->
+  <section class="teaser-wrap">
+    <a href={coinHref} class="teaser-card teaser-card--coin">
+      <span class="teaser-card__eyebrow">{t.coinTeaser.eyebrow}</span>
+      <h2 class="teaser-card__title">{t.coinTeaser.title}</h2>
+      <p class="teaser-card__text">{t.coinTeaser.text}</p>
+      <span class="teaser-card__cta">{t.coinTeaser.cta} →</span>
+    </a>
+  </section>
+
+  <!-- ── Community CTA ── -->
+  <section class="community">
+    <h2 class="community__title">{t.community.title}</h2>
+    <p class="community__text">{t.community.text}</p>
+    <div class="community__actions">
+      <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.community.ctaPrimary}</a>
+      <a href="https://docs.almena.network" class="btn btn--ghost" target="_blank" rel="noopener">{t.community.ctaSecondary}</a>
+    </div>
+  </section>
+</main>
+
+<SiteFooter lang={lang} />
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+    padding: 80px 0 90px;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: -60px;
+    left: -5%;
+    width: 720px;
+    height: 460px;
+    max-width: 100%;
+    background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.14) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__title {
+    font-size: clamp(2.4rem, 5.5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 22px 0;
+    background: linear-gradient(170deg, #ffffff 0%, rgba(255, 255, 255, 0.72) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero__subtitle {
+    font-size: clamp(1rem, 2vw, 1.1875rem);
+    color: var(--color-text-muted);
+    margin: 0 0 32px;
+    max-width: 52ch;
+    line-height: 1.65;
+  }
+
+  .hero__countdown {
+    align-self: stretch;
+    margin-bottom: 32px;
+  }
+
+  .hero__countdown :global(.countdown) {
+    align-items: flex-start;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero__visual {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mesh {
+    width: 340px;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* ── What ── */
+  .what {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 0 90px;
+  }
+
+  .what__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+    color: var(--color-text);
+  }
+
+  .what__text {
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ── Uses ── */
+  .uses {
+    padding: 0 0 90px;
+  }
+
+  .uses__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .use-card {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .use-card--link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .use-card:hover {
+    border-color: rgba(255, 140, 0, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .use-card.is-launching {
+    border-color: rgba(255, 140, 0, 0.35);
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255, 140, 0, 0.08) 0%, transparent 60%),
+      var(--color-surface);
+  }
+
+  .use-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary);
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 140, 0, 0.16);
+  }
+
+  .use-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--color-text);
+  }
+
+  .use-card__text {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0 0 18px;
+    line-height: 1.55;
+  }
+
+  .use-card__meta {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .use-card__layer {
+    font-family: ui-monospace, monospace;
+    font-size: 0.6875rem;
+    color: var(--color-text-subtle);
+  }
+
+  .use-card__status {
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 100px;
+    color: var(--brand-primary);
+    background: var(--brand-primary-subtle);
+  }
+
+  .use-card.is-launching .use-card__status {
+    color: var(--semantic-success);
+    background: rgba(34, 197, 94, 0.12);
+  }
+
+  .uses__note {
+    margin: 24px auto 0;
+    max-width: 60ch;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-text-subtle);
+  }
+
+  /* ── How the network works ── */
+  .how {
+    padding: 0 0 90px;
+  }
+
+  .how__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .pillar-card {
+    padding: 32px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .pillar-card:hover {
+    border-color: rgba(255, 140, 0, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .pillar-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary);
+    margin-bottom: 18px;
+    border: 1px solid rgba(255, 140, 0, 0.16);
+  }
+
+  .pillar-card__tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-primary);
+    margin-bottom: 8px;
+  }
+
+  .pillar-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--color-text);
+  }
+
+  .pillar-card__text {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .how__cta {
+    text-align: center;
+  }
+
+  /* ── Identity (use case in focus) ── */
+  .identity {
+    padding: 0 0 90px;
+  }
+
+  .identity__title {
+    margin-top: 14px;
+  }
+
+  .identity__layout {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .identity__roles {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .role-card {
+    display: flex;
+    gap: 16px;
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+    transition: border-color var(--transition);
+  }
+
+  .role-card:hover {
+    border-color: rgba(255, 140, 0, 0.25);
+  }
+
+  .role-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 11px;
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary);
+    border: 1px solid rgba(255, 140, 0, 0.16);
+  }
+
+  .role-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: var(--color-text);
+  }
+
+  .role-card__text {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .identity__note {
+    margin: 24px auto 0;
+    max-width: 76ch;
+    text-align: center;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  .identity__cta {
+    margin-top: 24px;
+    text-align: center;
+  }
+
+  /* ── Roadmap ── */
+  .roadmap {
+    padding: 0 0 90px;
+  }
+
+  .roadmap__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .roadmap-card {
+    padding: 24px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+  }
+
+  .roadmap-card__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: 14px;
+  }
+
+  .roadmap-card__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-text-subtle);
+  }
+
+  .roadmap-card.is-done .roadmap-card__dot { background: var(--semantic-success); }
+  .roadmap-card.is-done .roadmap-card__label { color: var(--semantic-success); }
+  .roadmap-card.is-progress .roadmap-card__dot { background: var(--semantic-warning); }
+  .roadmap-card.is-progress .roadmap-card__label { color: var(--semantic-warning); }
+  .roadmap-card.is-soon .roadmap-card__dot { background: var(--brand-primary); }
+  .roadmap-card.is-soon .roadmap-card__label { color: var(--brand-primary); }
+
+  .roadmap-card__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--color-text);
+  }
+
+  .roadmap-card__text {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── Coin teaser ── */
+  .teaser-wrap {
+    padding: 0 0 90px;
+  }
+
+  .teaser-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding: 44px;
+    text-decoration: none;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .teaser-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 90% at 50% 100%, rgba(255, 140, 0, 0.14) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .teaser-card:hover {
+    border-color: rgba(255, 140, 0, 0.3);
+    transform: translateY(-3px);
+  }
+
+  .teaser-card > * {
+    position: relative;
+    max-width: 62ch;
+  }
+
+  .teaser-card__eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--brand-primary);
+    margin-bottom: 12px;
+  }
+
+  .teaser-card__title {
+    font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+    color: var(--color-text);
+  }
+
+  .teaser-card__text {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 22px;
+    line-height: 1.6;
+  }
+
+  .teaser-card__cta {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--brand-primary);
+  }
+
+  /* ── Community ── */
+  .community {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 0 100px;
+  }
+
+  .community__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 16px;
+    color: var(--color-text);
+  }
+
+  .community__text {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto 30px;
+    line-height: 1.7;
+  }
+
+  .community__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 56px 0 72px;
+      text-align: center;
+    }
+
+    .hero__copy {
+      align-items: center;
+    }
+
+    .hero__subtitle {
+      margin-inline: auto;
+    }
+
+    .hero__countdown :global(.countdown) {
+      align-items: center;
+    }
+
+    .hero__visual {
+      order: -1;
+    }
+
+    .mesh {
+      width: 260px;
+    }
+
+    .uses__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .roadmap__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .how__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .identity__layout {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .uses__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .roadmap__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pillar-card,
+    .teaser-card {
+      padding: 24px;
+    }
+  }
+</style>

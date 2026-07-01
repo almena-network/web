@@ -12,6 +12,8 @@ const t = site[lang].footer;
 const prefix = lang === "es" ? "/es" : "";
 const homeHref = lang === "es" ? "/es/" : "/";
 const networkHref = `${prefix}/network/`;
+const identityHref = `${prefix}/identity/`;
+const messagingHref = `${prefix}/messaging/`;
 const coinHref = `${prefix}/coin/`;
 const year = new Date().getFullYear();
 const launchTag = launchLabel(lang);
@@ -31,9 +33,10 @@ const launchLine = lang === "es" ? `Lanzamiento de mainnet · ${launchTag}` : `M
 
     <nav class="footer__cols" aria-label="Footer">
       <div class="footer__col">
-        <h3 class="footer__col-title">{lang === "es" ? "Plataforma" : "Platform"}</h3>
-        <a href={homeHref} class="footer__link">{t.messenger}</a>
+        <h3 class="footer__col-title">{t.platform}</h3>
         <a href={networkHref} class="footer__link">{t.network}</a>
+        <a href={identityHref} class="footer__link">{t.identity}</a>
+        <a href={messagingHref} class="footer__link">{t.messaging}</a>
         <a href={coinHref} class="footer__link">{t.coin}</a>
       </div>
       <div class="footer__col">

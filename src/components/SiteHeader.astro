@@ -4,7 +4,7 @@ import { site, launchLabel } from "../data/landing";
 
 interface Props {
   lang: Lang;
-  page: "home" | "network" | "coin";
+  page: "home" | "network" | "identity" | "messaging" | "coin";
 }
 
 const { lang, page } = Astro.props;
@@ -13,18 +13,19 @@ const t = site[lang].nav;
 const prefix = lang === "es" ? "/es" : "";
 const homeHref = lang === "es" ? "/es/" : "/";
 const networkHref = `${prefix}/network/`;
+const identityHref = `${prefix}/identity/`;
+const messagingHref = `${prefix}/messaging/`;
 const coinHref = `${prefix}/coin/`;
 
 // Language switch keeps the user on the equivalent page.
 const otherPrefix = lang === "en" ? "/es" : "";
-const otherLangHref =
-  page === "network"
-    ? `${otherPrefix}/network/`
-    : page === "coin"
-      ? `${otherPrefix}/coin/`
-      : lang === "en"
-        ? "/es/"
-        : "/";
+const subpaths: Record<string, string> = {
+  network: "/network/",
+  identity: "/identity/",
+  messaging: "/messaging/",
+  coin: "/coin/",
+};
+const otherLangHref = page === "home" ? (lang === "en" ? "/es/" : "/") : `${otherPrefix}${subpaths[page]}`;
 
 const launchTag = launchLabel(lang);
 ---
@@ -37,8 +38,9 @@ const launchTag = launchLabel(lang);
     </a>
 
     <nav class="nav__links" aria-label="Primary">
-      <a href={homeHref} class={`nav__link${page === "home" ? " nav__link--active" : ""}`}>{t.messenger}</a>
       <a href={networkHref} class={`nav__link${page === "network" ? " nav__link--active" : ""}`}>{t.network}</a>
+      <a href={identityHref} class={`nav__link${page === "identity" ? " nav__link--active" : ""}`}>{t.identity}</a>
+      <a href={messagingHref} class={`nav__link${page === "messaging" ? " nav__link--active" : ""}`}>{t.messaging}</a>
       <a href={coinHref} class={`nav__link${page === "coin" ? " nav__link--active" : ""}`}>{t.coin}</a>
       <a href="https://docs.almena.network" class="nav__link" target="_blank" rel="noopener">{t.docs}</a>
       <a href="https://github.com/almena-network" class="nav__link" target="_blank" rel="noopener">{t.github}</a>
@@ -50,7 +52,29 @@ const launchTag = launchLabel(lang);
         <span class="nav__launch-dot" aria-hidden="true"></span>
         {launchTag}
       </span>
+      <button
+        class="nav__toggle"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="nav-mobile"
+        data-nav-toggle
+      >
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
     </div>
+  </div>
+
+  <div class="nav__mobile" id="nav-mobile" data-nav-mobile>
+    <a href={networkHref} class={`nav__mobile-link${page === "network" ? " nav__mobile-link--active" : ""}`}>{t.network}</a>
+    <a href={identityHref} class={`nav__mobile-link${page === "identity" ? " nav__mobile-link--active" : ""}`}>{t.identity}</a>
+    <a href={messagingHref} class={`nav__mobile-link${page === "messaging" ? " nav__mobile-link--active" : ""}`}>{t.messaging}</a>
+    <a href={coinHref} class={`nav__mobile-link${page === "coin" ? " nav__mobile-link--active" : ""}`}>{t.coin}</a>
+    <a href="https://docs.almena.network" class="nav__mobile-link" target="_blank" rel="noopener">{t.docs}</a>
+    <a href="https://github.com/almena-network" class="nav__mobile-link" target="_blank" rel="noopener">{t.github}</a>
+    <a href={otherLangHref} class="nav__mobile-link nav__mobile-link--lang">{t.langSwitch}</a>
   </div>
 </header>
 
@@ -173,9 +197,103 @@ const launchTag = launchLabel(lang);
     .nav__launch-dot { animation: none; }
   }
 
+  /* ── Mobile hamburger ── */
+  .nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .nav__toggle-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin: 0 auto;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform var(--transition), opacity var(--transition);
+  }
+
+  .nav--open .nav__toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav--open .nav__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav--open .nav__toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav__mobile {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 16px 16px;
+    background: #080808;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.8);
+  }
+
+  .nav--open .nav__mobile {
+    display: flex;
+  }
+
+  .nav__mobile-link {
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav__mobile-link:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__mobile-link--active {
+    color: var(--brand-primary);
+  }
+
+  .nav__mobile-link--lang {
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
   @media (max-width: 860px) {
     .nav__links {
       display: none;
+    }
+
+    .nav__lang {
+      display: none;
+    }
+
+    .nav__toggle {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 861px) {
+    .nav__mobile {
+      display: none !important;
     }
   }
 
@@ -190,3 +308,21 @@ const launchTag = launchLabel(lang);
     }
   }
 </style>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".nav");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  if (header && toggle) {
+    const setOpen = (open: boolean) => {
+      header.classList.toggle("nav--open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+    toggle.addEventListener("click", () => setOpen(!header.classList.contains("nav--open")));
+    header.querySelectorAll("[data-nav-mobile] a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false)),
+    );
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
+  }
+</script>
