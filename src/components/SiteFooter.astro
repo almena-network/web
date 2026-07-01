@@ -1,6 +1,6 @@
 ---
 import type { Lang } from "../data/landing";
-import { site } from "../data/landing";
+import { site, launchLabel } from "../data/landing";
 
 interface Props {
   lang: Lang;
@@ -12,7 +12,10 @@ const t = site[lang].footer;
 const prefix = lang === "es" ? "/es" : "";
 const homeHref = lang === "es" ? "/es/" : "/";
 const networkHref = `${prefix}/network/`;
+const coinHref = `${prefix}/coin/`;
 const year = new Date().getFullYear();
+const launchTag = launchLabel(lang);
+const launchLine = lang === "es" ? `Lanzamiento de mainnet · ${launchTag}` : `Mainnet launch · ${launchTag}`;
 ---
 
 <footer class="footer">
@@ -23,13 +26,15 @@ const year = new Date().getFullYear();
         <span>Almena</span>
       </a>
       <p class="footer__tagline">{t.tagline}</p>
+      <p class="footer__launch">{launchLine}</p>
     </div>
 
     <nav class="footer__cols" aria-label="Footer">
       <div class="footer__col">
-        <h3 class="footer__col-title">{t.messenger}</h3>
-        <a href={homeHref} class="footer__link">{lang === "es" ? "Inicio" : "Home"}</a>
+        <h3 class="footer__col-title">{lang === "es" ? "Plataforma" : "Platform"}</h3>
+        <a href={homeHref} class="footer__link">{t.messenger}</a>
         <a href={networkHref} class="footer__link">{t.network}</a>
+        <a href={coinHref} class="footer__link">{t.coin}</a>
       </div>
       <div class="footer__col">
         <h3 class="footer__col-title">{t.resources}</h3>
@@ -80,6 +85,13 @@ const year = new Date().getFullYear();
     color: var(--color-text-muted);
     line-height: 1.55;
     max-width: 34ch;
+  }
+
+  .footer__launch {
+    margin: 12px 0 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--brand-primary);
   }
 
   .footer__cols {

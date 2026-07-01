@@ -1,0 +1,186 @@
+---
+import type { Lang } from "../data/landing";
+import { launch, launchLabel } from "../data/landing";
+
+interface Props {
+  lang: Lang;
+  variant?: "hero" | "compact";
+}
+
+const { lang, variant = "hero" } = Astro.props;
+const t = launch[lang];
+const u = t.units;
+---
+
+<div
+  class={`countdown countdown--${variant}`}
+  data-countdown
+  data-launch={launch.date}
+  data-done={t.countdownDone}
+  role="timer"
+  aria-label={`${t.countdownTitle} — ${launchLabel(lang)}`}
+>
+  <p class="countdown__title">{t.countdownTitle}</p>
+  <div class="countdown__units" aria-hidden="true">
+    <div class="countdown__unit">
+      <span class="countdown__value" data-days>--</span>
+      <span class="countdown__label">{u.days}</span>
+    </div>
+    <span class="countdown__sep" aria-hidden="true">:</span>
+    <div class="countdown__unit">
+      <span class="countdown__value" data-hours>--</span>
+      <span class="countdown__label">{u.hours}</span>
+    </div>
+    <span class="countdown__sep" aria-hidden="true">:</span>
+    <div class="countdown__unit">
+      <span class="countdown__value" data-minutes>--</span>
+      <span class="countdown__label">{u.minutes}</span>
+    </div>
+    <span class="countdown__sep" aria-hidden="true">:</span>
+    <div class="countdown__unit">
+      <span class="countdown__value" data-seconds>--</span>
+      <span class="countdown__label">{u.seconds}</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  function pad(n: number): string {
+    return String(n).padStart(2, "0");
+  }
+
+  function tick(el: HTMLElement): void {
+    const target = new Date(el.dataset.launch ?? "").getTime();
+    const diff = target - Date.now();
+
+    const set = (sel: string, val: string) => {
+      const node = el.querySelector<HTMLElement>(sel);
+      if (node) node.textContent = val;
+    };
+
+    if (Number.isNaN(target) || diff <= 0) {
+      const units = el.querySelector<HTMLElement>(".countdown__units");
+      if (units) units.remove();
+      const title = el.querySelector<HTMLElement>(".countdown__title");
+      if (title) title.textContent = el.dataset.done ?? "";
+      el.classList.add("countdown--done");
+      return;
+    }
+
+    const days = Math.floor(diff / 86_400_000);
+    const hours = Math.floor((diff % 86_400_000) / 3_600_000);
+    const minutes = Math.floor((diff % 3_600_000) / 60_000);
+    const seconds = Math.floor((diff % 60_000) / 1_000);
+
+    set("[data-days]", String(days));
+    set("[data-hours]", pad(hours));
+    set("[data-minutes]", pad(minutes));
+    set("[data-seconds]", pad(seconds));
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-countdown]").forEach((el) => {
+    tick(el);
+    const id = window.setInterval(() => {
+      const target = new Date(el.dataset.launch ?? "").getTime();
+      if (!Number.isNaN(target) && target - Date.now() <= 0) {
+        window.clearInterval(id);
+      }
+      tick(el);
+    }, 1000);
+  });
+</script>
+
+<style>
+  .countdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .countdown__title {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .countdown__units {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .countdown__unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 84px;
+    padding: 18px 12px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+  }
+
+  .countdown__value {
+    font-size: clamp(2rem, 6vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--brand-primary);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .countdown__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-text-subtle);
+  }
+
+  .countdown__sep {
+    align-self: center;
+    margin-top: 4px;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: rgba(255, 140, 0, 0.35);
+    line-height: 1;
+  }
+
+  .countdown--done .countdown__title {
+    font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+    text-transform: none;
+    letter-spacing: -0.01em;
+    color: var(--brand-primary);
+  }
+
+  /* Compact variant for secondary placements (e.g. the coin page). */
+  .countdown--compact .countdown__unit {
+    min-width: 64px;
+    padding: 12px 10px;
+  }
+
+  .countdown--compact .countdown__value {
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+  }
+
+  @media (max-width: 520px) {
+    .countdown__units {
+      gap: 6px;
+    }
+
+    .countdown__unit {
+      min-width: 0;
+      flex: 1;
+      padding: 14px 6px;
+    }
+
+    .countdown__sep {
+      display: none;
+    }
+  }
+</style>

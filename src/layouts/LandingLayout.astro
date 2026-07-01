@@ -1,8 +1,10 @@
 ---
+import type { Lang } from "../data/landing";
+
 interface Props {
   title: string;
   description: string;
-  lang: "en" | "es";
+  lang: Lang;
 }
 
 const { title, description, lang } = Astro.props;
@@ -15,6 +17,11 @@ const { title, description, lang } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#080808" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/logo.svg" />
     <link rel="alternate" hreflang="en" href={`${Astro.url.origin}/`} />
     <link rel="alternate" hreflang="es" href={`${Astro.url.origin}/es/`} />
     <link rel="alternate" hreflang="x-default" href={`${Astro.url.origin}/`} />
@@ -41,11 +48,6 @@ const { title, description, lang } = Astro.props;
     --brand-primary-active: #e67e00;
     --brand-primary-subtle: rgba(255, 140, 0, 0.08);
 
-    /* Legacy aliases kept for existing components */
-    --color-primary: #ff8c00;
-    --color-primary-hover: #ff9f2e;
-    --color-secondary: #ff8c00;
-
     /* Surfaces */
     --color-bg: #080808;
     --color-bg-gradient:
@@ -61,6 +63,11 @@ const { title, description, lang } = Astro.props;
     --color-text: #f0f0f0;
     --color-text-muted: #888888;
     --color-text-subtle: #555555;
+
+    /* Semantic (roadmap / status) */
+    --semantic-success: #22c55e;
+    --semantic-warning: #f5a623;
+    --semantic-info: var(--brand-primary);
 
     /* Shape */
     --radius: 12px;
@@ -97,5 +104,87 @@ const { title, description, lang } = Astro.props;
   img,
   svg {
     display: block;
+  }
+
+  /* ── Shared layout primitives (used across all pages) ── */
+  .page {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 26px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition),
+      border-color var(--transition), transform var(--transition);
+    cursor: pointer;
+  }
+
+  .btn--primary {
+    background: var(--brand-primary);
+    color: #0d0d0d;
+    border: 1px solid transparent;
+  }
+
+  .btn--primary:hover {
+    background: var(--brand-primary-hover);
+    transform: translateY(-1px);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .btn--ghost:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  /* ── Eyebrow pill ── */
+  .eyebrow {
+    display: inline-block;
+    padding: 6px 14px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--brand-primary);
+    background: var(--brand-primary-subtle);
+    border: 1px solid rgba(255, 140, 0, 0.22);
+    border-radius: 100px;
+  }
+
+  /* ── Section heading block ── */
+  .section-head {
+    text-align: center;
+    margin-bottom: 44px;
+  }
+
+  .section-head__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 12px;
+    color: var(--color-text);
+  }
+
+  .section-head__subtitle {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto;
+    max-width: 54ch;
+    line-height: 1.6;
   }
 </style>

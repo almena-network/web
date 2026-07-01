@@ -1,0 +1,564 @@
+---
+import type { Lang } from "../data/landing";
+import { coin } from "../data/landing";
+import SiteHeader from "./SiteHeader.astro";
+import SiteFooter from "./SiteFooter.astro";
+import Countdown from "./Countdown.astro";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = coin[lang];
+const prefix = lang === "es" ? "/es" : "";
+const networkHref = `${prefix}/network/`;
+
+const cardIcons = ["reward", "tokenomics", "staking"];
+
+const ic = (path: string) =>
+  `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+
+function cardIcon(name: string): string {
+  switch (name) {
+    case "reward":
+      return ic('<circle cx="12" cy="8" r="6"/><path d="M8.5 13.5 7 22l5-3 5 3-1.5-8.5"/>');
+    case "tokenomics":
+      return ic('<path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l8-4"/>');
+    case "staking":
+      return ic('<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>');
+    default:
+      return ic('<circle cx="12" cy="12" r="9"/>');
+  }
+}
+---
+
+<SiteHeader lang={lang} page="coin" />
+
+<main class="page">
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero__glow" aria-hidden="true"></div>
+    <div class="hero__copy">
+      <span class="eyebrow">{t.hero.eyebrow}</span>
+      <h1 class="hero__title">{t.hero.title}</h1>
+      <p class="hero__subtitle">{t.hero.subtitle}</p>
+      <div class="hero__actions">
+        <a href="https://docs.almena.network" class="btn btn--primary" target="_blank" rel="noopener">{t.hero.ctaPrimary}</a>
+        <a href={networkHref} class="btn btn--ghost">{t.hero.ctaSecondary}</a>
+      </div>
+    </div>
+    <div class="hero__visual" aria-hidden="true">
+      <div class="coin">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="coin__svg">
+          <defs>
+            <radialGradient id="coin-face" cx="38%" cy="32%" r="80%">
+              <stop offset="0%" stop-color="#ffb457" />
+              <stop offset="45%" stop-color="#ff8c00" />
+              <stop offset="100%" stop-color="#c96a00" />
+            </radialGradient>
+            <linearGradient id="coin-rim" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ffc074" />
+              <stop offset="100%" stop-color="#b35f00" />
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="92" fill="url(#coin-rim)" />
+          <circle cx="100" cy="100" r="80" fill="url(#coin-face)" />
+          <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" />
+          <!-- Almena "A" mark, echoing the brand logo -->
+          <path
+            d="M100 44 L134 150 L116 150 L108 122 L92 122 L84 150 L66 150 Z M96 106 L104 106 L100 78 Z"
+            fill="#0d0d0d"
+            fill-opacity="0.82"
+          />
+        </svg>
+      </div>
+      <div class="hero__count">
+        <Countdown lang={lang} variant="compact" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── What is ALMENA ── -->
+  <section class="what">
+    <h2 class="what__title">{t.what.title}</h2>
+    <p class="what__text">{t.what.text}</p>
+  </section>
+
+  <!-- ── The coin behind the tech ── -->
+  <section class="cards" aria-labelledby="cards-heading">
+    <div class="section-head">
+      <h2 id="cards-heading" class="section-head__title">{t.cards.title}</h2>
+    </div>
+    <div class="cards__grid">
+      {t.cards.items.map((c, i) => (
+        <article class="coin-card">
+          <div class="coin-card__icon" aria-hidden="true" set:html={cardIcon(cardIcons[i])} />
+          <span class="coin-card__tag">{c.tag}</span>
+          <h3 class="coin-card__title">{c.title}</h3>
+          <p class="coin-card__text">{c.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Stats ── -->
+  <section class="stats" aria-label={t.stats.title}>
+    <div class="section-head">
+      <h2 class="section-head__title">{t.stats.title}</h2>
+    </div>
+    <div class="stats__grid">
+      {t.stats.items.map((s) => (
+        <div class="stat">
+          <span class="stat__value">{s.value}</span>
+          <span class="stat__label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+    <p class="stats__note">{t.stats.note}</p>
+  </section>
+
+  <!-- ── How a coin is earned ── -->
+  <section class="flow" aria-labelledby="flow-heading">
+    <div class="section-head">
+      <h2 id="flow-heading" class="section-head__title">{t.flow.title}</h2>
+      <p class="section-head__subtitle">{t.flow.subtitle}</p>
+    </div>
+    <div class="flow__grid">
+      {t.flow.items.map((f) => (
+        <article class="flow-step">
+          <span class="flow-step__num">{f.step}</span>
+          <h3 class="flow-step__title">{f.title}</h3>
+          <p class="flow-step__text">{f.text}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── Market (honest, coming at launch) ── -->
+  <section class="market">
+    <div class="market__inner">
+      <span class="market__badge">{t.market.badge}</span>
+      <h2 class="market__title">{t.market.title}</h2>
+      <p class="market__text">{t.market.text}</p>
+      <div class="market__count">
+        <Countdown lang={lang} variant="compact" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Final CTA ── -->
+  <section class="cta">
+    <div class="cta__glow" aria-hidden="true"></div>
+    <div class="cta__content">
+      <h2 class="cta__title">{t.cta.title}</h2>
+      <p class="cta__text">{t.cta.text}</p>
+      <div class="cta__actions">
+        <a href="https://docs.almena.network" class="btn btn--primary" target="_blank" rel="noopener">{t.cta.ctaPrimary}</a>
+        <a href="https://github.com/almena-network" class="btn btn--ghost" target="_blank" rel="noopener">{t.cta.ctaSecondary}</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<SiteFooter lang={lang} />
+
+<style>
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 48px;
+    align-items: center;
+    padding: 80px 0 90px;
+  }
+
+  .hero__glow {
+    position: absolute;
+    top: -40px;
+    right: -5%;
+    width: 640px;
+    height: 460px;
+    max-width: 100%;
+    background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.16) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: -1;
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero__title {
+    font-size: clamp(2.2rem, 5vw, 3.75rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 22px 0;
+    background: linear-gradient(170deg, #ffffff 0%, rgba(255, 255, 255, 0.72) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero__subtitle {
+    font-size: clamp(1rem, 2vw, 1.1875rem);
+    color: var(--color-text-muted);
+    margin: 0 0 32px;
+    max-width: 52ch;
+    line-height: 1.65;
+  }
+
+  .hero__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .hero__visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+
+  .coin {
+    width: 240px;
+    max-width: 70%;
+    filter: drop-shadow(0 24px 40px rgba(255, 140, 0, 0.25));
+    animation: coin-float 6s ease-in-out infinite;
+  }
+
+  .coin__svg {
+    width: 100%;
+    height: auto;
+  }
+
+  @keyframes coin-float {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-14px) rotate(2deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .coin { animation: none; }
+  }
+
+  /* ── What ── */
+  .what {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 0 90px;
+  }
+
+  .what__title {
+    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 18px;
+    color: var(--color-text);
+  }
+
+  .what__text {
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  /* ── Cards ── */
+  .cards {
+    padding: 0 0 90px;
+  }
+
+  .cards__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .coin-card {
+    padding: 32px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    transition: border-color var(--transition), transform var(--transition);
+  }
+
+  .coin-card:hover {
+    border-color: rgba(255, 140, 0, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .coin-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary);
+    margin-bottom: 18px;
+    border: 1px solid rgba(255, 140, 0, 0.16);
+  }
+
+  .coin-card__tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-primary);
+    margin-bottom: 8px;
+  }
+
+  .coin-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--color-text);
+  }
+
+  .coin-card__text {
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Stats ── */
+  .stats {
+    padding: 0 0 90px;
+  }
+
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 32px 16px;
+    background: var(--color-surface);
+    text-align: center;
+  }
+
+  .stat__value {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--brand-primary);
+    line-height: 1;
+  }
+
+  .stat__label {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .stats__note {
+    margin: 18px auto 0;
+    max-width: 56ch;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-text-subtle);
+  }
+
+  /* ── Flow ── */
+  .flow {
+    padding: 0 0 90px;
+  }
+
+  .flow__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .flow-step {
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius);
+  }
+
+  .flow-step__num {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: rgba(255, 140, 0, 0.22);
+    line-height: 1;
+    margin-bottom: 14px;
+  }
+
+  .flow-step__title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    margin: 0 0 8px;
+    color: var(--color-text);
+  }
+
+  .flow-step__text {
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Market ── */
+  .market {
+    padding: 0 0 90px;
+  }
+
+  .market__inner {
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+    padding: 60px 40px;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(ellipse 80% 100% at 50% 0%, rgba(255, 140, 0, 0.1) 0%, transparent 60%),
+      var(--color-surface);
+    border: 1px solid rgba(255, 140, 0, 0.18);
+  }
+
+  .market__badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--brand-primary);
+    padding: 5px 12px;
+    border: 1px solid rgba(255, 140, 0, 0.22);
+    border-radius: 100px;
+    background: var(--brand-primary-subtle);
+    margin-bottom: 18px;
+  }
+
+  .market__title {
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--color-text);
+  }
+
+  .market__text {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto 32px;
+    max-width: 62ch;
+    line-height: 1.7;
+  }
+
+  /* ── Final CTA ── */
+  .cta {
+    position: relative;
+    overflow: hidden;
+    padding: 76px 48px;
+    margin: 0 0 100px;
+    text-align: center;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+  }
+
+  .cta__glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 90% at 50% 100%, rgba(255, 140, 0, 0.13) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .cta__content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cta__title {
+    font-size: clamp(1.6rem, 3.4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--color-text);
+  }
+
+  .cta__text {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0 auto 30px;
+    max-width: 56ch;
+    line-height: 1.65;
+  }
+
+  .cta__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 960px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 56px 0 72px;
+      text-align: center;
+    }
+
+    .hero__copy {
+      align-items: center;
+    }
+
+    .hero__subtitle {
+      margin-inline: auto;
+    }
+
+    .hero__visual {
+      order: -1;
+    }
+
+    .cards__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stats__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .flow__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .coin-card,
+    .flow-step {
+      padding: 24px;
+    }
+
+    .market__inner {
+      padding: 44px 24px;
+    }
+
+    .cta {
+      padding: 48px 24px;
+    }
+  }
+</style>

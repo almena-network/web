@@ -1,0 +1,14 @@
+---
+import LandingLayout from '../../layouts/LandingLayout.astro';
+import CoinPage from '../../components/CoinPage.astro';
+import { coin } from '../../data/landing';
+
+import Analytics from '@vercel/analytics/astro'
+
+const t = coin.en;
+---
+
+<LandingLayout title={t.title} description={t.description} lang="en">
+  <Analytics/>
+  <CoinPage lang="en" />
+</LandingLayout>

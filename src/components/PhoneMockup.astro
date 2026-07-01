@@ -1,0 +1,246 @@
+---
+import type { Lang } from "../data/landing";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const c = {
+  en: {
+    account: "Account ID",
+    encrypted: "End-to-end encrypted",
+    now: "now",
+    m1: "No phone number. Just this ID.",
+    m2: "And no server in the middle 🧅",
+    m3: "Exactly. Send messages, not metadata.",
+    placeholder: "Message",
+  },
+  es: {
+    account: "Account ID",
+    encrypted: "Cifrado de extremo a extremo",
+    now: "ahora",
+    m1: "Sin número de teléfono. Solo este ID.",
+    m2: "Y sin servidor en medio 🧅",
+    m3: "Exacto. Envía mensajes, no metadatos.",
+    placeholder: "Mensaje",
+  },
+}[lang];
+---
+
+<div class="mockup" aria-hidden="true">
+  <div class="mockup__glow"></div>
+  <div class="phone">
+    <div class="phone__notch"></div>
+    <div class="phone__screen">
+      <header class="chat__head">
+        <span class="chat__avatar">05</span>
+        <span class="chat__id">
+          <span class="chat__id-label">{c.account}</span>
+          <span class="chat__id-value">05a3f…9c2</span>
+        </span>
+        <svg class="chat__lock" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </svg>
+      </header>
+
+      <div class="chat__enc">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+        <span>{c.encrypted}</span>
+      </div>
+
+      <div class="chat__body">
+        <div class="bubble bubble--in">{c.m1}</div>
+        <div class="bubble bubble--out">{c.m2}</div>
+        <div class="bubble bubble--in">{c.m3}</div>
+      </div>
+
+      <div class="chat__composer">
+        <span class="chat__input">{c.placeholder}</span>
+        <span class="chat__send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13" /><polygon points="22 2 15 22 11 13 2 9 22 2" /></svg>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .mockup {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .mockup__glow {
+    position: absolute;
+    inset: -10% 10%;
+    background: radial-gradient(ellipse at center, rgba(255, 140, 0, 0.22) 0%, transparent 70%);
+    filter: blur(10px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .phone {
+    position: relative;
+    z-index: 1;
+    width: 280px;
+    max-width: 100%;
+    aspect-ratio: 280 / 570;
+    padding: 12px;
+    border-radius: 40px;
+    background: linear-gradient(160deg, #262626 0%, #141414 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  }
+
+  .phone__notch {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 96px;
+    height: 22px;
+    border-radius: 0 0 14px 14px;
+    background: #0a0a0a;
+    z-index: 2;
+  }
+
+  .phone__screen {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    background: #0c0c0c;
+    overflow: hidden;
+    padding: 34px 12px 12px;
+  }
+
+  .chat__head {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 4px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .chat__avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--brand-primary-subtle);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+    color: var(--brand-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .chat__id {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chat__id-label {
+    font-size: 0.5625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-subtle);
+  }
+
+  .chat__id-value {
+    font-family: ui-monospace, monospace;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .chat__lock {
+    color: var(--brand-primary);
+    flex-shrink: 0;
+  }
+
+  .chat__enc {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 12px auto;
+    padding: 4px 10px;
+    border-radius: 100px;
+    background: var(--brand-primary-subtle);
+    color: var(--brand-primary);
+    font-size: 0.5625rem;
+    font-weight: 600;
+  }
+
+  .chat__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-end;
+    padding: 0 2px 10px;
+  }
+
+  .bubble {
+    max-width: 82%;
+    padding: 8px 11px;
+    font-size: 0.75rem;
+    line-height: 1.35;
+    border-radius: 14px;
+  }
+
+  .bubble--in {
+    align-self: flex-start;
+    background: #1e1e1e;
+    color: var(--color-text);
+    border-bottom-left-radius: 4px;
+  }
+
+  .bubble--out {
+    align-self: flex-end;
+    background: var(--brand-primary);
+    color: #0d0d0d;
+    font-weight: 500;
+    border-bottom-right-radius: 4px;
+  }
+
+  .chat__composer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border-radius: 100px;
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .chat__input {
+    flex: 1;
+    padding-left: 8px;
+    font-size: 0.75rem;
+    color: var(--color-text-subtle);
+  }
+
+  .chat__send {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--brand-primary);
+    color: #0d0d0d;
+    flex-shrink: 0;
+  }
+</style>
