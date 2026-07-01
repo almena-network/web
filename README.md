@@ -12,14 +12,29 @@ Public-facing marketing and information site for the Almena Network decentralize
 
 ## Description
 
-Static site built with Astro. Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
+Pre-launch marketing site built with Astro. It is framed around a **launch-date countdown** to the Almena mainnet, with copy that reflects the real stage of development (messenger core and node network on devnet today; calls in testing; ALMENA market/economics at mainnet). Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
+
+### Launch date
+
+The countdown target is a **single constant** in `src/data/landing.ts`:
+
+```ts
+export const launch = { date: "2026-11-11T12:00:00Z", /* … */ };
+```
+
+`launch.date` (ISO 8601, UTC) is the confirmed mainnet launch date — **11 November 2026**. The countdown, the header/footer launch chips and all "at launch" copy derive from it; change this one line to move the date.
 
 ### Pages
 
+The network is the product; messaging is one use case. The pages reflect that priority:
+
 | Route | Description |
 |-------|-------------|
-| `/` and `/es/` | Almena messenger landing — identity, onion routing, groups, calls, disappearing messages |
-| `/network/` and `/es/network/` | Network infrastructure — service nodes, blockchain node, staking, rewards |
+| `/` and `/es/` | The Almena network / platform — launch countdown, what it is, "one platform, many uses", identity in focus, how the network works, development roadmap |
+| `/identity/` and `/es/identity/` | Decentralized identity as a use case — issuers/holders/verifiers, zero-knowledge / minimal disclosure, verifiable credentials, reusable KYC |
+| `/messaging/` and `/es/messaging/` | Messaging as a use case — onion routing, groups, disappearing messages, calls (in development) |
+| `/network/` and `/es/network/` | The network in depth — service nodes, blockchain node, staking, run a node |
+| `/coin/` and `/es/coin/` | The ALMENA coin — how it's earned; economics still being designed, so **no amounts/values** are shown (they go live at mainnet) |
 
 ## Tech Stack
 

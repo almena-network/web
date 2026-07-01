@@ -11,6 +11,8 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = network[lang];
+const prefix = lang === "es" ? "/es" : "";
+const coinHref = `${prefix}/coin/`;
 
 const pillarIcons = ["service", "chain"];
 
@@ -31,12 +33,12 @@ function pillarIcon(name: string): string {
   <!-- ── Hero ── -->
   <section class="hero">
     <div class="hero__glow" aria-hidden="true"></div>
-    <span class="hero__eyebrow">{t.hero.eyebrow}</span>
+    <span class="eyebrow">{t.hero.eyebrow}</span>
     <h1 class="hero__title">{t.hero.title}</h1>
     <p class="hero__subtitle">{t.hero.subtitle}</p>
     <div class="hero__actions">
       <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.hero.ctaPrimary}</a>
-      <a href="https://docs.almena.network" class="btn btn--ghost" target="_blank" rel="noopener">{t.hero.ctaSecondary}</a>
+      <a href={coinHref} class="btn btn--ghost">{t.hero.ctaSecondary}</a>
     </div>
   </section>
 
@@ -50,6 +52,7 @@ function pillarIcon(name: string): string {
         </div>
       ))}
     </div>
+    <p class="stats__note">{t.stats.note}</p>
   </section>
 
   <!-- ── What ── -->
@@ -114,7 +117,7 @@ function pillarIcon(name: string): string {
       <p class="cta__text">{t.cta.text}</p>
       <div class="cta__actions">
         <a href="https://github.com/almena-network" class="btn btn--primary" target="_blank" rel="noopener">{t.cta.ctaPrimary}</a>
-        <a href="https://docs.almena.network" class="btn btn--ghost" target="_blank" rel="noopener">{t.cta.ctaSecondary}</a>
+        <a href={coinHref} class="btn btn--ghost">{t.cta.ctaSecondary}</a>
       </div>
     </div>
   </section>
@@ -123,73 +126,6 @@ function pillarIcon(name: string): string {
 <SiteFooter lang={lang} />
 
 <style>
-  .page {
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  /* ── Buttons ── */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 26px;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    font-family: inherit;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: background var(--transition), color var(--transition), border-color var(--transition), transform var(--transition);
-    cursor: pointer;
-  }
-
-  .btn--primary {
-    background: var(--brand-primary);
-    color: #0d0d0d;
-    border: 1px solid transparent;
-  }
-
-  .btn--primary:hover {
-    background: var(--brand-primary-hover);
-    transform: translateY(-1px);
-  }
-
-  .btn--ghost {
-    background: transparent;
-    color: var(--color-text);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-  }
-
-  .btn--ghost:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.3);
-    transform: translateY(-1px);
-  }
-
-  /* ── Section heads ── */
-  .section-head {
-    text-align: center;
-    margin-bottom: 44px;
-  }
-
-  .section-head__title {
-    font-size: clamp(1.6rem, 3.2vw, 2.25rem);
-    font-weight: 700;
-    letter-spacing: -0.015em;
-    margin: 0 0 12px;
-    color: var(--color-text);
-  }
-
-  .section-head__subtitle {
-    font-size: 1rem;
-    color: var(--color-text-muted);
-    margin: 0 auto;
-    max-width: 54ch;
-    line-height: 1.6;
-  }
-
   /* ── Hero ── */
   .hero {
     position: relative;
@@ -212,17 +148,8 @@ function pillarIcon(name: string): string {
     z-index: -1;
   }
 
-  .hero__eyebrow {
-    display: inline-block;
-    padding: 6px 14px;
+  .eyebrow {
     margin-bottom: 24px;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--brand-primary);
-    background: var(--brand-primary-subtle);
-    border: 1px solid rgba(255, 140, 0, 0.22);
-    border-radius: 100px;
   }
 
   .hero__title {
@@ -288,6 +215,14 @@ function pillarIcon(name: string): string {
     font-size: 0.8125rem;
     color: var(--color-text-muted);
     text-align: center;
+  }
+
+  .stats__note {
+    margin: 18px auto 0;
+    max-width: 54ch;
+    text-align: center;
+    font-size: 0.8125rem;
+    color: var(--color-text-subtle);
   }
 
   /* ── What ── */
@@ -512,10 +447,6 @@ function pillarIcon(name: string): string {
   }
 
   @media (max-width: 640px) {
-    .page {
-      padding: 0 16px;
-    }
-
     .hero {
       padding: 72px 0 56px;
     }
