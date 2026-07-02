@@ -7,9 +7,9 @@
 //   • network   — the network in depth (nodes, run a node) → "/network/"   and "/es/network/"
 //   • veracity  — the transparency log (proving what's true) → "/veracity/" and "/es/veracity/"
 //
-// Almena is coinless: no blockchain, no coin, no mining, no staking, no rewards. Veracity is
+// Almena is coinless: no coin, no mining, no staking, no rewards. Veracity is
 // delivered by a transparency log (append-only Merkle-tree, RFC-6962 style) plus authority-signed
-// lists — the same guarantees the removed blockchain used to provide, without any token.
+// lists — the same guarantees the removed coin used to provide, without any token.
 //
 // PRE-LAUNCH: the platform runs on a devnet today; launch is coming (countdown from `launch.date`).
 // Copy is honest about the stage of development — see `home.roadmap`.
@@ -927,17 +927,17 @@ export const network = {
   },
 } as const;
 
-// ── Veracity = the transparency log (coinless: no chain, no coin, no rewards) ─
+// ── Veracity = the transparency log (coinless: no coin, no rewards) ─
 export const veracity = {
   en: {
     title: "Veracity — Prove what's true, no middleman",
     description:
-      "Veracity is Almena's transparency log: an append-only, tamper-evident record that proves integrity, authorship and proof of existence — verified by the network's own nodes, with no blockchain and no coin.",
+      "Veracity is Almena's transparency log: an append-only, tamper-evident record that proves integrity, authorship and proof of existence — verified by the network's own nodes, with no coin.",
     hero: {
       eyebrow: "Veracity",
       title: "Prove what's true. No middleman.",
       subtitle:
-        "Veracity is an append-only transparency log — a public, tamper-evident record that proves a piece of data existed, unchanged, at a known time, and who signed it. No blockchain, no coin, no gatekeeper: the network's own nodes witness each other to keep it honest.",
+        "Veracity is an append-only transparency log — a public, tamper-evident record that proves a piece of data existed, unchanged, at a known time, and who signed it. No coin, no gatekeeper: the network's own nodes witness each other to keep it honest.",
       ctaPrimary: "Follow the launch",
       ctaSecondary: "Explore the network",
     },
@@ -1003,12 +1003,12 @@ export const veracity = {
   es: {
     title: "Veracidad — Demuestra qué es verdad, sin intermediarios",
     description:
-      "La veracidad es el registro de transparencia de Almena: un historial de solo-añadir y a prueba de manipulación que demuestra integridad, autoría y prueba de existencia — verificado por los propios nodos de la red, sin blockchain y sin moneda.",
+      "La veracidad es el registro de transparencia de Almena: un historial de solo-añadir y a prueba de manipulación que demuestra integridad, autoría y prueba de existencia — verificado por los propios nodos de la red, sin moneda.",
     hero: {
       eyebrow: "Veracidad",
       title: "Demuestra qué es verdad. Sin intermediarios.",
       subtitle:
-        "La veracidad es un registro de transparencia de solo-añadir — un historial público y a prueba de manipulación que demuestra que un dato existió, sin cambios, en un momento conocido, y quién lo firmó. Sin blockchain, sin moneda, sin guardián: los propios nodos de la red se testifican entre sí para mantenerlo honesto.",
+        "La veracidad es un registro de transparencia de solo-añadir — un historial público y a prueba de manipulación que demuestra que un dato existió, sin cambios, en un momento conocido, y quién lo firmó. Sin moneda, sin guardián: los propios nodos de la red se testifican entre sí para mantenerlo honesto.",
       ctaPrimary: "Sigue el lanzamiento",
       ctaSecondary: "Explorar la red",
     },
