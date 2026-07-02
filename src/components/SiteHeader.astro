@@ -4,7 +4,7 @@ import { site, launchLabel } from "../data/landing";
 
 interface Props {
   lang: Lang;
-  page: "home" | "network" | "identity" | "messaging" | "coin";
+  page: "home" | "network" | "identity" | "messaging" | "veracity";
 }
 
 const { lang, page } = Astro.props;
@@ -15,7 +15,7 @@ const homeHref = lang === "es" ? "/es/" : "/";
 const networkHref = `${prefix}/network/`;
 const identityHref = `${prefix}/identity/`;
 const messagingHref = `${prefix}/messaging/`;
-const coinHref = `${prefix}/coin/`;
+const veracityHref = `${prefix}/veracity/`;
 
 // Language switch keeps the user on the equivalent page.
 const otherPrefix = lang === "en" ? "/es" : "";
@@ -23,7 +23,7 @@ const subpaths: Record<string, string> = {
   network: "/network/",
   identity: "/identity/",
   messaging: "/messaging/",
-  coin: "/coin/",
+  veracity: "/veracity/",
 };
 const otherLangHref = page === "home" ? (lang === "en" ? "/es/" : "/") : `${otherPrefix}${subpaths[page]}`;
 
@@ -41,7 +41,7 @@ const launchTag = launchLabel(lang);
       <a href={networkHref} class={`nav__link${page === "network" ? " nav__link--active" : ""}`}>{t.network}</a>
       <a href={identityHref} class={`nav__link${page === "identity" ? " nav__link--active" : ""}`}>{t.identity}</a>
       <a href={messagingHref} class={`nav__link${page === "messaging" ? " nav__link--active" : ""}`}>{t.messaging}</a>
-      <a href={coinHref} class={`nav__link${page === "coin" ? " nav__link--active" : ""}`}>{t.coin}</a>
+      <a href={veracityHref} class={`nav__link${page === "veracity" ? " nav__link--active" : ""}`}>{t.veracity}</a>
       <a href="https://github.com/almena-network" class="nav__link" target="_blank" rel="noopener">{t.github}</a>
     </nav>
 
@@ -70,7 +70,7 @@ const launchTag = launchLabel(lang);
     <a href={networkHref} class={`nav__mobile-link${page === "network" ? " nav__mobile-link--active" : ""}`}>{t.network}</a>
     <a href={identityHref} class={`nav__mobile-link${page === "identity" ? " nav__mobile-link--active" : ""}`}>{t.identity}</a>
     <a href={messagingHref} class={`nav__mobile-link${page === "messaging" ? " nav__mobile-link--active" : ""}`}>{t.messaging}</a>
-    <a href={coinHref} class={`nav__mobile-link${page === "coin" ? " nav__mobile-link--active" : ""}`}>{t.coin}</a>
+    <a href={veracityHref} class={`nav__mobile-link${page === "veracity" ? " nav__mobile-link--active" : ""}`}>{t.veracity}</a>
     <a href="https://github.com/almena-network" class="nav__mobile-link" target="_blank" rel="noopener">{t.github}</a>
     <a href={otherLangHref} class="nav__mobile-link nav__mobile-link--lang">{t.langSwitch}</a>
   </div>

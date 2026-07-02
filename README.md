@@ -1,6 +1,6 @@
 # Almena Network Web
 
-Public-facing marketing and information site for the Almena Network decentralized messenger platform.
+Public-facing marketing and information site for the Almena Network — an open, decentralized platform.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ Public-facing marketing and information site for the Almena Network decentralize
 
 ## Description
 
-Pre-launch marketing site built with Astro. It is framed around a **launch-date countdown** to the Almena mainnet, with copy that reflects the real stage of development (messenger core and node network on devnet today; calls in testing; ALMENA market/economics at mainnet). Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
+Pre-launch marketing site built with Astro. It is framed around a **launch-date countdown** to the Almena mainnet, with copy that reflects the real stage of development (messenger core and node network on devnet today; calls in testing; veracity — the transparency log — as the differentiating capability). Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
 
 ### Launch date
 
@@ -33,8 +33,8 @@ The network is the product; messaging is one use case. The pages reflect that pr
 | `/` and `/es/` | The Almena network / platform — launch countdown, what it is, "one platform, many uses", identity in focus, how the network works, development roadmap |
 | `/identity/` and `/es/identity/` | Decentralized identity as a use case — issuers/holders/verifiers, zero-knowledge / minimal disclosure, verifiable credentials, reusable KYC |
 | `/messaging/` and `/es/messaging/` | Messaging as a use case — onion routing, groups, disappearing messages, calls (in development) |
-| `/network/` and `/es/network/` | The network in depth — service nodes, blockchain node, staking, run a node |
-| `/coin/` and `/es/coin/` | The ALMENA coin — how it's earned; economics still being designed, so **no amounts/values** are shown (they go live at mainnet) |
+| `/network/` and `/es/network/` | The network in depth — service nodes, how the network runs, run a node |
+| `/veracity/` and `/es/veracity/` | Veracity as the differentiator — the transparency log: integrity, authorship, and proof of existence for what the network carries |
 
 ## Tech Stack
 

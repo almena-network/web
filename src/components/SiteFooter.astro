@@ -14,7 +14,7 @@ const homeHref = lang === "es" ? "/es/" : "/";
 const networkHref = `${prefix}/network/`;
 const identityHref = `${prefix}/identity/`;
 const messagingHref = `${prefix}/messaging/`;
-const coinHref = `${prefix}/coin/`;
+const veracityHref = `${prefix}/veracity/`;
 const year = new Date().getFullYear();
 const launchTag = launchLabel(lang);
 const launchLine = lang === "es" ? `Lanzamiento de mainnet · ${launchTag}` : `Mainnet launch · ${launchTag}`;
@@ -37,7 +37,7 @@ const launchLine = lang === "es" ? `Lanzamiento de mainnet · ${launchTag}` : `M
         <a href={networkHref} class="footer__link">{t.network}</a>
         <a href={identityHref} class="footer__link">{t.identity}</a>
         <a href={messagingHref} class="footer__link">{t.messaging}</a>
-        <a href={coinHref} class="footer__link">{t.coin}</a>
+        <a href={veracityHref} class="footer__link">{t.veracity}</a>
       </div>
       <div class="footer__col">
         <h3 class="footer__col-title">{t.resources}</h3>

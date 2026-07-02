@@ -24,12 +24,15 @@ By participating in this project you agree to abide by our
 ## Scope of this repository
 
 This repo is **only** the marketing/information website. The Almena
-applications (the client, the node software, the blockchain) live in separate
+applications (the client and the node software) live in separate
 repositories. Please keep pull requests here focused on the website: copy,
 pages, layout, styling, accessibility, performance, and build tooling.
 
 If your change concerns the protocol, node, or client software, open it in the
 corresponding repository instead.
+
+Almena is a general-purpose decentralized platform; messaging is its flagship
+first use, and veracity — the transparency log — is its differentiator.
 
 ## Prerequisites
 
@@ -64,8 +67,8 @@ src/
 public/          Static assets served as-is
 ```
 
-Key routes: `/` (home), `/identity/`, `/messaging/`, `/network/`, `/coin/`, and
-their Spanish counterparts under `/es/`.
+Key routes: `/` (home), `/identity/`, `/messaging/`, `/network/`, `/veracity/`,
+and their Spanish counterparts under `/es/`.
 
 ## Content and copy
 
@@ -81,8 +84,9 @@ their Spanish counterparts under `/es/`.
 - **The network is the product; messaging is one use case.** Keep framing
   consistent with the existing pages: Almena is a general-purpose decentralized
   platform, not "just a messenger."
-- **The ALMENA coin economics are still being designed** — do not publish
-  amounts, prices, or token values on the coin page; those go live at mainnet.
+- **Veracity is the differentiator.** The transparency log — integrity,
+  authorship, and proof of existence — is what sets Almena apart. Keep the
+  veracity page and copy focused on that story.
 
 ## Coding conventions
 
