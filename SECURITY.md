@@ -4,9 +4,8 @@ The Almena Network team takes the security of this project seriously. This
 policy covers the **Almena Network website** (this repository) — a static
 marketing and information site built with Astro.
 
-> For vulnerabilities in the Almena **client**, **node**, or **blockchain**
-> software, please report them in the corresponding repository rather than
-> here.
+> For vulnerabilities in the Almena **client** or **node** software, please
+> report them in the corresponding repository rather than here.
 
 ## Supported versions
 
@@ -63,8 +62,8 @@ relevant classes of issues include:
 
 The following are generally **out of scope** for this repository:
 
-- Vulnerabilities in the Almena client, node, or blockchain software (report
-  those in their own repositories)
+- Vulnerabilities in the Almena client or node software (report those in their
+  own repositories)
 - Findings that require a compromised host, browser, or network
 - Volumetric denial-of-service or automated scanner output without a
   demonstrable, specific impact

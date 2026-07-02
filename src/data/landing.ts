@@ -11,7 +11,7 @@
 // delivered by a transparency log (append-only Merkle-tree, RFC-6962 style) plus authority-signed
 // lists — the same guarantees the removed blockchain used to provide, without any token.
 //
-// PRE-LAUNCH: the platform runs on a devnet today; mainnet is coming (countdown from `launch.date`).
+// PRE-LAUNCH: the platform runs on a devnet today; launch is coming (countdown from `launch.date`).
 // Copy is honest about the stage of development — see `home.roadmap`.
 
 export type Lang = "en" | "es";
@@ -19,18 +19,18 @@ export type Lang = "en" | "es";
 // ── Launch config ────────────────────────────────────────────────────────────
 // SINGLE SOURCE OF TRUTH for the countdown. Replace `date` to move the launch.
 export const launch = {
-  // Confirmed mainnet launch: 11 November 2026.
+  // Confirmed launch: 11 November 2026.
   date: "2026-11-11T12:00:00Z",
   en: {
     badge: "Pre-launch · building in the open",
-    countdownTitle: "Mainnet launches in",
-    countdownDone: "Almena mainnet is live.",
+    countdownTitle: "Almena launches in",
+    countdownDone: "Almena is live.",
     units: { days: "Days", hours: "Hours", minutes: "Minutes", seconds: "Seconds" },
   },
   es: {
     badge: "Pre-lanzamiento · construido en abierto",
-    countdownTitle: "La mainnet se lanza en",
-    countdownDone: "La mainnet de Almena está activa.",
+    countdownTitle: "Almena se lanza en",
+    countdownDone: "Almena está activa.",
     units: { days: "Días", hours: "Horas", minutes: "Minutos", seconds: "Segundos" },
   },
 } as const;
@@ -98,7 +98,7 @@ export const home = {
   en: {
     title: "Almena — The open, decentralized platform",
     description:
-      "Almena is an open, decentralized platform — a community-run network of nodes and a transparency log that can power storage, voting, document signing, traceability, messaging and more. Mainnet launches soon.",
+      "Almena is an open, decentralized platform — a community-run network of nodes and a transparency log that can power storage, voting, document signing, traceability, messaging and more. Launch is coming soon.",
     hero: {
       title: "One network. Every use. No middleman.",
       subtitle:
@@ -108,7 +108,7 @@ export const home = {
     },
     roadmap: {
       title: "Where Almena is today",
-      subtitle: "Built in the open, running on a devnet, counting down to mainnet.",
+      subtitle: "Built in the open, running on a devnet, counting down to launch.",
       items: [
         {
           state: "done",
@@ -130,7 +130,7 @@ export const home = {
         },
         {
           state: "soon",
-          label: "At mainnet",
+          label: "At launch",
           title: "Veracity & new uses",
           text: "The transparency log matures, and the roadmap opens the network to more uses — storage, voting, document signing, traceability and beyond.",
         },
@@ -222,7 +222,7 @@ export const home = {
   es: {
     title: "Almena — La plataforma abierta y descentralizada",
     description:
-      "Almena es una plataforma abierta y descentralizada — una red comunitaria de nodos y un registro de transparencia capaz de impulsar almacenamiento, votaciones, firma de documentos, trazabilidad, mensajería y más. La mainnet llega pronto.",
+      "Almena es una plataforma abierta y descentralizada — una red comunitaria de nodos y un registro de transparencia capaz de impulsar almacenamiento, votaciones, firma de documentos, trazabilidad, mensajería y más. El lanzamiento llega pronto.",
     hero: {
       title: "Una red. Cada uso. Sin intermediarios.",
       subtitle:
@@ -232,7 +232,7 @@ export const home = {
     },
     roadmap: {
       title: "En qué punto está Almena",
-      subtitle: "Construido en abierto, funcionando en una devnet, con la cuenta atrás hacia mainnet.",
+      subtitle: "Construido en abierto, funcionando en una devnet, con la cuenta atrás hacia el lanzamiento.",
       items: [
         {
           state: "done",
@@ -254,7 +254,7 @@ export const home = {
         },
         {
           state: "soon",
-          label: "En mainnet",
+          label: "En el lanzamiento",
           title: "Veracidad y nuevos usos",
           text: "El registro de transparencia madura, y el roadmap abre la red a más usos — almacenamiento, votaciones, firma de documentos, trazabilidad y más allá.",
         },
@@ -446,11 +446,11 @@ export const identity = {
     },
     roadmap: {
       label: "On the roadmap",
-      text: "Identity is a post-launch use case. The network — the transparency log and signed lists that give identity its trust anchor — go live at mainnet; identity is built on top.",
+      text: "Identity is a post-launch use case. The network — the transparency log and signed lists that give identity its trust anchor — go live at launch; identity is built on top.",
     },
     cta: {
       title: "Identity you actually own, soon on Almena",
-      text: "The network that anchors it is open source and running on a devnet today. Follow the countdown to mainnet, and read how the layers beneath identity work.",
+      text: "The network that anchors it is open source and running on a devnet today. Follow the countdown to launch, and read how the layers beneath identity work.",
       ctaPrimary: "Follow on GitHub",
     },
   },
@@ -551,11 +551,11 @@ export const identity = {
     },
     roadmap: {
       label: "En el roadmap",
-      text: "La identidad es un caso de uso posterior al lanzamiento. La red — el registro de transparencia y las listas firmadas que dan a la identidad su ancla de confianza — se activan en mainnet; la identidad se construye encima.",
+      text: "La identidad es un caso de uso posterior al lanzamiento. La red — el registro de transparencia y las listas firmadas que dan a la identidad su ancla de confianza — se activan en el lanzamiento; la identidad se construye encima.",
     },
     cta: {
       title: "Una identidad que de verdad es tuya, pronto en Almena",
-      text: "La red que la ancla es código abierto y funciona hoy en una devnet. Sigue la cuenta atrás hacia mainnet y lee cómo funcionan las capas bajo la identidad.",
+      text: "La red que la ancla es código abierto y funciona hoy en una devnet. Sigue la cuenta atrás hacia el lanzamiento y lee cómo funcionan las capas bajo la identidad.",
       ctaPrimary: "Seguir en GitHub",
     },
   },
@@ -647,7 +647,7 @@ export const messaging = {
         {
           tag: "Calls · in development",
           title: "Voice & video calls, no phone number",
-          text: "Make and receive encrypted calls using only your Account ID. No SIM card, no carrier — calls route through a media-relay layer that keeps your IP and identity private. This is the feature we're hardening right now ahead of the mainnet launch.",
+          text: "Make and receive encrypted calls using only your Account ID. No SIM card, no carrier — calls route through a media-relay layer that keeps your IP and identity private. This is the feature we're hardening right now ahead of launch.",
           points: ["Encrypted voice & video", "No phone number needed", "Relay keeps your IP private"],
         },
       ],
@@ -655,7 +655,7 @@ export const messaging = {
     cta: {
       title: "Private messaging, launching soon",
       text:
-        "The client, the nodes and the protocol are open source today. Follow the countdown to mainnet — and read how the network beneath it works.",
+        "The client, the nodes and the protocol are open source today. Follow the countdown to launch — and read how the network beneath it works.",
       ctaPrimary: "Follow on GitHub",
     },
   },
@@ -743,7 +743,7 @@ export const messaging = {
         {
           tag: "Llamadas · en desarrollo",
           title: "Llamadas de voz y vídeo, sin número de teléfono",
-          text: "Haz y recibe llamadas cifradas usando solo tu Account ID. Sin tarjeta SIM, sin operadora — las llamadas se enrutan por una capa de media-relay que mantiene tu IP y tu identidad privadas. Es la función que estamos afinando ahora mismo de cara al lanzamiento de mainnet.",
+          text: "Haz y recibe llamadas cifradas usando solo tu Account ID. Sin tarjeta SIM, sin operadora — las llamadas se enrutan por una capa de media-relay que mantiene tu IP y tu identidad privadas. Es la función que estamos afinando ahora mismo de cara al lanzamiento.",
           points: ["Voz y vídeo cifrados", "Sin número de teléfono", "El relay mantiene tu IP privada"],
         },
       ],
@@ -751,7 +751,7 @@ export const messaging = {
     cta: {
       title: "Mensajería privada, muy pronto",
       text:
-        "El cliente, los nodos y el protocolo ya son código abierto. Sigue la cuenta atrás hacia mainnet — y lee cómo funciona la red que hay debajo.",
+        "El cliente, los nodos y el protocolo ya son código abierto. Sigue la cuenta atrás hacia el lanzamiento — y lee cómo funciona la red que hay debajo.",
       ctaPrimary: "Seguir en GitHub",
     },
   },
@@ -767,7 +767,7 @@ export const network = {
       eyebrow: "The network",
       title: "The substrate for a decentralized world.",
       subtitle:
-        "Behind every Almena use case is a decentralized mesh of nodes plus a transparency log that proves what's true — run by the community, owned by no one. It runs on a devnet today and goes to mainnet at launch.",
+        "Behind every Almena use case is a decentralized mesh of nodes plus a transparency log that proves what's true — run by the community, owned by no one. It runs on a devnet today and goes live at launch.",
       ctaPrimary: "Follow the launch",
       ctaSecondary: "How veracity works",
     },
@@ -837,7 +837,7 @@ export const network = {
     cta: {
       title: "Become part of the network",
       text:
-        "The node software is open source today. Read the code, run it against the devnet, and be ready to store, relay and witness when mainnet launches.",
+        "The node software is open source today. Read the code, run it against the devnet, and be ready to store, relay and witness when Almena launches.",
       ctaPrimary: "Contribute on GitHub",
       ctaSecondary: "How veracity works",
     },
@@ -850,7 +850,7 @@ export const network = {
       eyebrow: "La red",
       title: "El sustrato para un mundo descentralizado.",
       subtitle:
-        "Detrás de cada uso de Almena hay una malla descentralizada de nodos más un registro de transparencia que demuestra qué es verdad — gestionada por la comunidad, propiedad de nadie. Hoy funciona en una devnet y llega a mainnet en el lanzamiento.",
+        "Detrás de cada uso de Almena hay una malla descentralizada de nodos más un registro de transparencia que demuestra qué es verdad — gestionada por la comunidad, propiedad de nadie. Hoy funciona en una devnet y se activa en el lanzamiento.",
       ctaPrimary: "Sigue el lanzamiento",
       ctaSecondary: "Cómo funciona la veracidad",
     },
@@ -920,7 +920,7 @@ export const network = {
     cta: {
       title: "Forma parte de la red",
       text:
-        "El software del nodo ya es código abierto. Lee el código, pruébalo contra la devnet y prepárate para almacenar, retransmitir y testificar cuando se lance mainnet.",
+        "El software del nodo ya es código abierto. Lee el código, pruébalo contra la devnet y prepárate para almacenar, retransmitir y testificar cuando se lance Almena.",
       ctaPrimary: "Contribuir en GitHub",
       ctaSecondary: "Cómo funciona la veracidad",
     },
@@ -996,7 +996,7 @@ export const veracity = {
     cta: {
       title: "Verifiable by anyone, soon on Almena",
       text:
-        "The log, the checkpoints and the verification tools are open source today. Read how veracity works, and watch the countdown to the mainnet launch.",
+        "The log, the checkpoints and the verification tools are open source today. Read how veracity works, and watch the countdown to launch.",
       ctaPrimary: "Follow on GitHub",
     },
   },
@@ -1067,7 +1067,7 @@ export const veracity = {
     cta: {
       title: "Verificable por cualquiera, pronto en Almena",
       text:
-        "El log, los checkpoints y las herramientas de verificación ya son código abierto. Lee cómo funciona la veracidad y sigue la cuenta atrás hacia el lanzamiento de mainnet.",
+        "El log, los checkpoints y las herramientas de verificación ya son código abierto. Lee cómo funciona la veracidad y sigue la cuenta atrás hacia el lanzamiento.",
       ctaPrimary: "Seguir en GitHub",
     },
   },

@@ -12,7 +12,7 @@ Public-facing marketing and information site for the Almena Network — an open,
 
 ## Description
 
-Pre-launch marketing site built with Astro. It is framed around a **launch-date countdown** to the Almena mainnet, with copy that reflects the real stage of development (messenger core and node network on devnet today; calls in testing; veracity — the transparency log — as the differentiating capability). Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
+Pre-launch marketing site built with Astro. It is framed around a **launch-date countdown** to the Almena network launch, with copy that reflects the real stage of development (messenger core and node network on devnet today; calls in testing; veracity — the transparency log — as the differentiating capability). Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
 
 ### Launch date
 
@@ -22,7 +22,7 @@ The countdown target is a **single constant** in `src/data/landing.ts`:
 export const launch = { date: "2026-11-11T12:00:00Z", /* … */ };
 ```
 
-`launch.date` (ISO 8601, UTC) is the confirmed mainnet launch date — **11 November 2026**. The countdown, the header/footer launch chips and all "at launch" copy derive from it; change this one line to move the date.
+`launch.date` (ISO 8601, UTC) is the confirmed launch date — **11 November 2026**. The countdown, the header/footer launch chips and all "at launch" copy derive from it; change this one line to move the date.
 
 ### Pages
 
