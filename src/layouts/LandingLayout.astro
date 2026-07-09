@@ -187,4 +187,49 @@ const { title, description, lang } = Astro.props;
     max-width: 54ch;
     line-height: 1.6;
   }
+
+  /* ── Maturity status badge (shared across pages) ──
+     Honest 3-state signal: live 🟢 / testing 🟡 / roadmap ⚪. */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.625rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 9px;
+    border-radius: 100px;
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+  }
+
+  .status-badge::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+  }
+
+  .status-badge--live {
+    color: var(--semantic-success);
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.28);
+  }
+
+  .status-badge--testing {
+    color: var(--semantic-warning);
+    background: rgba(245, 166, 35, 0.12);
+    border-color: rgba(245, 166, 35, 0.3);
+  }
+
+  .status-badge--roadmap {
+    color: var(--color-text-subtle);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
 </style>

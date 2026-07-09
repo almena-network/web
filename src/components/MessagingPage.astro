@@ -1,6 +1,6 @@
 ---
 import type { Lang } from "../data/landing";
-import { messaging } from "../data/landing";
+import { messaging, statusLabel } from "../data/landing";
 import SiteHeader from "./SiteHeader.astro";
 import SiteFooter from "./SiteFooter.astro";
 import PhoneMockup from "./PhoneMockup.astro";
@@ -155,7 +155,10 @@ function featureArt(index: number): string {
       {t.features.items.map((f, i) => (
         <article class={`feature-row${i % 2 === 1 ? " feature-row--reverse" : ""}`}>
           <div class="feature-row__body">
-            <span class="feature-row__tag">{f.tag}</span>
+            <div class="feature-row__meta">
+              <span class="feature-row__tag">{f.tag}</span>
+              <span class={`status-badge status-badge--${f.status}`}>{statusLabel[lang][f.status]}</span>
+            </div>
             <h3 class="feature-row__title">{f.title}</h3>
             <p class="feature-row__text">{f.text}</p>
             <ul class="feature-row__points">
@@ -347,6 +350,14 @@ function featureArt(index: number): string {
     order: 2;
   }
 
+  .feature-row__meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
   .feature-row__tag {
     display: inline-block;
     font-size: 0.75rem;
@@ -354,7 +365,6 @@ function featureArt(index: number): string {
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--brand-primary);
-    margin-bottom: 12px;
   }
 
   .feature-row__title {

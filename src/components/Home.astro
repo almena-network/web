@@ -1,6 +1,6 @@
 ---
 import type { Lang } from "../data/landing";
-import { home, network, identity, launch } from "../data/landing";
+import { home, network, identity, launch, statusLabel } from "../data/landing";
 import SiteHeader from "./SiteHeader.astro";
 import SiteFooter from "./SiteFooter.astro";
 import Countdown from "./Countdown.astro";
@@ -72,11 +72,8 @@ function roleIcon(name: string): string {
   }
 }
 
-// Use-case status → localized short label.
-const useStatusLabel: Record<string, string> =
-  lang === "es"
-    ? { launching: "Al lanzar", roadmap: "Roadmap" }
-    : { launching: "At launch", roadmap: "Roadmap" };
+// Use-case status → localized short label (shared 3-state vocabulary).
+const useStatusLabel = statusLabel[lang];
 
 // Roadmap state → dot color class.
 const stateClass: Record<string, string> = {
@@ -186,14 +183,14 @@ const stateClass: Record<string, string> = {
         return (
           <Tag
             href={useHref}
-            class={`use-card ${u.status === "launching" ? "is-launching" : "is-roadmap"}${useHref ? " use-card--link" : ""}`}
+            class={`use-card ${u.status === "live" ? "is-live" : "is-roadmap"}${useHref ? " use-card--link" : ""}`}
           >
             <div class="use-card__icon" aria-hidden="true" set:html={useIcon(u.icon)} />
             <h3 class="use-card__title">{u.title}</h3>
             <p class="use-card__text">{u.text}</p>
             <div class="use-card__meta">
               <span class="use-card__layer">{u.layer}</span>
-              <span class="use-card__status">{useStatusLabel[u.status]}</span>
+              <span class={`status-badge status-badge--${u.status}`}>{useStatusLabel[u.status]}</span>
             </div>
           </Tag>
         );
@@ -421,10 +418,10 @@ const stateClass: Record<string, string> = {
     transform: translateY(-2px);
   }
 
-  .use-card.is-launching {
-    border-color: rgba(255, 140, 0, 0.35);
+  .use-card.is-live {
+    border-color: rgba(34, 197, 94, 0.28);
     background:
-      radial-gradient(ellipse 90% 70% at 50% 0%, rgba(255, 140, 0, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 90% 70% at 50% 0%, rgba(34, 197, 94, 0.07) 0%, transparent 60%),
       var(--color-surface);
   }
 
@@ -469,22 +466,6 @@ const stateClass: Record<string, string> = {
     font-family: ui-monospace, monospace;
     font-size: 0.6875rem;
     color: var(--color-text-subtle);
-  }
-
-  .use-card__status {
-    font-size: 0.625rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 3px 8px;
-    border-radius: 100px;
-    color: var(--brand-primary);
-    background: var(--brand-primary-subtle);
-  }
-
-  .use-card.is-launching .use-card__status {
-    color: var(--semantic-success);
-    background: rgba(34, 197, 94, 0.12);
   }
 
   .uses__note {

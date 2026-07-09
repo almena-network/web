@@ -16,6 +16,20 @@
 
 export type Lang = "en" | "es";
 
+// ── Maturity status vocabulary ───────────────────────────────────────────────
+// One honest, shared 3-state model surfaced as inline badges across the site:
+//   live    🟢  implemented, tested and running on the devnet today (verifiable)
+//   testing 🟡  implemented, being hardened/verified before launch
+//   roadmap ⚪  not built yet (or only the substrate exists, not the user-facing product)
+// Some features are live in the protocol/backend but have no user-facing UI yet — the
+// copy says so explicitly; the badge still reflects whether the capability itself runs.
+export type Status = "live" | "testing" | "roadmap";
+
+export const statusLabel: Record<Lang, Record<Status, string>> = {
+  en: { live: "Live on devnet", testing: "In testing", roadmap: "Roadmap" },
+  es: { live: "Vivo en devnet", testing: "En pruebas", roadmap: "Roadmap" },
+} as const;
+
 // ── Launch config ────────────────────────────────────────────────────────────
 // SINGLE SOURCE OF TRUTH for the countdown. Replace `date` to move the launch.
 export const launch = {
@@ -123,16 +137,16 @@ export const home = {
           text: "Private messaging — end-to-end encrypted chats, Account IDs, onion routing, encrypted groups and disappearing messages — runs today on the developer network.",
         },
         {
+          state: "done",
+          label: "Live on devnet",
+          title: "Veracity you can verify",
+          text: "The transparency log is running today, and the app already verifies proofs against it — inclusion, authorship and witnessed checkpoints. Witnessing across the full swarm and qualified timestamps are still maturing.",
+        },
+        {
           state: "progress",
           label: "In testing",
           title: "Voice & video calls",
-          text: "Encrypted, onion-routed calls over a media-relay layer. The relay is wired; end-to-end call quality is being verified before launch.",
-        },
-        {
-          state: "soon",
-          label: "At launch",
-          title: "Veracity & new uses",
-          text: "The transparency log matures, and the roadmap opens the network to more uses — storage, voting, document signing, traceability and beyond.",
+          text: "Encrypted, onion-routed calls over a media relay. The relay and calls are implemented; end-to-end call quality is being hardened before launch. More uses — storage, voting, document signing — follow on the roadmap.",
         },
       ],
     },
@@ -145,12 +159,12 @@ export const home = {
       title: "One platform, many uses",
       subtitle:
         "The same network — an open node layer and a transparency log that proves what's true — is built to power many decentralized services. Messaging is the first to ship.",
-      note: "Messaging launches first · other uses are on the roadmap",
+      note: "Messaging is live on the devnet · identity foundations are running · other uses are on the roadmap",
       items: [
         {
           icon: "chat",
           layer: "Network",
-          status: "launching",
+          status: "live",
           title: "Private messaging",
           text: "End-to-end encrypted conversations with no central server to censor them or leak metadata. The first Almena app.",
           href: "messaging",
@@ -193,9 +207,9 @@ export const home = {
         {
           icon: "id",
           layer: "Network + Transparency log",
-          status: "roadmap",
-          title: "Identity & zero-knowledge",
-          text: "Self-sovereign identity and verifiable credentials — prove a fact (age, residency, a diploma) without revealing the underlying data.",
+          status: "testing",
+          title: "Identity & credentials",
+          text: "The foundations are live: did:almena identities, verifiable credentials and a registry of issuers/verifiers all run today. The in-app wallet is what's still to come.",
           href: "identity",
         },
       ],
@@ -247,16 +261,16 @@ export const home = {
           text: "La mensajería privada — chats cifrados de extremo a extremo, Account IDs, onion routing, grupos cifrados y mensajes efímeros — ya funciona hoy en la red de desarrollo.",
         },
         {
+          state: "done",
+          label: "Activo en devnet",
+          title: "Veracidad que puedes verificar",
+          text: "El registro de transparencia ya funciona hoy, y la app verifica pruebas contra él — inclusión, autoría y checkpoints testificados. El testimonio a lo largo de todo el swarm y el sellado de tiempo cualificado aún están madurando.",
+        },
+        {
           state: "progress",
           label: "En pruebas",
           title: "Llamadas de voz y vídeo",
-          text: "Llamadas cifradas y enrutadas onion sobre una capa de media-relay. El relay ya está integrado; ahora verificamos la calidad de llamada de extremo a extremo antes del lanzamiento.",
-        },
-        {
-          state: "soon",
-          label: "En el lanzamiento",
-          title: "Veracidad y nuevos usos",
-          text: "El registro de transparencia madura, y el roadmap abre la red a más usos — almacenamiento, votaciones, firma de documentos, trazabilidad y más allá.",
+          text: "Llamadas cifradas y enrutadas onion sobre una capa de media-relay. El relay y las llamadas ya están implementados; ahora endurecemos la calidad de extremo a extremo antes del lanzamiento. Más usos — almacenamiento, votaciones, firma de documentos — llegan en el roadmap.",
         },
       ],
     },
@@ -269,12 +283,12 @@ export const home = {
       title: "Una plataforma, muchos usos",
       subtitle:
         "La misma red — una capa de nodos abierta y un registro de transparencia que demuestra qué es verdad — está hecha para impulsar muchos servicios descentralizados. La mensajería es el primero en llegar.",
-      note: "La mensajería se lanza primero · el resto de usos están en el roadmap",
+      note: "La mensajería ya funciona en la devnet · los cimientos de identidad están corriendo · el resto de usos están en el roadmap",
       items: [
         {
           icon: "chat",
           layer: "Red",
-          status: "launching",
+          status: "live",
           title: "Mensajería privada",
           text: "Conversaciones cifradas de extremo a extremo sin servidor central que las censure o filtre metadatos. La primera app de Almena.",
           href: "messaging",
@@ -317,9 +331,9 @@ export const home = {
         {
           icon: "id",
           layer: "Red + Transparency log",
-          status: "roadmap",
-          title: "Identidad y conocimiento cero",
-          text: "Identidad soberana y credenciales verificables — demuestra un hecho (edad, residencia, un título) sin revelar el dato en sí.",
+          status: "testing",
+          title: "Identidad y credenciales",
+          text: "Los cimientos ya funcionan: identidades did:almena, credenciales verificables y un registry de emisores/verificadores corren hoy. La cartera dentro de la app es lo que aún falta.",
           href: "identity",
         },
       ],
@@ -401,42 +415,60 @@ export const identity = {
       trusts: "trusts (signed issuer list)",
     },
     disclosure: {
-      tag: "Zero-knowledge",
+      tag: "Minimal disclosure",
       title: "Prove it. Don't reveal it.",
-      text: "With zero-knowledge proofs you demonstrate a claim is true without exposing the data behind it — minimal disclosure, one interaction at a time. It's what separates a real identity layer from a shared database.",
+      text: "Almena's credentials use selective disclosure (SD-JWT): you present only the claims each interaction needs and drop the rest, with the issuer's signature still intact. On the roadmap, zero-knowledge proofs go further — proving a fact like \"over 18\" is true without revealing any underlying claim at all.",
+      roadmapNote: "Selective disclosure is live today · full zero-knowledge proofs are on the roadmap",
       points: [
-        "Prove you're over 18 — not your birth date",
-        "Prove residency — not your address",
-        "Prove you hold a credential — not the document",
+        "Reveal only the claims you choose",
+        "Prove you hold a credential — not the whole document",
+        "The issuer's signature stays valid on what you share",
       ],
     },
     capabilities: {
       title: "What you can do with Almena Identity",
       items: [
         {
+          status: "live",
           title: "Self-sovereign identity (DID/SSI)",
-          text: "A portable identity you control — not a login owned by a platform that can lock you out.",
+          text: "A portable did:almena identity you control — not a login owned by a platform that can lock you out. Live in the protocol today.",
         },
         {
+          status: "live",
           title: "Verifiable credentials",
-          text: "Diplomas, certifications, licenses, work history — cryptographically signed and instantly checkable.",
+          text: "Diplomas, certifications, licenses, work history — SD-JWT credentials, cryptographically signed and instantly checkable. Implemented and tested.",
         },
         {
+          status: "roadmap",
           title: "Reusable KYC",
           text: "Verify once, reuse across services — without repeating the process or resharing documents each time.",
         },
         {
+          status: "live",
           title: "Minimal disclosure",
-          text: "Share only the single fact each interaction needs, and nothing else about you.",
+          text: "Share only the claims each interaction needs, and nothing else about you — via SD-JWT selective disclosure.",
         },
         {
+          status: "testing",
           title: "Revocation you can see",
-          text: "Issuers can revoke a credential — but only on a public transparency log, never silently.",
+          text: "Issuers can revoke a credential — but only on a public transparency log, never silently. The registry that records it runs today.",
         },
         {
+          status: "live",
           title: "No identity provider",
           text: "No third-party login in the middle that can profile you, gate access, or deplatform you.",
         },
+      ],
+    },
+    registry: {
+      tag: "Live on devnet",
+      title: "The issuer & verifier registry is running",
+      text:
+        "Who counts as a recognized issuer or verifier lives in a network-backed registry — a thin console with no private database, whose state is a stream of signed records in the transparency log. Admins sign in by scanning a QR with their Almena app (DID-Auth), and every record is re-verified locally before it's trusted. It runs on the devnet today.",
+      points: [
+        "Sign in with your DID — no passwords, no accounts",
+        "No private database: state lives in the transparency log",
+        "Every record re-verified locally, never taken on trust",
       ],
     },
     layer: {
@@ -445,8 +477,8 @@ export const identity = {
         "Identity spans two roles of the network. The transparency log anchors issuer trust and revocation, tamper-evident and public; the network layer stores and moves credentials privately. You keep the credentials themselves.",
     },
     roadmap: {
-      label: "On the roadmap",
-      text: "Identity is a post-launch use case. The network — the transparency log and signed lists that give identity its trust anchor — go live at launch; identity is built on top.",
+      label: "Foundations live · wallet coming",
+      text: "The foundations already run on the devnet: did:almena identities, SD-JWT verifiable credentials, and the issuer/verifier registry. What's still to come is the in-app credential wallet that puts all of it in your hands — that's the launch-and-beyond work.",
     },
     cta: {
       title: "Identity you actually own, soon on Almena",
@@ -506,42 +538,60 @@ export const identity = {
       trusts: "confía (lista de emisores firmada)",
     },
     disclosure: {
-      tag: "Conocimiento cero",
+      tag: "Divulgación mínima",
       title: "Demuéstralo. No lo reveles.",
-      text: "Con pruebas de conocimiento cero demuestras que una afirmación es cierta sin exponer el dato que hay detrás — divulgación mínima, interacción a interacción. Es lo que separa una capa de identidad real de una simple base de datos.",
+      text: "Las credenciales de Almena usan divulgación selectiva (SD-JWT): presentas solo los claims que cada interacción necesita y omites el resto, con la firma del emisor intacta. En el roadmap, las pruebas de conocimiento cero van más allá — demostrar un hecho como \"mayor de 18\" sin revelar ningún dato subyacente.",
+      roadmapNote: "La divulgación selectiva ya funciona hoy · las pruebas de conocimiento cero completas están en el roadmap",
       points: [
-        "Demuestra que eres mayor de edad — no tu fecha de nacimiento",
-        "Demuestra tu residencia — no tu dirección",
-        "Demuestra que posees una credencial — no el documento",
+        "Revela solo los claims que elijas",
+        "Demuestra que posees una credencial — no el documento entero",
+        "La firma del emisor sigue válida sobre lo que compartes",
       ],
     },
     capabilities: {
       title: "Qué puedes hacer con Almena Identidad",
       items: [
         {
+          status: "live",
           title: "Identidad soberana (DID/SSI)",
-          text: "Una identidad portable que controlas tú — no un login propiedad de una plataforma que puede dejarte fuera.",
+          text: "Una identidad did:almena portable que controlas tú — no un login propiedad de una plataforma que puede dejarte fuera. Ya viva en el protocolo.",
         },
         {
+          status: "live",
           title: "Credenciales verificables",
-          text: "Títulos, certificaciones, licencias, historial laboral — firmados criptográficamente y comprobables al instante.",
+          text: "Títulos, certificaciones, licencias, historial laboral — credenciales SD-JWT firmadas criptográficamente y comprobables al instante. Implementadas y testeadas.",
         },
         {
+          status: "roadmap",
           title: "KYC reutilizable",
           text: "Verifícate una vez, reutilízalo entre servicios — sin repetir el proceso ni reenviar documentos cada vez.",
         },
         {
+          status: "live",
           title: "Divulgación mínima",
-          text: "Comparte solo el dato que cada interacción necesita, y nada más sobre ti.",
+          text: "Comparte solo los claims que cada interacción necesita, y nada más sobre ti — mediante divulgación selectiva SD-JWT.",
         },
         {
+          status: "testing",
           title: "Revocación que puedes ver",
-          text: "Los emisores pueden revocar una credencial — pero solo en un registro de transparencia público, nunca en silencio.",
+          text: "Los emisores pueden revocar una credencial — pero solo en un registro de transparencia público, nunca en silencio. El registry que lo anota ya funciona hoy.",
         },
         {
+          status: "live",
           title: "Sin proveedor de identidad",
           text: "Ningún login de terceros en medio que pueda perfilarte, restringir tu acceso o expulsarte.",
         },
+      ],
+    },
+    registry: {
+      tag: "Vivo en devnet",
+      title: "El registry de emisores y verificadores ya funciona",
+      text:
+        "Quién cuenta como emisor o verificador reconocido vive en un registry respaldado por la red — una consola fina, sin base de datos privada, cuyo estado es un flujo de registros firmados en el registro de transparencia. Los administradores entran escaneando un QR con su app de Almena (DID-Auth), y cada registro se re-verifica en local antes de darlo por bueno. Corre en la devnet hoy.",
+      points: [
+        "Entra con tu DID — sin contraseñas, sin cuentas",
+        "Sin base de datos privada: el estado vive en el registro de transparencia",
+        "Cada registro re-verificado en local, nunca por confianza",
       ],
     },
     layer: {
@@ -550,8 +600,8 @@ export const identity = {
         "La identidad abarca dos funciones de la red. El registro de transparencia ancla la confianza en los emisores y la revocación, a prueba de manipulación y público; la capa de red almacena y mueve las credenciales de forma privada. Las credenciales, las guardas tú.",
     },
     roadmap: {
-      label: "En el roadmap",
-      text: "La identidad es un caso de uso posterior al lanzamiento. La red — el registro de transparencia y las listas firmadas que dan a la identidad su ancla de confianza — se activan en el lanzamiento; la identidad se construye encima.",
+      label: "Cimientos vivos · cartera en camino",
+      text: "Los cimientos ya corren en la devnet: identidades did:almena, credenciales verificables SD-JWT y el registry de emisores/verificadores. Lo que aún falta es la cartera de credenciales dentro de la app que lo pone todo en tus manos — ese es el trabajo del lanzamiento en adelante.",
     },
     cta: {
       title: "Una identidad que de verdad es tuya, pronto en Almena",
@@ -622,32 +672,37 @@ export const messaging = {
       items: [
         {
           tag: "Identity",
+          status: "live",
           title: "Private by design",
           text: "Sign up with no personal data. Almena generates an Account ID and a 12-word recovery phrase — that's your identity. There's no directory, no profile to mine, and nothing for an attacker to leak.",
           points: ["No phone number or email", "Random Account ID (05…)", "12-word recovery phrase"],
         },
         {
           tag: "Anonymity",
+          status: "live",
           title: "Hidden by onion routing",
           text: "Instead of connecting straight to a server, Almena builds an encrypted three-hop path through the node network for every message. Your IP address stays hidden from the people you talk to and from the network itself.",
           points: ["Three-hop onion paths", "Your IP stays private", "No node sees both ends"],
         },
         {
           tag: "Control",
+          status: "live",
           title: "Yours, on every device",
           text: "Your account, conversations and contacts sync across your devices through your own encrypted swarm — no cloud account required. Restore everything on a new device from your recovery phrase. Set a disappearing-message timer on any conversation and messages delete themselves from all devices automatically.",
           points: ["Multi-device sync", "Restore from recovery phrase", "Disappearing messages"],
         },
         {
           tag: "Groups",
-          title: "Encrypted group conversations",
-          text: "Create group chats with friends or join community channels. Every group uses the same end-to-end encryption as 1:1 chats — members can be added or removed at any time and the message history stays sealed to the current member set.",
-          points: ["Create and manage groups", "Add or remove members", "Community channels"],
+          status: "live",
+          title: "Private groups & public channels",
+          text: "Private group chats use the same end-to-end encryption as 1:1 chats — members can be added or removed and history stays sealed to the current member set. Community channels are a different thing: open, joinable public rooms, so — like any public space — they are not end-to-end encrypted.",
+          points: ["End-to-end encrypted private groups", "Add or remove members", "Open community channels (public, not E2E)"],
         },
         {
-          tag: "Calls · in development",
+          tag: "Calls · in testing",
+          status: "testing",
           title: "Voice & video calls, no phone number",
-          text: "Make and receive encrypted calls using only your Account ID. No SIM card, no carrier — calls route through a media-relay layer that keeps your IP and identity private. This is the feature we're hardening right now ahead of launch.",
+          text: "Make and receive encrypted calls using only your Account ID. No SIM card, no carrier — calls route through a media relay that keeps your IP and identity private. Calls and the relay are implemented; we're hardening end-to-end quality ahead of launch.",
           points: ["Encrypted voice & video", "No phone number needed", "Relay keeps your IP private"],
         },
       ],
@@ -718,32 +773,37 @@ export const messaging = {
       items: [
         {
           tag: "Identidad",
+          status: "live",
           title: "Privado por diseño",
           text: "Regístrate sin datos personales. Almena genera un Account ID y una frase de recuperación de 12 palabras — esa es tu identidad. No hay directorio, ni perfil que explotar, ni nada que un atacante pueda filtrar.",
           points: ["Sin teléfono ni email", "Account ID aleatorio (05…)", "Frase de recuperación de 12 palabras"],
         },
         {
           tag: "Anonimato",
+          status: "live",
           title: "Oculto por onion routing",
           text: "En vez de conectarte directo a un servidor, Almena construye una ruta cifrada de tres saltos por la red de nodos para cada mensaje. Tu dirección IP queda oculta para quien hablas y para la propia red.",
           points: ["Rutas onion de tres saltos", "Tu IP permanece privada", "Ningún nodo ve los dos extremos"],
         },
         {
           tag: "Control",
+          status: "live",
           title: "Tuyo, en cada dispositivo",
           text: "Tu cuenta, conversaciones y contactos se sincronizan entre tus dispositivos a través de tu propio swarm cifrado — sin cuenta en la nube. Restaura todo en un dispositivo nuevo con tu frase de recuperación. Activa un temporizador de mensajes efímeros en cualquier conversación y los mensajes se eliminan solos de todos los dispositivos.",
           points: ["Sincronización multi-dispositivo", "Restaurar con la frase de recuperación", "Mensajes efímeros"],
         },
         {
           tag: "Grupos",
-          title: "Conversaciones de grupo cifradas",
-          text: "Crea chats grupales con amigos o únete a canales comunitarios. Cada grupo usa el mismo cifrado de extremo a extremo que los chats 1:1 — los miembros se pueden añadir o eliminar en cualquier momento y el historial permanece sellado para el conjunto de miembros actual.",
-          points: ["Crear y gestionar grupos", "Añadir o eliminar miembros", "Canales comunitarios"],
+          status: "live",
+          title: "Grupos privados y canales públicos",
+          text: "Los grupos privados usan el mismo cifrado de extremo a extremo que los chats 1:1 — los miembros se pueden añadir o eliminar y el historial permanece sellado para el conjunto de miembros actual. Los canales comunitarios son otra cosa: salas públicas abiertas a las que cualquiera se une, así que — como cualquier espacio público — no son de extremo a extremo.",
+          points: ["Grupos privados cifrados de extremo a extremo", "Añadir o eliminar miembros", "Canales comunitarios abiertos (públicos, no E2E)"],
         },
         {
-          tag: "Llamadas · en desarrollo",
+          tag: "Llamadas · en pruebas",
+          status: "testing",
           title: "Llamadas de voz y vídeo, sin número de teléfono",
-          text: "Haz y recibe llamadas cifradas usando solo tu Account ID. Sin tarjeta SIM, sin operadora — las llamadas se enrutan por una capa de media-relay que mantiene tu IP y tu identidad privadas. Es la función que estamos afinando ahora mismo de cara al lanzamiento.",
+          text: "Haz y recibe llamadas cifradas usando solo tu Account ID. Sin tarjeta SIM, sin operadora — las llamadas se enrutan por una capa de media-relay que mantiene tu IP y tu identidad privadas. Las llamadas y el relay ya están implementados; ahora endurecemos la calidad de extremo a extremo de cara al lanzamiento.",
           points: ["Voz y vídeo cifrados", "Sin número de teléfono", "El relay mantiene tu IP privada"],
         },
       ],

@@ -1,6 +1,6 @@
 ---
 import type { Lang } from "../data/landing";
-import { identity } from "../data/landing";
+import { identity, statusLabel } from "../data/landing";
 import SiteHeader from "./SiteHeader.astro";
 import SiteFooter from "./SiteFooter.astro";
 import IdentityDiagram from "./IdentityDiagram.astro";
@@ -98,6 +98,7 @@ const check = (c: string) =>
         <span class="disclosure__tag">{t.disclosure.tag}</span>
         <h2 class="disclosure__title">{t.disclosure.title}</h2>
         <p class="disclosure__text">{t.disclosure.text}</p>
+        <p class="disclosure__note">{t.disclosure.roadmapNote}</p>
       </div>
       <ul class="disclosure__points">
         {t.disclosure.points.map((p) => (
@@ -115,11 +116,30 @@ const check = (c: string) =>
     <div class="caps__grid">
       {t.capabilities.items.map((c, i) => (
         <article class="cap-card">
-          <div class="cap-card__icon" aria-hidden="true" set:html={capIcons[i]} />
+          <div class="cap-card__head">
+            <div class="cap-card__icon" aria-hidden="true" set:html={capIcons[i]} />
+            <span class={`status-badge status-badge--${c.status}`}>{statusLabel[lang][c.status]}</span>
+          </div>
           <h3 class="cap-card__title">{c.title}</h3>
           <p class="cap-card__text">{c.text}</p>
         </article>
       ))}
+    </div>
+  </section>
+
+  <!-- ── Issuer/verifier registry (live on devnet) ── -->
+  <section class="registry">
+    <div class="registry__inner">
+      <div class="registry__body">
+        <span class={`status-badge status-badge--live registry__badge`}>{t.registry.tag}</span>
+        <h2 class="registry__title">{t.registry.title}</h2>
+        <p class="registry__text">{t.registry.text}</p>
+      </div>
+      <ul class="registry__points">
+        {t.registry.points.map((p) => (
+          <li set:html={check(p)} />
+        ))}
+      </ul>
     </div>
   </section>
 
@@ -341,6 +361,78 @@ const check = (c: string) =>
     line-height: 1.65;
   }
 
+  .disclosure__note {
+    margin: 16px 0 0;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-subtle);
+    line-height: 1.5;
+  }
+
+  /* ── Registry (mirrors disclosure layout) ── */
+  .registry {
+    padding: 0 0 90px;
+  }
+
+  .registry__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+    padding: 44px;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(ellipse 80% 100% at 0% 0%, rgba(34, 197, 94, 0.08) 0%, transparent 60%),
+      var(--color-surface);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+  }
+
+  .registry__badge {
+    margin-bottom: 14px;
+  }
+
+  .registry__title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--color-text);
+  }
+
+  .registry__text {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.65;
+  }
+
+  .registry__points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .registry__points li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text);
+  }
+
+  .registry__points svg {
+    color: var(--semantic-success);
+    flex-shrink: 0;
+  }
+
   .disclosure__points {
     list-style: none;
     margin: 0;
@@ -392,16 +484,24 @@ const check = (c: string) =>
     transform: translateY(-2px);
   }
 
+  .cap-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
   .cap-card__icon {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 44px;
     height: 44px;
+    flex-shrink: 0;
     border-radius: 11px;
     background: var(--brand-primary-subtle);
     color: var(--brand-primary);
-    margin-bottom: 16px;
     border: 1px solid rgba(255, 140, 0, 0.16);
   }
 
@@ -516,7 +616,8 @@ const check = (c: string) =>
       order: -1;
     }
 
-    .disclosure__inner {
+    .disclosure__inner,
+    .registry__inner {
       grid-template-columns: 1fr;
       gap: 28px;
     }
@@ -531,6 +632,7 @@ const check = (c: string) =>
 
   @media (max-width: 640px) {
     .disclosure__inner,
+    .registry__inner,
     .cta {
       padding: 28px 22px;
     }
