@@ -1,0 +1,343 @@
+---
+import type { Lang } from "../data/charter";
+import { site, GITHUB_URL, LOCALES, langNames, langHome } from "../data/charter";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = site[lang].nav;
+
+const homeHref = langHome(lang);
+
+// Single-page site: nav links are in-page section anchors.
+const links = [
+  { href: "#contract", label: t.contract },
+  { href: "#identity", label: t.identity },
+  { href: "#reputation", label: t.reputation },
+  { href: "#progression", label: t.progression },
+  { href: "#justice", label: t.justice },
+  { href: "#friction", label: t.friction },
+];
+
+const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lang === "it" ? "Lingua" : lang === "pt" ? "Idioma" : lang === "es" ? "Idioma" : "Language";
+---
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href={homeHref} class="nav__logo" aria-label="Almena">
+      <img src="/logo.svg" alt="" width="30" height="30" />
+      <span>Almena</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Charter sections">
+      {links.map((l) => <a href={l.href} class="nav__link">{l.label}</a>)}
+      <a href={GITHUB_URL} class="nav__link" target="_blank" rel="noopener">{t.github}</a>
+    </nav>
+
+    <div class="nav__actions">
+      <div class="nav__lang">
+        <select class="nav__lang-select" data-lang-select aria-label={languageLabel}>
+          {LOCALES.map((l) => (
+            <option value={langHome(l)} selected={l === lang}>{langNames[l]}</option>
+          ))}
+        </select>
+        <svg class="nav__lang-caret" viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <button
+        class="nav__toggle"
+        type="button"
+        aria-label="Menu"
+        aria-expanded="false"
+        aria-controls="nav-mobile"
+        data-nav-toggle
+      >
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav__mobile" id="nav-mobile" data-nav-mobile>
+    {links.map((l) => <a href={l.href} class="nav__mobile-link">{l.label}</a>)}
+    <a href={GITHUB_URL} class="nav__mobile-link" target="_blank" rel="noopener">{t.github}</a>
+    <div class="nav__mobile-lang">
+      <span class="nav__mobile-lang-label">{languageLabel}</span>
+      <div class="nav__lang">
+        <select class="nav__lang-select" data-lang-select aria-label={languageLabel}>
+          {LOCALES.map((l) => (
+            <option value={langHome(l)} selected={l === lang}>{langNames[l]}</option>
+          ))}
+        </select>
+        <svg class="nav__lang-caret" viewBox="0 0 12 12" aria-hidden="true">
+          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8, 8, 8, 0.72);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__inner {
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    flex-shrink: 0;
+    transition: color var(--transition);
+  }
+
+  .nav__logo:hover {
+    color: var(--brand-primary);
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+    justify-content: center;
+  }
+
+  .nav__link {
+    padding: 6px 11px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+    white-space: nowrap;
+  }
+
+  .nav__link:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  .nav__lang {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav__lang-select {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-sm);
+    padding: 6px 30px 6px 12px;
+    cursor: pointer;
+    transition: color var(--transition), background var(--transition), border-color var(--transition);
+  }
+
+  .nav__lang-select:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.28);
+  }
+
+  .nav__lang-select:focus-visible {
+    outline: none;
+    border-color: var(--brand-primary);
+    color: var(--color-text);
+  }
+
+  .nav__lang-select option {
+    color: #f0f0f0;
+    background: #111111;
+  }
+
+  .nav__lang-caret {
+    position: absolute;
+    right: 10px;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    color: var(--color-text-muted);
+  }
+
+  .nav__mobile-lang {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 6px;
+    padding: 12px 10px 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .nav__mobile-lang-label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+  }
+
+  /* ── Mobile hamburger ── */
+  .nav__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .nav__toggle-bar {
+    display: block;
+    width: 18px;
+    height: 2px;
+    margin: 0 auto;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform var(--transition), opacity var(--transition);
+  }
+
+  .nav--open .nav__toggle-bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .nav--open .nav__toggle-bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .nav--open .nav__toggle-bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav__mobile {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 16px 16px;
+    background: #080808;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.8);
+  }
+
+  .nav--open .nav__mobile {
+    display: flex;
+  }
+
+  .nav__mobile-link {
+    padding: 12px 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .nav__mobile-link:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .nav__mobile-link--lang {
+    margin-top: 6px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  @media (max-width: 940px) {
+    .nav__links {
+      display: none;
+    }
+
+    .nav__actions .nav__lang {
+      display: none;
+    }
+
+    .nav__toggle {
+      display: flex;
+    }
+  }
+
+  @media (min-width: 941px) {
+    .nav__mobile {
+      display: none !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .nav__inner {
+      padding: 0 16px;
+      gap: 12px;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>(".nav");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  if (header && toggle) {
+    const setOpen = (open: boolean) => {
+      header.classList.toggle("nav--open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    };
+    toggle.addEventListener("click", () => setOpen(!header.classList.contains("nav--open")));
+    header.querySelectorAll("[data-nav-mobile] a").forEach((a) =>
+      a.addEventListener("click", () => setOpen(false)),
+    );
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") setOpen(false);
+    });
+  }
+
+  document.querySelectorAll<HTMLSelectElement>("[data-lang-select]").forEach((select) => {
+    select.addEventListener("change", () => {
+      const dest = select.value;
+      if (dest) window.location.href = dest;
+    });
+  });
+</script>
