@@ -1,0 +1,196 @@
+---
+import type { Lang } from "../../data/charter";
+import { charter } from "../../data/charter";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = charter[lang].justice;
+
+// pool grid: 6x3, a few marked as the randomly selected panel
+const cols = 6;
+const rows = 3;
+const selected = new Set([2, 7, 15]);
+const pool = Array.from({ length: cols * rows }, (_, i) => ({ i, on: selected.has(i) }));
+---
+
+<section id="justice" class="section section--alt">
+  <div class="page">
+    <div class="sec-head sec-head--center">
+      <span class="sec-num">{t.num}</span>
+      <span class="sec-kicker">{t.kicker}</span>
+      <h2 class="sec-title">{t.title}</h2>
+      <p class="sec-lead">{t.lead}</p>
+    </div>
+
+    <div class="arb">
+      <figure class="arb__fig">
+        <div class="arb__stage">
+          <div class="arb__pool" aria-hidden="true">
+            {pool.map((n) => <span class={`arb__cell${n.on ? " is-panel" : ""}`}></span>)}
+          </div>
+          <span class="arb__label">{t.poolLabel}</span>
+        </div>
+
+        <div class="arb__arrow" aria-hidden="true">
+          <span class="arb__rand">⚄</span>
+          <svg viewBox="0 0 60 20"><line x1="2" y1="10" x2="52" y2="10" stroke="var(--brand-primary)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arb-a)"/><defs><marker id="arb-a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0,7 3,0 6" fill="var(--brand-primary)"/></marker></defs></svg>
+        </div>
+
+        <div class="arb__stage">
+          <div class="arb__panel" aria-hidden="true">
+            <span class="arb__juror"></span><span class="arb__juror"></span><span class="arb__juror"></span>
+          </div>
+          <span class="arb__label arb__label--hi">{t.panelLabel}</span>
+        </div>
+
+        <div class="arb__arrow" aria-hidden="true">
+          <svg viewBox="0 0 60 20"><line x1="2" y1="10" x2="52" y2="10" stroke="var(--brand-primary)" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arb-b)"/><defs><marker id="arb-b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><polygon points="0 0,7 3,0 6" fill="var(--brand-primary)"/></marker></defs></svg>
+        </div>
+
+        <div class="arb__stage">
+          <div class="arb__verdict" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 3l7 7M3 14l7 7" /><path d="M4.5 12.5l7-7 3 3-7 7z" /><path d="M12.5 4.5l3 3" /><path d="M14 21H3" />
+            </svg>
+          </div>
+          <span class="arb__label arb__label--verdict">{t.verdictLabel}</span>
+        </div>
+      </figure>
+
+      <div class="arb__steps">
+        {t.steps.map((s, i) => (
+          <div class="arb__step">
+            <span class="arb__step-n">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3 class="card__title">{s.title}</h3>
+              <p class="card__text">{s.text}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .arb__fig {
+    margin: 0 0 40px;
+    padding: 30px 22px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .arb__stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 120px;
+  }
+
+  .arb__pool {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 7px;
+  }
+
+  .arb__cell {
+    width: 15px;
+    height: 15px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .arb__cell.is-panel {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px var(--brand-primary-subtle);
+  }
+
+  .arb__panel {
+    display: flex;
+    gap: 10px;
+  }
+
+  .arb__juror {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--brand-primary);
+    box-shadow: 0 0 0 4px var(--brand-primary-subtle);
+  }
+
+  .arb__verdict {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    color: var(--brand-primary);
+    background: var(--brand-primary-subtle);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+  }
+
+  .arb__verdict svg { width: 28px; height: 28px; }
+
+  .arb__label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-subtle);
+    text-align: center;
+  }
+
+  .arb__label--hi, .arb__label--verdict { color: var(--brand-primary); }
+
+  .arb__arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--brand-primary);
+  }
+
+  .arb__arrow svg { width: 54px; height: 18px; }
+  .arb__rand { font-size: 1.1rem; line-height: 1; }
+
+  .arb__steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+
+  .arb__step {
+    display: flex;
+    gap: 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+
+  .arb__step-n {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--brand-primary);
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 760px) {
+    .arb__arrow svg { transform: rotate(90deg); }
+    .arb__steps { grid-template-columns: 1fr; }
+  }
+</style>

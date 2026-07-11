@@ -1,0 +1,132 @@
+---
+import type { Lang } from "../../data/charter";
+import { charter } from "../../data/charter";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = charter[lang].hero;
+---
+
+<section class="hero">
+  <div class="page hero__inner">
+    <span class="eyebrow">{t.eyebrow}</span>
+    <p class="hero__doc">{t.docTitle}</p>
+    <h1 class="hero__title">{t.title}</h1>
+    <p class="hero__mission">{t.mission}</p>
+
+    <div class="hero__badges">
+      {t.badges.map((b) => <span class="hero__badge">{b}</span>)}
+    </div>
+
+    <blockquote class="hero__motto">
+      <span class="hero__quote" aria-hidden="true">“</span>
+      {t.motto}
+    </blockquote>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding: 72px 0 40px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% -20%, rgba(255, 140, 0, 0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    position: relative;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__doc {
+    margin: 22px 0 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+  }
+
+  .hero__title {
+    margin: 14px 0 0;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    max-width: 16ch;
+    background: linear-gradient(180deg, #ffffff 0%, #d8d8d8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero__mission {
+    margin: 26px 0 0;
+    max-width: 62ch;
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .hero__badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 30px 0 0;
+  }
+
+  .hero__badge {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text);
+    background: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 100px;
+    padding: 7px 16px;
+  }
+
+  .hero__motto {
+    position: relative;
+    margin: 44px auto 0;
+    max-width: 40ch;
+    padding: 24px 28px;
+    border: 1px solid rgba(255, 140, 0, 0.28);
+    border-radius: var(--radius-lg);
+    background: var(--brand-primary-subtle);
+    font-size: clamp(1.125rem, 2.4vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .hero__quote {
+    position: absolute;
+    top: -18px;
+    left: 14px;
+    font-size: 4rem;
+    line-height: 1;
+    color: var(--brand-primary);
+    opacity: 0.5;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 48px 0 28px;
+    }
+  }
+</style>

@@ -1,14 +1,14 @@
 ---
-import LandingLayout from '../layouts/LandingLayout.astro';
-import Home from '../components/Home.astro';
-import { home } from '../data/landing';
+import LandingLayout from "../layouts/LandingLayout.astro";
+import CharterPage from "../components/CharterPage.astro";
+import { charter } from "../data/charter";
 
-import Analytics from '@vercel/analytics/astro'
+import Analytics from "@vercel/analytics/astro";
 
-const t = home.en;
+const t = charter.en.meta;
 ---
 
 <LandingLayout title={t.title} description={t.description} lang="en">
-  <Analytics/>
-  <Home lang="en" />
+  <Analytics />
+  <CharterPage lang="en" />
 </LandingLayout>

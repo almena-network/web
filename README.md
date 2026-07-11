@@ -1,6 +1,6 @@
 # Almena Network Web
 
-Public-facing marketing and information site for the Almena Network — an open, decentralized platform.
+Public-facing site for the Almena Network. It presents, graphically, the **Almena Founding Charter** — the platform's constitutional document: *Protocol of Sovereignty, Reputation & Integrity*.
 
 ## Prerequisites
 
@@ -12,29 +12,30 @@ Public-facing marketing and information site for the Almena Network — an open,
 
 ## Description
 
-Pre-launch marketing site built with Astro. It is framed around a **launch-date countdown** to the Almena network launch, with copy that reflects the real stage of development (messenger core and node network on devnet today; calls in testing; veracity — the transparency log — as the differentiating capability). Content is fully bilingual (English / Spanish) and driven by `src/data/landing.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
+A single-purpose site built with Astro: one page per language that renders the founding charter as a graphical narrative — hero + mission, the social contract, the identity layer (Holders / Issuers / circular governance), the trust & reputation graph, capability milestones, distributed arbitration, positive friction, resilience, and the final declaration. Each section pairs the charter's text with a purpose-built SVG diagram. Content is fully bilingual (English / Spanish) and driven by a single source of truth, `src/data/charter.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
 
-### Launch date
+The charter itself is authored as an agent rule (`.cursor/rules/almena-founding-charter.mdc`); this site is the public, visual expression of the same principles.
 
-The countdown target is a **single constant** in `src/data/landing.ts`:
+### Content
 
-```ts
-export const launch = { date: "2026-11-11T12:00:00Z", /* … */ };
-```
-
-`launch.date` (ISO 8601, UTC) is the confirmed launch date — **11 November 2026**. The countdown, the header/footer launch chips and all "at launch" copy derive from it; change this one line to move the date.
+All copy — both locales — lives in `src/data/charter.ts`. Edit that file to change wording; the section components read from it and never hardcode text.
 
 ### Pages
 
-The network is the product; messaging is one use case. The pages reflect that priority:
-
 | Route | Description |
 |-------|-------------|
-| `/` and `/es/` | The Almena network / platform — launch countdown, what it is, "one platform, many uses", identity in focus, how the network works, development roadmap |
-| `/identity/` and `/es/identity/` | Decentralized identity as a use case — issuers/holders/verifiers, zero-knowledge / minimal disclosure, verifiable credentials, reusable KYC |
-| `/messaging/` and `/es/messaging/` | Messaging as a use case — onion routing, groups, disappearing messages, calls (in development) |
-| `/network/` and `/es/network/` | The network in depth — service nodes, how the network runs, run a node |
-| `/veracity/` and `/es/veracity/` | Veracity as the differentiator — the transparency log: integrity, authorship, and proof of existence for what the network carries |
+| `/` | The founding charter, in English |
+| `/es/` | The founding charter, in Spanish |
+
+### Structure
+
+| Path | Purpose |
+|------|---------|
+| `src/data/charter.ts` | Single source of truth for all charter copy (en / es) |
+| `src/components/CharterPage.astro` | Assembles the page: header, all sections, footer |
+| `src/components/charter/*.astro` | One component per charter section (SVG diagram + text) |
+| `src/components/CharterHeader.astro`, `CharterFooter.astro` | Nav (in-page section anchors + language switch) and footer |
+| `src/layouts/LandingLayout.astro` | Base layout: brand tokens and shared section primitives |
 
 ## Tech Stack
 

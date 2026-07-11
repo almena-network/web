@@ -1,6 +1,6 @@
 ---
-import type { Lang } from "../data/landing";
-import { site, launchLabel } from "../data/landing";
+import type { Lang } from "../data/charter";
+import { site, GITHUB_URL } from "../data/charter";
 
 interface Props {
   lang: Lang;
@@ -8,46 +8,30 @@ interface Props {
 
 const { lang } = Astro.props;
 const t = site[lang].footer;
-
-const prefix = lang === "es" ? "/es" : "";
-const homeHref = lang === "es" ? "/es/" : "/";
-const networkHref = `${prefix}/network/`;
-const identityHref = `${prefix}/identity/`;
-const messagingHref = `${prefix}/messaging/`;
-const veracityHref = `${prefix}/veracity/`;
 const year = new Date().getFullYear();
-const launchTag = launchLabel(lang);
-const launchLine = lang === "es" ? `Lanzamiento · ${launchTag}` : `Launch · ${launchTag}`;
 ---
 
 <footer class="footer">
   <div class="footer__inner">
     <div class="footer__brand">
-      <a href={homeHref} class="footer__logo">
+      <a href={lang === "es" ? "/es/" : "/"} class="footer__logo">
         <img src="/logo.svg" alt="" width="28" height="28" />
         <span>Almena</span>
       </a>
       <p class="footer__tagline">{t.tagline}</p>
-      <p class="footer__launch">{launchLine}</p>
     </div>
 
-    <nav class="footer__cols" aria-label="Footer">
+    <div class="footer__cols">
       <div class="footer__col">
-        <h3 class="footer__col-title">{t.platform}</h3>
-        <a href={networkHref} class="footer__link">{t.network}</a>
-        <a href={identityHref} class="footer__link">{t.identity}</a>
-        <a href={messagingHref} class="footer__link">{t.messaging}</a>
-        <a href={veracityHref} class="footer__link">{t.veracity}</a>
+        <h3 class="footer__col-title">{t.doc}</h3>
+        <span class="footer__meta">{t.version}</span>
       </div>
       <div class="footer__col">
         <h3 class="footer__col-title">{t.resources}</h3>
-        <a href="https://github.com/almena-network" class="footer__link" target="_blank" rel="noopener">{t.github}</a>
-      </div>
-      <div class="footer__col">
-        <h3 class="footer__col-title">{lang === "es" ? "Contacto" : "Contact"}</h3>
+        <a href={GITHUB_URL} class="footer__link" target="_blank" rel="noopener">{t.github}</a>
         <a href={`mailto:${t.email}`} class="footer__link">{t.email}</a>
       </div>
-    </nav>
+    </div>
   </div>
 
   <div class="footer__bar">
@@ -59,7 +43,7 @@ const launchLine = lang === "es" ? `Lanzamiento · ${launchTag}` : `Launch · ${
 <style>
   .footer {
     border-top: 1px solid rgba(255, 255, 255, 0.07);
-    margin-top: 40px;
+    margin-top: 24px;
   }
 
   .footer__inner {
@@ -67,7 +51,7 @@ const launchLine = lang === "es" ? `Lanzamiento · ${launchTag}` : `Launch · ${
     margin: 0 auto;
     padding: 48px 24px 32px;
     display: grid;
-    grid-template-columns: 1.4fr 2fr;
+    grid-template-columns: 1.6fr 2fr;
     gap: 40px;
   }
 
@@ -85,20 +69,13 @@ const launchLine = lang === "es" ? `Lanzamiento · ${launchTag}` : `Launch · ${
     margin: 14px 0 0;
     font-size: 0.875rem;
     color: var(--color-text-muted);
-    line-height: 1.55;
-    max-width: 34ch;
-  }
-
-  .footer__launch {
-    margin: 12px 0 0;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    color: var(--brand-primary);
+    line-height: 1.6;
+    max-width: 48ch;
   }
 
   .footer__cols {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1.4fr 1fr;
     gap: 24px;
   }
 
@@ -115,6 +92,12 @@ const launchLine = lang === "es" ? `Lanzamiento · ${launchTag}` : `Launch · ${
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-text-subtle);
+  }
+
+  .footer__meta {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
   }
 
   .footer__link {
@@ -149,10 +132,6 @@ const launchLine = lang === "es" ? `Lanzamiento · ${launchTag}` : `Launch · ${
   }
 
   @media (max-width: 540px) {
-    .footer__cols {
-      grid-template-columns: 1fr 1fr;
-    }
-
     .footer__bar {
       flex-direction: column;
       align-items: flex-start;

@@ -1,0 +1,97 @@
+---
+import type { Lang } from "../../data/charter";
+import { charter, GITHUB_URL } from "../../data/charter";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = charter[lang].declaration;
+---
+
+<section id="declaration" class="section">
+  <div class="page">
+    <div class="decl">
+      <span class="sec-num">{t.num}</span>
+      <span class="sec-kicker">{t.kicker}</span>
+      <h2 class="decl__title">{t.title}</h2>
+
+      <div class="decl__lines">
+        {t.lines.map((line) => <p class="decl__line">{line}</p>)}
+      </div>
+
+      <p class="decl__motto">{t.motto}</p>
+
+      <p class="decl__note">{t.note}</p>
+
+      <a href={GITHUB_URL} class="btn btn--primary decl__cta" target="_blank" rel="noopener">
+        {t.cta}
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M7 17L17 7M17 7H8M17 7v9" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .decl {
+    max-width: 780px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 44px 32px;
+    border: 1px solid rgba(255, 140, 0, 0.22);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(ellipse 90% 80% at 50% 0%, rgba(255, 140, 0, 0.08) 0%, transparent 70%),
+      var(--color-surface);
+  }
+
+  .decl .sec-kicker { text-align: center; }
+
+  .decl__title {
+    font-size: clamp(1.5rem, 3.4vw, 2.15rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 24px;
+    color: var(--color-text);
+  }
+
+  .decl__lines {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0 0 28px;
+  }
+
+  .decl__line {
+    margin: 0;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .decl__motto {
+    margin: 0 auto 28px;
+    max-width: 46ch;
+    font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--brand-primary);
+  }
+
+  .decl__note {
+    margin: 0 auto 28px;
+    max-width: 58ch;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-subtle);
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .decl__cta svg { margin-left: 2px; }
+</style>

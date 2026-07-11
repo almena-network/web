@@ -1,0 +1,155 @@
+---
+import type { Lang } from "../../data/charter";
+import { charter } from "../../data/charter";
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = charter[lang].progression;
+---
+
+<section id="progression" class="section">
+  <div class="page">
+    <div class="sec-head sec-head--center">
+      <span class="sec-num">{t.num}</span>
+      <span class="sec-kicker">{t.kicker}</span>
+      <h2 class="sec-title">{t.title}</h2>
+      <p class="sec-lead">{t.lead}</p>
+    </div>
+
+    <ol class="ladder">
+      {t.levels.map((lv, i) => (
+        <li class={`ladder__step ladder__step--${i + 1}`}>
+          <div class="ladder__bars" aria-hidden="true">
+            <span class={`ladder__bar${i >= 0 ? " is-on" : ""}`}></span>
+            <span class={`ladder__bar${i >= 1 ? " is-on" : ""}`}></span>
+            <span class={`ladder__bar${i >= 2 ? " is-on" : ""}`}></span>
+          </div>
+          <div class="ladder__num">{lv.n}</div>
+          <div class="ladder__body">
+            <div class="ladder__head">
+              <h3 class="ladder__title">{lv.title}</h3>
+              <span class="ladder__weight">{lv.weight}</span>
+            </div>
+            <p class="card__text">{lv.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ladder {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 880px;
+    margin-inline: auto;
+  }
+
+  .ladder__step {
+    display: grid;
+    grid-template-columns: 64px 44px 1fr;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 26px;
+    background: var(--color-surface);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    position: relative;
+  }
+
+  .ladder__step--3 {
+    border-color: rgba(255, 140, 0, 0.4);
+    background:
+      linear-gradient(90deg, var(--brand-primary-subtle) 0%, var(--color-surface) 40%);
+  }
+
+  /* progressive left inset to suggest a rising ladder */
+  .ladder__step--2 { margin-left: 4%; }
+  .ladder__step--3 { margin-left: 8%; }
+
+  .ladder__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    height: 40px;
+  }
+
+  .ladder__bar {
+    width: 12px;
+    border-radius: 3px 3px 0 0;
+    background: rgba(255, 255, 255, 0.09);
+  }
+
+  .ladder__bar:nth-child(1) { height: 40%; }
+  .ladder__bar:nth-child(2) { height: 70%; }
+  .ladder__bar:nth-child(3) { height: 100%; }
+
+  .ladder__bar.is-on { background: var(--brand-primary); }
+
+  .ladder__num {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--brand-primary);
+    background: var(--brand-primary-subtle);
+    border: 1px solid rgba(255, 140, 0, 0.3);
+  }
+
+  .ladder__head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+
+  .ladder__title {
+    margin: 0;
+    font-size: 1.1875rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .ladder__weight {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+    padding: 4px 11px;
+  }
+
+  .ladder__step--3 .ladder__weight {
+    color: var(--brand-primary);
+    background: var(--brand-primary-subtle);
+    border-color: rgba(255, 140, 0, 0.3);
+  }
+
+  @media (max-width: 640px) {
+    .ladder__step {
+      grid-template-columns: 40px 1fr;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .ladder__bars { display: none; }
+    .ladder__step--2, .ladder__step--3 { margin-left: 0; }
+  }
+</style>
