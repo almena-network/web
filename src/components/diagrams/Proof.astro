@@ -1,0 +1,186 @@
+---
+/**
+ * The credential as the reader will actually meet it: four things known about them, one of them
+ * answered and three of them still theirs.
+ *
+ * This is the hero picture because it is the whole platform in one frame. Everything else on the
+ * page — the roles, the catalogue, the network — exists so that this card can be shown to a
+ * stranger without handing them anything else. Saying *"selective disclosure"* explains nothing;
+ * showing three rows that stayed shut next to one that opened explains it to somebody who has
+ * never heard the phrase.
+ *
+ * The mark in the corner is the seal: the picture is signed by whoever issued it, which is the
+ * reason a verifier never has to call them.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** What the card is called at the top of itself. */
+  heading: string;
+  /** The attributes that stay hidden, in the order drawn. */
+  hidden: readonly [string, string, string];
+  /** The word marking a hidden row. */
+  hiddenNote: string;
+  /** The one answer that is disclosed. */
+  shown: string;
+  /** The word marking the disclosed row. */
+  shownNote: string;
+  /** The line under the picture. */
+  caption: string;
+}
+
+const { label, heading, hidden, hiddenNote, shown, shownNote, caption } =
+  Astro.props;
+
+/** Where each hidden row starts. Three rows, evenly spaced, drawn from one list. */
+const rows = hidden.map((field, i) => ({ field, y: 84 + i * 50 }));
+---
+
+<figure class="panel proof">
+  <div class="panel__frame panel__frame--narrow">
+    <svg viewBox="0 0 440 340" role="img" aria-label={label}>
+      <defs>
+        <linearGradient id="proof-card" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="var(--surface-3)"></stop>
+          <stop offset="100%" stop-color="var(--surface-1)"></stop>
+        </linearGradient>
+      </defs>
+
+      <!-- The card itself: one object, held by one person. -->
+      <rect
+        class="card-face"
+        x="10"
+        y="14"
+        width="420"
+        height="292"
+        rx="24"
+        fill="url(#proof-card)"></rect>
+
+      <text class="heading" x="34" y="56">{heading}</text>
+
+      <!-- The seal. The same mark as the site, because it is the same claim: three parties, and
+           a signature that makes the middle one unnecessary. -->
+      <g class="seal" transform="translate(360, 26) scale(0.0448)">
+        <path d="M511 237 237 784"></path>
+        <path d="M511 237 784 784"></path>
+        <path d="M237 784 648 511"></path>
+        <circle cx="511" cy="237" r="94"></circle>
+        <circle cx="237" cy="784" r="94"></circle>
+        <circle cx="784" cy="784" r="94"></circle>
+      </g>
+
+      <!-- What was not asked for, and therefore never left the device. -->
+      {
+        rows.map((row) => (
+          <g class="row row--kept">
+            <rect x="30" y={row.y} width="380" height="40" rx="12" />
+            <g transform={`translate(48, ${row.y + 11})`}>
+              <rect class="lock" x="0" y="7" width="14" height="11" rx="3" />
+              <path class="shackle" d="M3 7 V4.5 a4 4 0 0 1 8 0 V7" />
+            </g>
+            <text class="field" x="78" y={row.y + 25}>
+              {row.field}
+            </text>
+            <text class="note" x="392" y={row.y + 25}>
+              {hiddenNote}
+            </text>
+          </g>
+        ))
+      }
+
+      <!-- The one row that opened, and the only thing the verifier gets. -->
+      <g class="row row--shown">
+        <rect x="30" y="234" width="380" height="48" rx="12"></rect>
+        <path class="tick" d="M50 258 l7 7 l13 -15"></path>
+        <text class="field" x="82" y="264">{shown}</text>
+        <text class="note" x="392" y="264">{shownNote}</text>
+      </g>
+    </svg>
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .card-face {
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+
+  .heading {
+    fill: var(--color-text);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .seal path {
+    fill: none;
+    stroke: var(--brand);
+    stroke-width: 60;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .seal circle {
+    fill: var(--brand);
+  }
+
+  .row rect {
+    fill: var(--surface-2);
+    stroke: var(--line);
+    stroke-width: 1;
+  }
+
+  .row .field {
+    font-size: 14px;
+  }
+
+  .row .note {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-anchor: end;
+    text-transform: uppercase;
+  }
+
+  .row--kept .field {
+    fill: var(--color-text-subtle);
+  }
+
+  .row--kept .note {
+    fill: var(--color-text-subtle);
+  }
+
+  .row--kept .lock,
+  .row--kept .shackle {
+    fill: none;
+    stroke: var(--color-text-subtle);
+    stroke-width: 1.6;
+  }
+
+  /* The one place on this card where colour appears, and it marks the one thing that left it. */
+  .row--shown rect {
+    fill: var(--tone-ok-wash);
+    stroke: var(--tone-ok-edge);
+  }
+
+  .row--shown .field {
+    fill: var(--tone-ok);
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  .row--shown .note {
+    fill: var(--tone-ok);
+  }
+
+  .tick {
+    fill: none;
+    stroke: var(--tone-ok);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>

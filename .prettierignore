@@ -1,0 +1,9 @@
+dist
+.astro
+node_modules
+pnpm-lock.yaml
+
+# Prose is written by hand here, wrapped to a width the documents keep to deliberately.
+# Prettier's only effect on Markdown is padding table cells, which breaks that width and
+# buys nothing a reader can see.
+*.md

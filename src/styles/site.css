@@ -1,0 +1,435 @@
+/*
+ * The palette, and the one rule it exists to enforce: dark is not the same as flat.
+ *
+ * The surfaces are a **ladder** — four steps a reader can actually tell apart — built on one
+ * cool hue rather than on neutral grey, so that a card sitting on a panel sitting on the page
+ * reads as three depths instead of one slab. Every step is a token; a raw colour written into a
+ * component is the thing that flattens the ladder again.
+ *
+ * Colour carries meaning here and is never decoration. Four accents, one job each, and nothing
+ * outside a diagram or the closing list uses the last three:
+ *
+ *   `--brand`    the mark, the person in a picture, the flow that matters, the section you are in
+ *   `--tone-net` the infrastructure underneath — the registry, the nodes, what carries messages
+ *   `--tone-ok`  the minimal answer: what is enough
+ *   `--tone-bad` what refuses, what is hostile, what this platform is not
+ *
+ * Every text tone below clears 4.5:1 against the page, including the quietest one — a caption
+ * nobody can read is a caption that was not written.
+ */
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+
+  /* Identity */
+  --brand: #eb7229;
+  --brand-bright: #f7913f;
+  --brand-wash: rgba(235, 114, 41, 0.1);
+  --brand-edge: rgba(235, 114, 41, 0.38);
+
+  /* The three accents that only diagrams and the closing list may use */
+  --tone-net: #6aa6e8;
+  --tone-net-wash: rgba(106, 166, 232, 0.09);
+  --tone-net-edge: rgba(106, 166, 232, 0.34);
+  --tone-ok: #43c98a;
+  --tone-ok-wash: rgba(67, 201, 138, 0.09);
+  --tone-ok-edge: rgba(67, 201, 138, 0.34);
+  --tone-bad: #e2564d;
+  --tone-bad-wash: rgba(226, 86, 77, 0.09);
+  --tone-bad-edge: rgba(226, 86, 77, 0.32);
+
+  /* The ladder: page, panel, card, raised. Four steps, each visible against the last. */
+  --surface-0: #06070a;
+  --surface-1: #0d0f15;
+  --surface-2: #141821;
+  --surface-3: #1c212c;
+
+  --line: rgba(150, 166, 196, 0.14);
+  --line-strong: rgba(150, 166, 196, 0.26);
+
+  /* Text: three weights of voice, all of them legible on the page */
+  --color-text: #f3f5f8;
+  --color-text-muted: #a7aebd;
+  --color-text-subtle: #7c8598;
+
+  /* Shape and motion */
+  --radius-sm: 9px;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --transition: 180ms ease-out;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--color-text);
+  /* Two washes of colour, far apart and very faint: the page has a top and a bottom instead of
+     being one uniform field. */
+  background:
+    radial-gradient(
+      ellipse 120% 70% at 50% -15%,
+      rgba(235, 114, 41, 0.09) 0%,
+      transparent 62%
+    ),
+    radial-gradient(
+      ellipse 90% 50% at 85% 108%,
+      rgba(106, 166, 232, 0.05) 0%,
+      transparent 60%
+    ),
+    var(--surface-0);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Width ── */
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Sections, and the seam between them ── */
+.section {
+  position: relative;
+  padding: 88px 0;
+}
+
+/* Every other section is lifted one step off the page, so the eye is told where one argument
+   ends and the next begins without a heading having to say it. */
+.section--alt {
+  background: linear-gradient(
+    180deg,
+    rgba(150, 166, 196, 0.045) 0%,
+    rgba(150, 166, 196, 0.015) 100%
+  );
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ── The head of a section ── */
+.sec-head {
+  max-width: 62ch;
+  margin: 0 0 44px;
+}
+
+.sec-head--center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.sec-head--center .sec-num::after {
+  display: none;
+}
+
+.sec-num {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--color-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.sec-num::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--brand-edge), transparent);
+}
+
+.sec-kicker {
+  display: block;
+  margin: 12px 0;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.sec-title {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.12;
+  margin: 0 0 16px;
+  color: var(--color-text);
+}
+
+.sec-lead {
+  font-size: 1.0625rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Cards ── */
+.card {
+  position: relative;
+  background: linear-gradient(
+    165deg,
+    var(--surface-2) 0%,
+    var(--surface-1) 100%
+  );
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 26px 24px 28px;
+}
+
+.card__title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 8px;
+  color: var(--color-text);
+}
+
+.card__text {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* The chip at the top of a card: a small square that carries the accent, so the identity
+   colour lands in a named place instead of being sprinkled over the text. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 18px;
+  border-radius: 11px;
+  background: var(--brand-wash);
+  border: 1px solid var(--brand-edge);
+  color: var(--brand);
+}
+
+.chip svg {
+  width: 19px;
+  height: 19px;
+}
+
+.chip svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.chip--net {
+  background: var(--tone-net-wash);
+  border-color: var(--tone-net-edge);
+  color: var(--tone-net);
+}
+
+.chip--bad {
+  background: var(--tone-bad-wash);
+  border-color: var(--tone-bad-edge);
+  color: var(--tone-bad);
+}
+
+/* ── Pills ── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 100px;
+}
+
+.pill::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--brand);
+  flex-shrink: 0;
+}
+
+.pill--plain {
+  color: var(--brand);
+  background: var(--brand-wash);
+  border-color: var(--brand-edge);
+}
+
+.pill--plain::before {
+  display: none;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 24px;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition:
+    background var(--transition),
+    border-color var(--transition),
+    transform var(--transition);
+}
+
+.btn--primary {
+  background: var(--brand);
+  color: #120a04;
+  box-shadow: 0 10px 30px -14px var(--brand);
+}
+
+.btn--primary:hover {
+  background: var(--brand-bright);
+  transform: translateY(-1px);
+}
+
+.btn--ghost {
+  color: var(--color-text);
+  background: var(--surface-2);
+  border-color: var(--line-strong);
+}
+
+.btn--ghost:hover {
+  background: var(--surface-3);
+  transform: translateY(-1px);
+}
+
+/* ── The frame every diagram sits in ──
+   A picture on the bare page floats; a picture in a panel is an exhibit, and the panel is also
+   the step of the ladder that lets a diagram use the surfaces above it. */
+.panel {
+  margin: 0;
+  padding: 30px 28px 22px;
+  background:
+    radial-gradient(
+      ellipse 70% 90% at 50% 0%,
+      rgba(235, 114, 41, 0.05) 0%,
+      transparent 70%
+    ),
+    var(--surface-1);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+
+.panel svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* A drawing squeezed into a phone is a drawing with six-pixel lettering, which is the same
+   failure as a black label on a black page arrived at from the other direction. Below the width
+   where its labels stay readable the picture keeps its size and the frame scrolls instead. */
+.panel__frame {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+@media (max-width: 700px) {
+  .panel__frame > svg {
+    min-width: 600px;
+  }
+
+  .panel__frame--narrow > svg {
+    min-width: 380px;
+  }
+}
+
+.panel figcaption {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  color: var(--color-text-subtle);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 20px 14px 16px;
+  }
+
+  .section {
+    padding: 64px 0;
+  }
+}
+
+/* ── Diagram lettering ──
+   Held in one place because every picture uses it, and because the failure it prevents — a
+   label that resolves to the initial `fill`, which is black, on a page that is nearly black —
+   is invisible in review and total on screen. */
+.dia-title {
+  fill: var(--color-text);
+  font-size: 16px;
+  font-weight: 650;
+  text-anchor: middle;
+}
+
+.dia-label {
+  fill: var(--color-text-muted);
+  font-size: 13.5px;
+  text-anchor: middle;
+}
+
+.dia-note {
+  fill: var(--color-text-subtle);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  text-anchor: middle;
+}

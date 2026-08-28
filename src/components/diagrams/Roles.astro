@@ -1,0 +1,164 @@
+---
+/**
+ * The three roles, what actually passes between them, and the registry underneath.
+ *
+ * Drawn rather than described because the shape *is* the explanation, and because the shape is
+ * the part people get wrong. Nobody is looked up: the verifier puts a question to the person, the
+ * person's device builds an answer out of the credentials it holds, and the verifier checks that
+ * answer on its own. So there are **two** arrows on the right and they point opposite ways — one
+ * arrow there would draw a document being handed over, which is the picture this platform exists
+ * to replace.
+ *
+ * What travels never touches the registry, and the registry never holds it. A paragraph saying
+ * that reads as a claim; a picture showing it reads as a fact.
+ *
+ * Inline SVG on purpose: it inherits the palette through the theme tokens, costs no request, and
+ * scales without a second file for a second density. The person is the only box in the identity
+ * colour and the registry band is the only thing in the colour reserved for infrastructure, so
+ * both readings arrive before a label has been read.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** The three roles, in the order they are drawn. */
+  roles: readonly [string, string, string];
+  /** What the registry underneath is called. */
+  registry: string;
+  /** What passes: what the issuer does, what you send back, and what is put to you. */
+  flows: readonly [string, string, string];
+  /** The line under the picture. */
+  caption: string;
+}
+
+const { label, roles, registry, flows, caption } = Astro.props;
+---
+
+<figure class="panel">
+  <div class="panel__frame">
+    <svg viewBox="0 0 720 300" role="img" aria-label={label}>
+      <defs>
+        <marker
+          id="roles-tip"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--brand)"></path>
+        </marker>
+        <marker
+          id="roles-tip-quiet"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--color-text-subtle)"></path>
+        </marker>
+        <!-- The person glows a little. It is the only node on the page that does, because it is
+             the only one holding anything. -->
+        <radialGradient id="roles-person" cx="50%" cy="50%" r="70%">
+          <stop offset="0%" stop-color="rgba(235, 114, 41, 0.22)"></stop>
+          <stop offset="100%" stop-color="rgba(235, 114, 41, 0.06)"></stop>
+        </radialGradient>
+      </defs>
+
+      <!-- The three roles, as equals: no arrow of authority between them. -->
+      <g class="node">
+        <rect x="10" y="48" width="172" height="86" rx="18"></rect>
+        <text class="dia-title" x="96" y="97">{roles[0]}</text>
+      </g>
+      <g class="node node--person">
+        <rect x="256" y="48" width="172" height="86" rx="18"></rect>
+        <text class="dia-title" x="342" y="97">{roles[1]}</text>
+      </g>
+      <g class="node">
+        <rect x="538" y="48" width="172" height="86" rx="18"></rect>
+        <text class="dia-title" x="624" y="97">{roles[2]}</text>
+      </g>
+
+      <!-- The credential, once, from whoever already knew the fact. -->
+      <g class="flow">
+        <path d="M182 91 L250 91" marker-end="url(#roles-tip)"></path>
+        <text class="dia-note" x="216" y="34">{flows[0]}</text>
+      </g>
+
+      <!-- The exchange. The answer is the arrow that carries something; the question is the one
+           that starts it, and it is drawn quieter because it carries nothing about you. -->
+      <g class="flow">
+        <path d="M428 76 L532 76" marker-end="url(#roles-tip)"></path>
+        <text class="dia-note" x="480" y="34">{flows[1]}</text>
+      </g>
+      <g class="ask">
+        <path d="M532 110 L434 110" marker-end="url(#roles-tip-quiet)"></path>
+        <text class="dia-note" x="480" y="162">{flows[2]}</text>
+      </g>
+
+      <!-- The registry: consulted by the ends, holding nothing that came from the middle. -->
+      <g class="lookup">
+        <path d="M96 134 L96 206"></path>
+        <path d="M624 134 L624 206"></path>
+      </g>
+      <g class="ledger">
+        <rect x="10" y="206" width="700" height="72" rx="18"></rect>
+        <text class="dia-label" x="360" y="248">{registry}</text>
+      </g>
+    </svg>
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .node rect {
+    fill: var(--surface-3);
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+
+  .node--person rect {
+    fill: url(#roles-person);
+    stroke: var(--brand);
+    stroke-width: 1.5;
+  }
+
+  .node--person .dia-title {
+    fill: var(--brand-bright);
+  }
+
+  .flow path {
+    fill: none;
+    stroke: var(--brand);
+    stroke-width: 2.5;
+  }
+
+  .ask path {
+    fill: none;
+    stroke: var(--color-text-subtle);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+  }
+
+  .ledger rect {
+    fill: var(--tone-net-wash);
+    stroke: var(--tone-net-edge);
+    stroke-width: 1;
+    stroke-dasharray: 7 6;
+  }
+
+  .ledger .dia-label {
+    fill: var(--tone-net);
+  }
+
+  .lookup path {
+    fill: none;
+    stroke: var(--tone-net-edge);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 6;
+  }
+</style>

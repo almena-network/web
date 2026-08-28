@@ -1,0 +1,153 @@
+---
+/**
+ * What "nothing is rewritten" looks like when it is drawn.
+ *
+ * The sentence is easy to nod at and easy to misread as *nothing ever goes wrong*. It means the
+ * opposite: things go wrong, and the record keeps both the mistake and the answer to it. So the
+ * picture has to show the wrong entry still sitting there — struck through nowhere, deleted
+ * nowhere — with the correction arriving later along the same line.
+ *
+ * The arc runs forward and only forward. An arrow that curved back to the earlier entry would be
+ * drawing an edit, which is the one thing this record cannot do.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** What the axis is. */
+  axis: string;
+  /** What the wrong entry is called. */
+  mistake: string;
+  /** What is true of the wrong entry afterwards. */
+  kept: string;
+  /** What the later entry is called. */
+  correction: string;
+  /** What the arc between them says. */
+  link: string;
+  /** The line under the picture. */
+  caption: string;
+}
+
+const { label, axis, mistake, kept, correction, link, caption } = Astro.props;
+
+/** Six entries on one line. Only the third and the sixth are named; the rest are just record. */
+const entries = [60, 170, 280, 390, 500, 610];
+---
+
+<figure class="panel">
+  <div class="panel__frame">
+    <svg viewBox="0 0 720 250" role="img" aria-label={label}>
+      <defs>
+        <marker
+          id="ledger-tip"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--tone-ok)"></path>
+        </marker>
+      </defs>
+
+      <!-- The line time runs along. It has a direction and no end. -->
+      <path class="axis" d="M20 140 L700 140"></path>
+      <text class="dia-note axis__label" x="20" y="176">{axis}</text>
+
+      <!-- The record. Every entry is signed when it is made and stays exactly as it was made. -->
+      {
+        entries.map((x, i) => (
+          <rect
+            class:list={[
+              "entry",
+              i === 2 && "entry--mistake",
+              i === 5 && "entry--correction",
+            ]}
+            x={x}
+            y="113"
+            width="54"
+            height="54"
+            rx="14"
+          />
+        ))
+      }
+
+      <!-- The correction arrives later and points forward. Nothing points back. -->
+      <path
+        class="arc"
+        d="M307 113 C 360 44, 584 44, 637 113"
+        marker-end="url(#ledger-tip)"></path>
+      <text class="dia-note arc__label" x="472" y="52">{link}</text>
+
+      <text class="dia-note entry__name entry__name--bad" x="307" y="192"
+        >{mistake}</text
+      >
+      <text class="dia-note entry__kept" x="307" y="212">{kept}</text>
+      <text class="dia-note entry__name entry__name--ok" x="637" y="192"
+        >{correction}</text
+      >
+    </svg>
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .axis {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1;
+    stroke-dasharray: 2 7;
+  }
+
+  .axis__label {
+    text-anchor: start;
+  }
+
+  .entry {
+    fill: var(--surface-3);
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+
+  .entry--mistake {
+    fill: var(--tone-bad-wash);
+    stroke: var(--tone-bad-edge);
+    stroke-width: 1.5;
+  }
+
+  .entry--correction {
+    fill: var(--tone-ok-wash);
+    stroke: var(--tone-ok-edge);
+    stroke-width: 1.5;
+  }
+
+  .arc {
+    fill: none;
+    stroke: var(--tone-ok);
+    stroke-width: 2;
+    stroke-dasharray: 7 5;
+  }
+
+  .arc__label {
+    fill: var(--tone-ok);
+  }
+
+  .entry__name {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .entry__name--bad {
+    fill: var(--tone-bad);
+  }
+
+  .entry__name--ok {
+    fill: var(--tone-ok);
+  }
+
+  .entry__kept {
+    fill: var(--color-text-subtle);
+  }
+</style>

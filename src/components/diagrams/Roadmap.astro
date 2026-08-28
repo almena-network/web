@@ -1,0 +1,275 @@
+---
+/**
+ * How far the platform has got, drawn as the one shape that says it without a paragraph.
+ *
+ * A roadmap written as prose is a roadmap nobody finishes reading, and a roadmap written as a
+ * table of dates is a promise. This is neither: a rail with a stop for each thing the platform
+ * will let somebody do, coloured up to where the work actually is and grey after it. The eye gets
+ * the answer — *this much is built* — before the first line has been read.
+ *
+ * **Every number on it is derived from the list.** Nothing is written down twice, so the tally at
+ * the top cannot disagree with the stops beneath it, which is the way a progress figure normally
+ * goes wrong.
+ */
+
+/** How far along a capability is. */
+type State = "built" | "under" | "planned" | "later";
+
+interface Props {
+  /** What each state is called, in the reader's language. */
+  states: Record<State, string>;
+  /** The capabilities, in the order they can be built. */
+  items: readonly { title: string; body: string; state: State }[];
+  /** The line under the rail. */
+  note: string;
+}
+
+const { states, items, note } = Astro.props;
+
+/** The order the tally is read in, which is the order the rail runs. */
+const ORDER: readonly State[] = ["built", "under", "planned", "later"];
+
+/** How many capabilities sit at each state. Counted, never written down. */
+const tally = ORDER.map((state) => ({
+  state,
+  label: states[state],
+  count: items.filter((item) => item.state === state).length,
+})).filter((row) => row.count > 0);
+
+/**
+ * Where the coloured part of the rail stops.
+ *
+ * The last stop that is under way or finished, plus half a stop so the colour ends on the marker
+ * rather than short of it. If nothing had started the rail would be grey from the top, which is
+ * the honest picture and not a bug.
+ */
+const reached = items.reduce(
+  (last, item, i) =>
+    item.state === "built" || item.state === "under" ? i : last,
+  -1,
+);
+const done = `${((reached + 0.5) / items.length) * 100}%`;
+---
+
+<figure class="panel roadmap">
+  <ul class="tally">
+    {
+      tally.map((row) => (
+        <li class:list={["tally__item", `is-${row.state}`]}>
+          <span class="tally__count">{row.count}</span>
+          <span class="tally__label">{row.label}</span>
+        </li>
+      ))
+    }
+  </ul>
+
+  <ol class="rail" style={`--rail-done: ${done}`}>
+    {
+      items.map((item) => (
+        <li class:list={["stop", `is-${item.state}`]}>
+          <span class="stop__mark" aria-hidden="true" />
+          <div class="stop__text">
+            <h3 class="stop__title">{item.title}</h3>
+            <p class="stop__body">{item.body}</p>
+          </div>
+          <span class="stop__state">{states[item.state]}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <figcaption>{note}</figcaption>
+</figure>
+
+<style>
+  /* ── The tally ── */
+  .tally {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 30px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tally__item {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 9px 16px 9px 13px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--color-text-subtle);
+    border-radius: var(--radius-sm);
+  }
+
+  .tally__count {
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--color-text);
+  }
+
+  .tally__label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+  }
+
+  .tally__item.is-built {
+    border-left-color: var(--tone-ok);
+  }
+
+  .tally__item.is-built .tally__count {
+    color: var(--tone-ok);
+  }
+
+  .tally__item.is-under {
+    border-left-color: var(--brand);
+  }
+
+  .tally__item.is-under .tally__count {
+    color: var(--brand-bright);
+  }
+
+  /* ── The rail ── */
+  .rail {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* Colour up to where the work is, grey after it. The stop is the switch, not a decoration. */
+  .rail::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 14px;
+    bottom: 14px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(
+      180deg,
+      var(--tone-ok) 0%,
+      var(--brand) var(--rail-done),
+      var(--line-strong) calc(var(--rail-done) + 3%),
+      var(--line-strong) 100%
+    );
+  }
+
+  .stop {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    align-items: start;
+    column-gap: 18px;
+    row-gap: 4px;
+    padding: 11px 0;
+  }
+
+  .stop__mark {
+    position: relative;
+    z-index: 1;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    border-radius: 50%;
+    background: var(--surface-0);
+    border: 2px solid var(--line-strong);
+  }
+
+  /* A filled marker for what runs, a ring for what is under way, an outline for what has not
+     started, and a smaller, quieter one for what waits on the world rather than on us. */
+  .stop.is-built .stop__mark {
+    background: var(--tone-ok);
+    border-color: var(--tone-ok);
+  }
+
+  .stop.is-under .stop__mark {
+    border-color: var(--brand);
+    box-shadow:
+      inset 0 0 0 3px var(--surface-0),
+      inset 0 0 0 9px var(--brand),
+      0 0 0 5px var(--brand-wash);
+  }
+
+  .stop.is-later .stop__mark {
+    width: 14px;
+    height: 14px;
+    margin-top: 5px;
+    margin-left: 4px;
+    border-color: var(--line);
+  }
+
+  .stop__title {
+    margin: 0 0 4px;
+    font-size: 0.9688rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-text);
+  }
+
+  .stop.is-planned .stop__title,
+  .stop.is-later .stop__title {
+    color: var(--color-text-muted);
+  }
+
+  .stop__body {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  .stop.is-planned .stop__body,
+  .stop.is-later .stop__body {
+    color: var(--color-text-subtle);
+  }
+
+  .stop__state {
+    align-self: center;
+    padding: 5px 12px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    border-radius: 100px;
+    color: var(--color-text-subtle);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+  }
+
+  .stop.is-built .stop__state {
+    color: var(--tone-ok);
+    background: var(--tone-ok-wash);
+    border-color: var(--tone-ok-edge);
+  }
+
+  .stop.is-under .stop__state {
+    color: var(--brand-bright);
+    background: var(--brand-wash);
+    border-color: var(--brand-edge);
+  }
+
+  .stop.is-later .stop__state {
+    border-style: dashed;
+  }
+
+  @media (max-width: 720px) {
+    .stop {
+      grid-template-columns: 22px 1fr;
+    }
+
+    /* Under the title rather than beside it: at this width a column of chips on the right would
+       squeeze every line of prose into four words. */
+    .stop__state {
+      grid-column: 2;
+      justify-self: start;
+      align-self: start;
+      margin-top: 2px;
+    }
+  }
+</style>

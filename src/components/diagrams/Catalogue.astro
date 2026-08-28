@@ -1,0 +1,158 @@
+---
+/**
+ * Two requests for the same thing, side by side.
+ *
+ * This is the one picture the site really needs. The platform's argument is not that your data
+ * is yours — plenty of things claim that — it is that **what each party asks for is public and
+ * comparable**, so asking for more than you need is a visible act rather than a private one.
+ * Two columns showing the same errand answered with four fields and with one is that argument
+ * in a form nobody has to be talked into.
+ *
+ * The example is generic on purpose: an age check is the errand everybody has done, and no real
+ * organisation is named because naming one would be inventing a fact about it.
+ *
+ * The two columns are coloured against each other rather than both being neutral, because the
+ * comparison is the content: one asks for more than the errand needs, and the reader should see
+ * that before reading a single field.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** The errand both columns are answering. */
+  errand: string;
+  /** The heading of each column. */
+  headings: readonly [string, string];
+  /** What the wasteful column asks for. */
+  asking: readonly string[];
+  /** What the minimal column asks for. */
+  minimal: readonly string[];
+  /** The note under the columns. */
+  note: string;
+}
+
+const { label, errand, headings, asking, minimal, note } = Astro.props;
+---
+
+<figure class="panel catalogue" aria-label={label}>
+  <p class="errand">{errand}</p>
+
+  <div class="pair">
+    <article class="column column--heavy">
+      <header>
+        <h3>{headings[0]}</h3>
+        <p class="count">{asking.length}</p>
+      </header>
+      <ul>
+        {asking.map((field) => <li>{field}</li>)}
+      </ul>
+    </article>
+
+    <article class="column column--light">
+      <header>
+        <h3>{headings[1]}</h3>
+        <p class="count">{minimal.length}</p>
+      </header>
+      <ul>
+        {minimal.map((field) => <li>{field}</li>)}
+      </ul>
+    </article>
+  </div>
+
+  <figcaption>{note}</figcaption>
+</figure>
+
+<style>
+  .errand {
+    margin: 0 0 20px;
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+    text-align: center;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 720px) {
+    .pair {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .column {
+    padding: 18px 20px 14px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface-2);
+  }
+
+  .column header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  .column h3 {
+    margin: 0;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .count {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .column ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .column li {
+    padding: 11px 0;
+    border-top: 1px solid var(--line);
+    color: var(--color-text);
+    font-size: 0.9375rem;
+  }
+
+  /* Asking for more than the errand needs is not a crime and is not drawn as one — it is drawn
+     as excess, which is what the catalogue makes it possible to see. */
+  .column--heavy {
+    border-color: var(--tone-bad-edge);
+    background: linear-gradient(
+      180deg,
+      var(--tone-bad-wash) 0%,
+      var(--surface-2) 70%
+    );
+  }
+
+  .column--heavy h3,
+  .column--heavy .count {
+    color: var(--tone-bad);
+  }
+
+  .column--light {
+    border-color: var(--tone-ok-edge);
+    background: linear-gradient(
+      180deg,
+      var(--tone-ok-wash) 0%,
+      var(--surface-2) 70%
+    );
+  }
+
+  .column--light h3,
+  .column--light .count {
+    color: var(--tone-ok);
+  }
+</style>

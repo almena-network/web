@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 silent: true
 
 # Astro site: `dir` + `pnpm --dir` keep the package root at `web/` so `.env` (if present)
@@ -21,12 +21,41 @@ tasks:
       - echo "Installing web dependencies (pnpm)..."
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" install'
 
+  # `check` and `format` exist here because they exist everywhere: `task` is the surface, and a
+  # repository missing one of them is a repository where the closing check cannot run. This one
+  # went without for long enough that a broken type import sat in its layout unnoticed.
+  check:
+    desc: Type-check, lint and check formatting
+    dir: "{{.TASKFILE_DIR}}"
+    cmds:
+      - echo "Checking web (astro check, eslint, prettier)..."
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run check'
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run lint'
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run format:check'
+
+  format:
+    desc: Format the source with Prettier
+    dir: "{{.TASKFILE_DIR}}"
+    cmds:
+      - echo "Formatting web sources (Prettier)..."
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run format'
+
   build:
     desc: Build static site
     dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Building web static site (Astro)..."
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run build'
+
+  # Depends on `build` because what is tested is the script the built page actually ships, not the
+  # source it came from: the reader's language is decided by what was published.
+  test:
+    desc: Check what the built site does about language
+    dir: "{{.TASKFILE_DIR}}"
+    deps: [build]
+    cmds:
+      - echo "Testing web (node:test)..."
+      - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run test'
 
   dev:
     desc: Run dev server with hot reload
