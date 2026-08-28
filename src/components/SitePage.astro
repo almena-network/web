@@ -25,10 +25,13 @@ import Keys from "./diagrams/Keys.astro";
 import Network from "./diagrams/Network.astro";
 import Ledger from "./diagrams/Ledger.astro";
 import Roadmap from "./diagrams/Roadmap.astro";
+import UseCases from "./UseCases.astro";
+import CardGrid from "./CardGrid.astro";
 import { site, GITHUB_URL, type Lang } from "../data/site";
 import { content } from "../data/content";
 import { diagrams } from "../data/diagrams";
 import { roadmap, roadmapStates } from "../data/roadmap";
+import { cases } from "../data/cases";
 import { HOW, KEYS, NETWORK, NOT } from "./icons";
 
 interface Props {
@@ -40,6 +43,7 @@ const { lang } = Astro.props;
 const c = content[lang];
 const d = diagrams[lang];
 const r = roadmap[lang];
+const u = cases[lang];
 
 /**
  * The capabilities with their states attached.
@@ -104,25 +108,32 @@ const s = site[lang];
 
       <Roles {...d.roles} />
 
-      <div class="grid grid--three">
-        {
-          c.how.points.map((point, i) => (
-            <article class="card">
-              <span class="chip">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d={HOW[i]} />
-                </svg>
-              </span>
-              <h3 class="card__title">{point.title}</h3>
-              <p class="card__text">{point.body}</p>
-            </article>
-          ))
-        }
-      </div>
+      <CardGrid points={c.how.points} icons={HOW} />
     </div>
   </section>
 
-  <section id="different" class="section section--alt">
+  <!-- The errands. Everything above this is the mechanism; this is the mechanism happening to
+       somebody, first to the person and then to whoever is on the other side of the counter. -->
+  <section id="cases" class="section section--alt">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{u.num}</span>
+        <span class="sec-kicker">{u.kicker}</span>
+        <h2 class="sec-title">{u.title}</h2>
+        <p class="sec-lead">{u.lead}</p>
+      </div>
+
+      <UseCases
+        audiences={u.audiences}
+        audiencePicker={u.audiencePicker}
+        pickers={u.pickers}
+        cardHeading={u.cardHeading}
+        groups={u.groups}
+      />
+    </div>
+  </section>
+
+  <section id="different" class="section">
     <div class="page">
       <div class="sec-head">
         <span class="sec-num">{c.different.num}</span>
@@ -143,7 +154,7 @@ const s = site[lang];
     </div>
   </section>
 
-  <section id="keys" class="section">
+  <section id="keys" class="section section--alt">
     <div class="page">
       <div class="sec-head">
         <span class="sec-num">{c.keys.num}</span>
@@ -154,27 +165,13 @@ const s = site[lang];
 
       <Keys {...d.keys} />
 
-      <div class="grid grid--three">
-        {
-          c.keys.points.map((point, i) => (
-            <article class="card">
-              <span class="chip">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d={KEYS[i]} />
-                </svg>
-              </span>
-              <h3 class="card__title">{point.title}</h3>
-              <p class="card__text">{point.body}</p>
-            </article>
-          ))
-        }
-      </div>
+      <CardGrid points={c.keys.points} icons={KEYS} />
 
       <p class="callout">{c.keys.honest}</p>
     </div>
   </section>
 
-  <section id="network" class="section section--alt">
+  <section id="network" class="section">
     <div class="page">
       <div class="sec-head">
         <span class="sec-num">{c.network.num}</span>
@@ -185,21 +182,7 @@ const s = site[lang];
 
       <Network {...d.network} />
 
-      <div class="grid grid--three">
-        {
-          c.network.points.map((point, i) => (
-            <article class="card">
-              <span class="chip chip--net">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d={NETWORK[i]} />
-                </svg>
-              </span>
-              <h3 class="card__title">{point.title}</h3>
-              <p class="card__text">{point.body}</p>
-            </article>
-          ))
-        }
-      </div>
+      <CardGrid points={c.network.points} icons={NETWORK} tone="net" />
 
       <div class="stack">
         <Ledger {...d.ledger} />
@@ -209,7 +192,7 @@ const s = site[lang];
 
   <!-- The roadmap. It is the one part of this page that goes stale on its own, which is why what
        it says is derived from a list rather than written out here. -->
-  <section id="roadmap" class="section">
+  <section id="roadmap" class="section section--alt">
     <div class="page">
       <div class="sec-head">
         <span class="sec-num">{r.num}</span>
@@ -222,7 +205,7 @@ const s = site[lang];
     </div>
   </section>
 
-  <section id="limits" class="section section--alt">
+  <section id="limits" class="section">
     <div class="page">
       <div class="sec-head sec-head--center">
         <span class="sec-num">{c.limits.num}</span>
@@ -231,27 +214,13 @@ const s = site[lang];
         <p class="sec-lead">{c.limits.lead}</p>
       </div>
 
-      <div class="grid grid--two">
-        {
-          c.limits.items.map((item) => (
-            <article class="card">
-              <span class="chip chip--bad">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d={NOT} />
-                </svg>
-              </span>
-              <h3 class="card__title">{item.title}</h3>
-              <p class="card__text">{item.body}</p>
-            </article>
-          ))
-        }
-      </div>
+      <CardGrid points={c.limits.items} icons={NOT} tone="bad" columns={2} />
     </div>
   </section>
 
   <!-- The close. It makes no promise the rest of the page has not already had to earn, and its
        one link is to the code, which is the only claim here anybody can check today. -->
-  <section id="close" class="section close">
+  <section id="close" class="section section--alt close">
     <div class="page close__inner">
       <div class="sec-head sec-head--center close__head">
         <span class="sec-num">{c.close.num}</span>
@@ -366,24 +335,6 @@ const s = site[lang];
     max-width: 480px;
     width: 100%;
     justify-self: center;
-  }
-
-  /* ── Grids of cards ── */
-  .grid {
-    display: grid;
-    gap: 18px;
-    margin-top: 30px;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 760px) {
-    .grid--two {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .grid--three {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   /* One diagram following another needs air between them, or they read as one picture. */

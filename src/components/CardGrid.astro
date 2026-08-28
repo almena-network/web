@@ -1,0 +1,60 @@
+---
+/**
+ * A row of cards, each with a glyph, a title and a paragraph.
+ *
+ * Four sections were drawing this the same way with four copies of the same markup, which is four
+ * places for a chip to stop matching its neighbours. The differences that are real — how many
+ * columns, which accent the chips carry, which glyphs — are the props; everything else is here
+ * once.
+ */
+
+interface Props {
+  /** What the cards say. */
+  points: readonly { title: string; body: string }[];
+  /** The glyphs, one per card, or one glyph for all of them where they say the same thing. */
+  icons: readonly string[] | string;
+  /** Which accent the chips carry. The identity colour unless the section means something else. */
+  tone?: "brand" | "net" | "bad";
+  /** How many across, once there is room. */
+  columns?: 2 | 3;
+}
+
+const { points, icons, tone = "brand", columns = 3 } = Astro.props;
+
+const glyph = (i: number) => (typeof icons === "string" ? icons : icons[i]);
+---
+
+<div class:list={["grid", `grid--${columns}`]}>
+  {
+    points.map((point, i) => (
+      <article class="card">
+        <span class:list={["chip", tone !== "brand" && `chip--${tone}`]}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d={glyph(i)} />
+          </svg>
+        </span>
+        <h3 class="card__title">{point.title}</h3>
+        <p class="card__text">{point.body}</p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 30px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 760px) {
+    .grid--2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid--3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

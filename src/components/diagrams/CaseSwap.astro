@@ -1,0 +1,133 @@
+---
+/**
+ * What happens today, and what happens instead.
+ *
+ * Two blocks joined into one object rather than set side by side, so that the eye reads a **drop**
+ * and not a comparison between equals: the top half is struck through and quiet, the bottom half
+ * is lit, and the hinge between them is the argument. It is what an organisation is being sold,
+ * and it is also what somebody who has just lost their phone wants to see — which is why one of
+ * the person's cases is drawn this way too.
+ */
+
+interface Props {
+  /** The half that is being replaced: its heading and what is in it. */
+  before: { label: string; lines: readonly string[] };
+  /** The half that replaces it. */
+  after: { label: string; lines: readonly string[] };
+}
+
+const { before, after } = Astro.props;
+---
+
+<div class="swap">
+  <div class="swap__half swap__half--before">
+    <h4>{before.label}</h4>
+    <ul>
+      {before.lines.map((line) => <li>{line}</li>)}
+    </ul>
+  </div>
+  <span class="swap__turn" aria-hidden="true"></span>
+  <div class="swap__half swap__half--after">
+    <h4>{after.label}</h4>
+    <ul>
+      {after.lines.map((line) => <li>{line}</li>)}
+    </ul>
+  </div>
+</div>
+
+<style>
+  /* ── Today, and instead ──
+   Joined into one object rather than two cards side by side, so that the eye reads a drop and
+   not a comparison of equals. */
+  .swap {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .swap__half {
+    padding: 20px 22px;
+    border: 1px solid;
+    border-radius: var(--radius-lg);
+  }
+
+  .swap__half h4 {
+    margin: 0 0 12px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+
+  .swap__half ul {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+  }
+
+  .swap__half--before {
+    background: var(--surface-1);
+    border-color: var(--line);
+    border-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .swap__half--before h4 {
+    color: var(--color-text-subtle);
+  }
+
+  .swap__half--before li {
+    color: var(--color-text-subtle);
+    text-decoration: line-through;
+    text-decoration-color: var(--tone-bad);
+  }
+
+  .swap__half--after {
+    background: linear-gradient(
+      165deg,
+      rgba(67, 201, 138, 0.1),
+      var(--surface-2)
+    );
+    border-color: var(--tone-ok-edge);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .swap__half--after h4 {
+    color: var(--tone-ok);
+  }
+
+  .swap__half--after li {
+    color: var(--color-text);
+  }
+
+  /* The hinge between the two halves, drawn as a chevron so it needs no glyph and no alt text. */
+  .swap__turn {
+    position: relative;
+    z-index: 1;
+    align-self: center;
+    width: 34px;
+    height: 34px;
+    margin: -17px 0;
+    background: var(--surface-3);
+    border: 1px solid var(--tone-ok-edge);
+    border-radius: 50%;
+  }
+
+  .swap__turn::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 11px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--tone-ok);
+    border-bottom: 2px solid var(--tone-ok);
+    transform: rotate(45deg);
+  }
+</style>
