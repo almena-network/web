@@ -1,6 +1,6 @@
 ---
-import type { Lang } from "../data/charter";
-import { launch, launchLabel } from "../data/charter";
+import type { Lang } from "../data/site";
+import { launch, launchLabel } from "../data/site";
 
 interface Props {
   lang: Lang;
@@ -31,12 +31,16 @@ const units = [
       role="timer"
       aria-label={`${t.title} ${dateLabel}`}
     >
-      {units.map((u) => (
-        <div class="launch__unit">
-          <span class="launch__num" data-unit={u.key}>––</span>
-          <span class="launch__label">{u.label}</span>
-        </div>
-      ))}
+      {
+        units.map((u) => (
+          <div class="launch__unit">
+            <span class="launch__num" data-unit={u.key}>
+              ––
+            </span>
+            <span class="launch__label">{u.label}</span>
+          </div>
+        ))
+      }
     </div>
 
     <p class="launch__date">{dateLabel}</p>
@@ -69,15 +73,35 @@ const units = [
     grid-template-columns: 1fr;
   }
 
+  /* Each unit is its own tile, lifted two steps off the page and warmed from the top, so that
+     four numbers read as four objects rather than as one strip of text. */
   .launch__unit {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    padding: 20px 12px;
-    background: var(--color-surface);
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    padding: 22px 12px 18px;
+    background:
+      radial-gradient(
+        ellipse 100% 70% at 50% 0%,
+        rgba(235, 114, 41, 0.12) 0%,
+        transparent 70%
+      ),
+      linear-gradient(180deg, var(--surface-3) 0%, var(--surface-1) 100%);
+    border: 1px solid var(--line-strong);
     border-radius: var(--radius-lg);
+  }
+
+  /* A hairline of the identity colour along the top edge of every tile. */
+  .launch__unit::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 22%;
+    right: 22%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--brand), transparent);
   }
 
   .launch__num {
@@ -85,7 +109,7 @@ const units = [
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.02em;
-    color: var(--brand-primary);
+    color: var(--brand);
     font-variant-numeric: tabular-nums;
   }
 
@@ -101,7 +125,7 @@ const units = [
     font-size: clamp(1.5rem, 4vw, 2.25rem);
     font-weight: 800;
     letter-spacing: -0.02em;
-    color: var(--brand-primary);
+    color: var(--brand);
     margin: 0;
   }
 
@@ -145,7 +169,8 @@ const units = [
       };
       for (const f of fields) {
         const node = el.querySelector<HTMLElement>(`[data-unit="${f}"]`);
-        if (node) node.textContent = f === "days" ? String(values[f]) : pad(values[f]);
+        if (node)
+          node.textContent = f === "days" ? String(values[f]) : pad(values[f]);
       }
       return false;
     };

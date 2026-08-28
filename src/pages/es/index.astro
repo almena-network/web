@@ -1,14 +1,16 @@
 ---
+/**
+ * The portal in es. Both routes are the same page handed a different language.
+ */
+
 import LandingLayout from "../../layouts/LandingLayout.astro";
-import CharterPage from "../../components/CharterPage.astro";
-import { charter } from "../../data/charter";
+import SitePage from "../../components/SitePage.astro";
+import { site } from "../../data/site";
 
-import Analytics from "@vercel/analytics/astro";
-
-const t = charter.es.meta;
+const lang = "es" as const;
+const s = site[lang];
 ---
 
-<LandingLayout title={t.title} description={t.description} lang="es">
-  <Analytics />
-  <CharterPage lang="es" />
+<LandingLayout title={s.title} description={s.description} lang={lang}>
+  <SitePage lang={lang} />
 </LandingLayout>

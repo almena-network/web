@@ -1,0 +1,470 @@
+---
+/**
+ * The whole page, in one language.
+ *
+ * Both language routes render this and differ only in what they hand it, so a section can never
+ * exist in English and be missing in Spanish — a half language is worse than one language, and
+ * that is the reason there is one component here rather than one page per language with its own
+ * markup.
+ *
+ * The order is an argument and not a list. What you show comes first, because it is the thing a
+ * stranger can picture; then who signs it, then why what they ask for is public, then what
+ * happens when you lose the phone it was on, then who is allowed to carry it, and last what none
+ * of it is. The countdown sits directly under the opening rather than at the foot, because a date
+ * is news and news belongs where somebody who reads one screen will still see it.
+ */
+
+import Header from "./SiteHeader.astro";
+import Footer from "./SiteFooter.astro";
+import Countdown from "./Countdown.astro";
+import Proof from "./diagrams/Proof.astro";
+import Roles from "./diagrams/Roles.astro";
+import Catalogue from "./diagrams/Catalogue.astro";
+import Published from "./diagrams/Published.astro";
+import Keys from "./diagrams/Keys.astro";
+import Network from "./diagrams/Network.astro";
+import Ledger from "./diagrams/Ledger.astro";
+import Roadmap from "./diagrams/Roadmap.astro";
+import { site, GITHUB_URL, type Lang } from "../data/site";
+import { content } from "../data/content";
+import { diagrams } from "../data/diagrams";
+import { roadmap, roadmapStates } from "../data/roadmap";
+import { HOW, KEYS, NETWORK, NOT } from "./icons";
+
+interface Props {
+  /** Which language this rendering is in. */
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const c = content[lang];
+const d = diagrams[lang];
+const r = roadmap[lang];
+
+/**
+ * The capabilities with their states attached.
+ *
+ * The words and the facts are kept in separate files right up to here — a state is not something
+ * to translate — and this is the one line that puts them back together.
+ */
+const capabilities = r.items.map((item, i) => ({
+  ...item,
+  state: roadmapStates[i],
+}));
+const s = site[lang];
+---
+
+<a class="skip" href="#main">{s.skip}</a>
+
+<Header lang={lang} />
+
+<main id="main">
+  <!-- The opening. Copy on one side, the credential on the other, because the sentence and the
+       picture are making the same claim and neither is an illustration of the other. -->
+  <section class="section hero">
+    <div class="page hero__grid">
+      <div class="hero__copy">
+        <span class="pill pill--plain">{c.hero.eyebrow}</span>
+        <h1 class="hero__title">{c.hero.title}</h1>
+        <p class="hero__lead">{c.hero.lead}</p>
+
+        <ul class="hero__claims">
+          {c.hero.claims.map((claim) => <li class="pill">{claim}</li>)}
+        </ul>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="#how">{c.hero.ctaPrimary}</a>
+          <a
+            class="btn btn--ghost"
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener">{c.hero.ctaSecondary}</a
+          >
+        </div>
+
+        <p class="hero__note">{c.hero.note}</p>
+      </div>
+
+      <div class="hero__figure">
+        <Proof {...d.proof} />
+      </div>
+    </div>
+  </section>
+
+  <Countdown lang={lang} />
+
+  <section id="how" class="section">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{c.how.num}</span>
+        <span class="sec-kicker">{c.how.kicker}</span>
+        <h2 class="sec-title">{c.how.title}</h2>
+        <p class="sec-lead">{c.how.lead}</p>
+      </div>
+
+      <Roles {...d.roles} />
+
+      <div class="grid grid--three">
+        {
+          c.how.points.map((point, i) => (
+            <article class="card">
+              <span class="chip">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={HOW[i]} />
+                </svg>
+              </span>
+              <h3 class="card__title">{point.title}</h3>
+              <p class="card__text">{point.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="different" class="section section--alt">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{c.different.num}</span>
+        <span class="sec-kicker">{c.different.kicker}</span>
+        <h2 class="sec-title">{c.different.title}</h2>
+        <p class="sec-lead">{c.different.lead}</p>
+      </div>
+
+      <Catalogue {...d.catalogue} />
+
+      <p class="prose">{c.different.body}</p>
+
+      <div class="stack">
+        <Published {...d.published} />
+      </div>
+
+      <p class="callout">{c.different.honest}</p>
+    </div>
+  </section>
+
+  <section id="keys" class="section">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{c.keys.num}</span>
+        <span class="sec-kicker">{c.keys.kicker}</span>
+        <h2 class="sec-title">{c.keys.title}</h2>
+        <p class="sec-lead">{c.keys.lead}</p>
+      </div>
+
+      <Keys {...d.keys} />
+
+      <div class="grid grid--three">
+        {
+          c.keys.points.map((point, i) => (
+            <article class="card">
+              <span class="chip">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={KEYS[i]} />
+                </svg>
+              </span>
+              <h3 class="card__title">{point.title}</h3>
+              <p class="card__text">{point.body}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="callout">{c.keys.honest}</p>
+    </div>
+  </section>
+
+  <section id="network" class="section section--alt">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{c.network.num}</span>
+        <span class="sec-kicker">{c.network.kicker}</span>
+        <h2 class="sec-title">{c.network.title}</h2>
+        <p class="sec-lead">{c.network.lead}</p>
+      </div>
+
+      <Network {...d.network} />
+
+      <div class="grid grid--three">
+        {
+          c.network.points.map((point, i) => (
+            <article class="card">
+              <span class="chip chip--net">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={NETWORK[i]} />
+                </svg>
+              </span>
+              <h3 class="card__title">{point.title}</h3>
+              <p class="card__text">{point.body}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="stack">
+        <Ledger {...d.ledger} />
+      </div>
+    </div>
+  </section>
+
+  <!-- The roadmap. It is the one part of this page that goes stale on its own, which is why what
+       it says is derived from a list rather than written out here. -->
+  <section id="roadmap" class="section">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{r.num}</span>
+        <span class="sec-kicker">{r.kicker}</span>
+        <h2 class="sec-title">{r.title}</h2>
+        <p class="sec-lead">{r.lead}</p>
+      </div>
+
+      <Roadmap states={r.states} items={capabilities} note={r.note} />
+    </div>
+  </section>
+
+  <section id="limits" class="section section--alt">
+    <div class="page">
+      <div class="sec-head sec-head--center">
+        <span class="sec-num">{c.limits.num}</span>
+        <span class="sec-kicker">{c.limits.kicker}</span>
+        <h2 class="sec-title">{c.limits.title}</h2>
+        <p class="sec-lead">{c.limits.lead}</p>
+      </div>
+
+      <div class="grid grid--two">
+        {
+          c.limits.items.map((item) => (
+            <article class="card">
+              <span class="chip chip--bad">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d={NOT} />
+                </svg>
+              </span>
+              <h3 class="card__title">{item.title}</h3>
+              <p class="card__text">{item.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- The close. It makes no promise the rest of the page has not already had to earn, and its
+       one link is to the code, which is the only claim here anybody can check today. -->
+  <section id="close" class="section close">
+    <div class="page close__inner">
+      <div class="sec-head sec-head--center close__head">
+        <span class="sec-num">{c.close.num}</span>
+        <span class="sec-kicker">{c.close.kicker}</span>
+        <h2 class="sec-title">{c.close.title}</h2>
+      </div>
+
+      <blockquote class="quote">{c.close.quote}</blockquote>
+
+      <p class="close__body">{c.close.body}</p>
+
+      <a
+        class="btn btn--primary"
+        href={GITHUB_URL}
+        target="_blank"
+        rel="noopener">{c.close.cta}</a
+      >
+    </div>
+  </section>
+</main>
+
+<Footer lang={lang} />
+
+<style>
+  /* Off screen until it is focused, which is the only time it has a job. */
+  .skip {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 200;
+    padding: 12px 18px;
+    background: var(--brand);
+    color: #120a04;
+    font-weight: 650;
+    text-decoration: none;
+    border-radius: 0 0 var(--radius-sm) 0;
+  }
+
+  .skip:focus {
+    left: 0;
+  }
+
+  /* ── The opening ── */
+  .hero {
+    padding-top: 64px;
+    padding-bottom: 76px;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 44px;
+    align-items: center;
+  }
+
+  /* A grid track is at least as wide as its item's minimum content, and the credential keeps a
+     readable minimum of its own. Without this the picture's floor becomes the column's floor and
+     pushes the whole opening wider than the screen. */
+  .hero__grid > * {
+    min-width: 0;
+  }
+
+  @media (min-width: 980px) {
+    .hero__grid {
+      grid-template-columns: 1.06fr 0.94fr;
+      gap: 60px;
+    }
+  }
+
+  .hero__title {
+    margin: 20px 0 0;
+    font-size: clamp(2.3rem, 5.6vw, 3.7rem);
+    font-weight: 800;
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+  }
+
+  .hero__lead {
+    margin: 20px 0 0;
+    max-width: 40rem;
+    color: var(--color-text-muted);
+    font-size: clamp(1.02rem, 2vw, 1.16rem);
+    line-height: 1.62;
+  }
+
+  .hero__claims {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin: 26px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .hero__note {
+    margin: 30px 0 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--brand);
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .hero__figure {
+    max-width: 480px;
+    width: 100%;
+    justify-self: center;
+  }
+
+  /* ── Grids of cards ── */
+  .grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 30px;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 760px) {
+    .grid--two {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid--three {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* One diagram following another needs air between them, or they read as one picture. */
+  .stack {
+    margin-top: 30px;
+  }
+
+  .prose {
+    max-width: 48rem;
+    margin: 34px auto 0;
+    color: var(--color-text);
+    font-size: 1.05rem;
+    line-height: 1.68;
+  }
+
+  /* The admission on every section that has one. It is set apart rather than buried, because a
+     limitation written in the same voice as a claim is a limitation nobody reads. */
+  .callout {
+    max-width: 48rem;
+    margin: 30px auto 0;
+    padding: 20px 22px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--brand);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    color: var(--color-text-muted);
+    font-size: 0.9688rem;
+    line-height: 1.65;
+  }
+
+  /* ── The close ── */
+  .close__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .close__head {
+    margin-bottom: 22px;
+  }
+
+  .close__head .sec-title {
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+
+  .quote {
+    position: relative;
+    max-width: 34rem;
+    margin: 12px 0 0;
+    padding: 26px 30px;
+    background: linear-gradient(
+      160deg,
+      var(--brand-wash) 0%,
+      var(--surface-1) 80%
+    );
+    border: 1px solid var(--brand-edge);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    font-weight: 650;
+    line-height: 1.45;
+    letter-spacing: -0.015em;
+  }
+
+  .quote::before {
+    content: "“";
+    position: absolute;
+    top: -10px;
+    left: 18px;
+    color: var(--brand);
+    font-size: 3.4rem;
+    line-height: 1;
+  }
+
+  .close__body {
+    max-width: 46rem;
+    margin: 26px 0 30px;
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    line-height: 1.68;
+  }
+</style>

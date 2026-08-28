@@ -1,0 +1,124 @@
+---
+/**
+ * Why "what they ask for is public" is a mechanism and not a promise.
+ *
+ * The catalogue picture shows the *comparison*; this one shows how the comparison can exist at
+ * all. A request is not typed at the counter — it is written down in advance, published where
+ * anybody can read it, and then used. Four steps, in order, because the order is the argument:
+ * remove the middle two and the last one stops being true.
+ *
+ * Drawn in markup rather than SVG because it is a sequence of prose, and prose in an SVG is text
+ * that cannot wrap.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** The four steps, in the order they happen. */
+  steps: readonly { title: string; body: string }[];
+  /** The line under the picture. */
+  caption: string;
+}
+
+const { label, steps, caption } = Astro.props;
+---
+
+<figure class="panel chain" aria-label={label}>
+  <ol>
+    {
+      steps.map((step, i) => (
+        <li class:list={["step", i === steps.length - 1 && "step--last"]}>
+          <span class="step__num">{String(i + 1).padStart(2, "0")}</span>
+          <h3 class="step__title">{step.title}</h3>
+          <p class="step__body">{step.body}</p>
+        </li>
+      ))
+    }
+  </ol>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  ol {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: none;
+  }
+
+  @media (min-width: 860px) {
+    ol {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 26px;
+    }
+  }
+
+  .step {
+    position: relative;
+    padding: 18px 18px 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  /* The chevron between steps. It exists on wide screens only: stacked, the reading order is
+     already the arrow, and a chevron pointing sideways would be pointing at nothing. */
+  @media (min-width: 860px) {
+    .step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -19px;
+      width: 11px;
+      height: 11px;
+      border-top: 1.5px solid var(--brand-edge);
+      border-right: 1.5px solid var(--brand-edge);
+      transform: translateY(-50%) rotate(45deg);
+    }
+  }
+
+  .step__num {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .step__title {
+    margin: 0 0 7px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-text);
+  }
+
+  .step__body {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-muted);
+  }
+
+  /* Only the conclusion is in the identity colour. The first three steps are machinery; the
+     fourth is the thing the machinery was for. */
+  .step--last {
+    background: linear-gradient(
+      165deg,
+      var(--brand-wash) 0%,
+      var(--surface-2) 75%
+    );
+    border-color: var(--brand-edge);
+  }
+
+  .step--last .step__num,
+  .step--last .step__title {
+    color: var(--brand-bright);
+  }
+</style>

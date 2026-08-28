@@ -14,7 +14,7 @@ Public-facing site for the Almena Network. It presents, graphically, the **Almen
 
 A single-purpose site built with Astro: one page per language that renders the founding charter as a graphical narrative — hero + mission, the social contract, the identity layer (Holders / Issuers / circular governance), the trust & reputation graph, capability milestones, distributed arbitration, positive friction, resilience, and the final declaration. Each section pairs the charter's text with a purpose-built SVG diagram. Content is fully bilingual (English / Spanish) and driven by a single source of truth, `src/data/charter.ts`. Suitable for deployment to any static host (Vercel, Netlify, etc.).
 
-The charter itself is authored as an agent rule (`.cursor/rules/almena-founding-charter.mdc`); this site is the public, visual expression of the same principles.
+The charter itself is authored as an agent rule (`.claude/rules/almena-founding-charter.md`); this site is the public, visual expression of the same principles.
 
 ### Content
 

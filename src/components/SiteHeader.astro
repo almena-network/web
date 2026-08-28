@@ -1,6 +1,6 @@
 ---
-import type { Lang } from "../data/charter";
-import { site, GITHUB_URL, LOCALES, langNames, langHome } from "../data/charter";
+import type { Lang } from "../data/site";
+import { site, GITHUB_URL, LOCALES, langNames, langHome } from "../data/site";
 
 interface Props {
   lang: Lang;
@@ -13,15 +13,15 @@ const homeHref = langHome(lang);
 
 // Single-page site: nav links are in-page section anchors.
 const links = [
-  { href: "#contract", label: t.contract },
-  { href: "#identity", label: t.identity },
-  { href: "#reputation", label: t.reputation },
-  { href: "#progression", label: t.progression },
-  { href: "#justice", label: t.justice },
-  { href: "#friction", label: t.friction },
+  { href: "#how", label: t.how },
+  { href: "#different", label: t.different },
+  { href: "#keys", label: t.keys },
+  { href: "#network", label: t.network },
+  { href: "#roadmap", label: t.roadmap },
+  { href: "#limits", label: t.limits },
 ];
 
-const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lang === "it" ? "Lingua" : lang === "pt" ? "Idioma" : lang === "es" ? "Idioma" : "Language";
+const languageLabel = site[lang].language;
 ---
 
 <header class="nav">
@@ -31,20 +31,42 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
       <span>Almena</span>
     </a>
 
-    <nav class="nav__links" aria-label="Charter sections">
-      {links.map((l) => <a href={l.href} class="nav__link">{l.label}</a>)}
-      <a href={GITHUB_URL} class="nav__link" target="_blank" rel="noopener">{t.github}</a>
+    <nav class="nav__links" aria-label="Sections">
+      {
+        links.map((l) => (
+          <a href={l.href} class="nav__link">
+            {l.label}
+          </a>
+        ))
+      }
+      <a href={GITHUB_URL} class="nav__link" target="_blank" rel="noopener"
+        >GitHub</a
+      >
     </nav>
 
     <div class="nav__actions">
       <div class="nav__lang">
-        <select class="nav__lang-select" data-lang-select aria-label={languageLabel}>
-          {LOCALES.map((l) => (
-            <option value={langHome(l)} selected={l === lang}>{langNames[l]}</option>
-          ))}
+        <select
+          class="nav__lang-select"
+          data-lang-select
+          aria-label={languageLabel}
+        >
+          {
+            LOCALES.map((l) => (
+              <option value={langHome(l)} data-lang={l} selected={l === lang}>
+                {langNames[l]}
+              </option>
+            ))
+          }
         </select>
         <svg class="nav__lang-caret" viewBox="0 0 12 12" aria-hidden="true">
-          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path
+            d="M2.5 4.5 6 8l3.5-3.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
         </svg>
       </div>
       <button
@@ -63,18 +85,40 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
   </div>
 
   <div class="nav__mobile" id="nav-mobile" data-nav-mobile>
-    {links.map((l) => <a href={l.href} class="nav__mobile-link">{l.label}</a>)}
-    <a href={GITHUB_URL} class="nav__mobile-link" target="_blank" rel="noopener">{t.github}</a>
+    {
+      links.map((l) => (
+        <a href={l.href} class="nav__mobile-link">
+          {l.label}
+        </a>
+      ))
+    }
+    <a href={GITHUB_URL} class="nav__mobile-link" target="_blank" rel="noopener"
+      >GitHub</a
+    >
     <div class="nav__mobile-lang">
       <span class="nav__mobile-lang-label">{languageLabel}</span>
       <div class="nav__lang">
-        <select class="nav__lang-select" data-lang-select aria-label={languageLabel}>
-          {LOCALES.map((l) => (
-            <option value={langHome(l)} selected={l === lang}>{langNames[l]}</option>
-          ))}
+        <select
+          class="nav__lang-select"
+          data-lang-select
+          aria-label={languageLabel}
+        >
+          {
+            LOCALES.map((l) => (
+              <option value={langHome(l)} data-lang={l} selected={l === lang}>
+                {langNames[l]}
+              </option>
+            ))
+          }
         </select>
         <svg class="nav__lang-caret" viewBox="0 0 12 12" aria-hidden="true">
-          <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path
+            d="M2.5 4.5 6 8l3.5-3.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
         </svg>
       </div>
     </div>
@@ -86,10 +130,10 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     position: sticky;
     top: 0;
     z-index: 100;
-    background: rgba(8, 8, 8, 0.72);
+    background: rgba(6, 7, 10, 0.78);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--line);
   }
 
   .nav__inner {
@@ -116,7 +160,7 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
   }
 
   .nav__logo:hover {
-    color: var(--brand-primary);
+    color: var(--brand);
   }
 
   .nav__links {
@@ -134,13 +178,15 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     color: var(--color-text-muted);
     text-decoration: none;
     border-radius: var(--radius-sm);
-    transition: color var(--transition), background var(--transition);
+    transition:
+      color var(--transition),
+      background var(--transition);
     white-space: nowrap;
   }
 
   .nav__link:hover {
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--line);
   }
 
   .nav__actions {
@@ -148,6 +194,9 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     align-items: center;
     gap: 10px;
     flex-shrink: 0;
+    /* The links between the mark and these are hidden on a narrow screen, and without this the
+       menu button would sit against the wordmark instead of at the edge it opens from. */
+    margin-left: auto;
   }
 
   .nav__lang {
@@ -163,29 +212,32 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     font-size: 0.8125rem;
     font-weight: 500;
     color: var(--color-text-muted);
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     padding: 6px 30px 6px 12px;
     cursor: pointer;
-    transition: color var(--transition), background var(--transition), border-color var(--transition);
+    transition:
+      color var(--transition),
+      background var(--transition),
+      border-color var(--transition);
   }
 
   .nav__lang-select:hover {
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.28);
+    background: var(--line);
+    border-color: var(--line-strong);
   }
 
   .nav__lang-select:focus-visible {
     outline: none;
-    border-color: var(--brand-primary);
+    border-color: var(--brand);
     color: var(--color-text);
   }
 
   .nav__lang-select option {
-    color: #f0f0f0;
-    background: #111111;
+    color: #f3f5f8;
+    background: #141821;
   }
 
   .nav__lang-caret {
@@ -204,7 +256,7 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     gap: 12px;
     margin-top: 6px;
     padding: 12px 10px 4px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--line);
   }
 
   .nav__mobile-lang-label {
@@ -223,7 +275,7 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     height: 40px;
     padding: 0;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     cursor: pointer;
   }
@@ -235,7 +287,9 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     margin: 0 auto;
     border-radius: 2px;
     background: var(--color-text);
-    transition: transform var(--transition), opacity var(--transition);
+    transition:
+      transform var(--transition),
+      opacity var(--transition);
   }
 
   .nav--open .nav__toggle-bar:nth-child(1) {
@@ -259,8 +313,8 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     flex-direction: column;
     gap: 2px;
     padding: 10px 16px 16px;
-    background: #080808;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--surface-1);
+    border-bottom: 1px solid var(--line);
     box-shadow: 0 12px 24px -12px rgba(0, 0, 0, 0.8);
   }
 
@@ -275,18 +329,20 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
     color: var(--color-text-muted);
     text-decoration: none;
     border-radius: var(--radius-sm);
-    transition: color var(--transition), background var(--transition);
+    transition:
+      color var(--transition),
+      background var(--transition);
   }
 
   .nav__mobile-link:hover {
     color: var(--color-text);
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--line);
   }
 
   .nav__mobile-link--lang {
     margin-top: 6px;
     padding-top: 14px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-top: 1px solid var(--line);
   }
 
   @media (max-width: 940px) {
@@ -318,6 +374,8 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
 </style>
 
 <script>
+  import { remember } from "../lib/language";
+
   const header = document.querySelector<HTMLElement>(".nav");
   const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
   if (header && toggle) {
@@ -325,19 +383,27 @@ const languageLabel = lang === "fr" ? "Langue" : lang === "de" ? "Sprache" : lan
       header.classList.toggle("nav--open", open);
       toggle.setAttribute("aria-expanded", String(open));
     };
-    toggle.addEventListener("click", () => setOpen(!header.classList.contains("nav--open")));
-    header.querySelectorAll("[data-nav-mobile] a").forEach((a) =>
-      a.addEventListener("click", () => setOpen(false)),
+    toggle.addEventListener("click", () =>
+      setOpen(!header.classList.contains("nav--open")),
     );
+    header
+      .querySelectorAll("[data-nav-mobile] a")
+      .forEach((a) => a.addEventListener("click", () => setOpen(false)));
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") setOpen(false);
     });
   }
 
-  document.querySelectorAll<HTMLSelectElement>("[data-lang-select]").forEach((select) => {
-    select.addEventListener("change", () => {
-      const dest = select.value;
-      if (dest) window.location.href = dest;
+  // Choosing here overrules whatever the browser said — so it is remembered before the page is
+  // left, and the greeting on the English home never contradicts it afterwards.
+  document
+    .querySelectorAll<HTMLSelectElement>("[data-lang-select]")
+    .forEach((select) => {
+      select.addEventListener("change", () => {
+        const chosen = select.selectedOptions[0]?.dataset.lang;
+        if (chosen) remember(chosen);
+        const dest = select.value;
+        if (dest) window.location.href = dest;
+      });
     });
-  });
 </script>

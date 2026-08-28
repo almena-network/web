@@ -1,0 +1,161 @@
+---
+/**
+ * Where an identity actually lives: the words, the devices, and the people who can help.
+ *
+ * Drawn because the question everybody asks is *what happens if I lose my phone*, and the
+ * honest answer has a shape: the words sit above the devices and can always replace them, any
+ * device can throw out another straight away, and the guardians stand to one side as a way back
+ * that never becomes a way in. A list of three bullet points loses all of that.
+ *
+ * The guardians are drawn in the colour that means *other people's machinery* everywhere else on
+ * this page, and drawn hollow: they are a route back, and there is nothing of yours inside them.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** What the recovery phrase is called. */
+  seed: string;
+  /** What the devices are called, in the order drawn. */
+  devices: readonly [string, string, string];
+  /** What the guardians are called. */
+  guardians: string;
+  /** The two relations drawn: what the words do, and what the guardians do. */
+  relations: readonly [string, string];
+  /** What the devices can do to each other. */
+  between: string;
+  /** The line under the picture. */
+  caption: string;
+}
+
+const { label, seed, devices, guardians, relations, between, caption } =
+  Astro.props;
+---
+
+<figure class="panel">
+  <div class="panel__frame">
+    <svg viewBox="0 0 720 360" role="img" aria-label={label}>
+      <defs>
+        <marker
+          id="keys-arrow"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--brand)"></path>
+        </marker>
+        <marker
+          id="keys-arrow-net"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--tone-net)"></path>
+        </marker>
+      </defs>
+
+      <!-- The words, above everything, because they outrank every device. -->
+      <g class="seed">
+        <rect x="212" y="10" width="296" height="64" rx="18"></rect>
+        <text class="dia-title" x="360" y="48">{seed}</text>
+      </g>
+
+      <!-- What the words can always do. -->
+      <g class="relation">
+        <path d="M360 74 L360 136" marker-end="url(#keys-arrow)"></path>
+        <text class="dia-note relation__label" x="374" y="110"
+          >{relations[0]}</text
+        >
+      </g>
+
+      <!-- The devices, equal to one another: any one can remove any other. -->
+      <g class="devices">
+        <rect x="52" y="144" width="176" height="78" rx="18"></rect>
+        <text class="dia-title" x="140" y="189">{devices[0]}</text>
+        <rect x="272" y="144" width="176" height="78" rx="18"></rect>
+        <text class="dia-title" x="360" y="189">{devices[1]}</text>
+        <rect x="492" y="144" width="176" height="78" rx="18"></rect>
+        <text class="dia-title" x="580" y="189">{devices[2]}</text>
+      </g>
+      <!-- The label for what the devices do to each other sits off to one side: the middle of this
+           band belongs to the arrow coming up from the guardians. -->
+      <g class="between">
+        <path d="M228 183 L272 183"></path>
+        <path d="M448 183 L492 183"></path>
+        <text class="dia-note" x="150" y="252">{between}</text>
+      </g>
+
+      <!-- The guardians: a way back, never a way in. -->
+      <g class="relation relation--net">
+        <path d="M360 292 L360 240" marker-end="url(#keys-arrow-net)"></path>
+        <text class="dia-note relation__label" x="374" y="272"
+          >{relations[1]}</text
+        >
+      </g>
+      <g class="guardians">
+        <rect x="212" y="292" width="296" height="58" rx="18"></rect>
+        <text class="dia-label" x="360" y="327">{guardians}</text>
+      </g>
+    </svg>
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .seed rect {
+    fill: var(--brand-wash);
+    stroke: var(--brand);
+    stroke-width: 1.5;
+  }
+
+  .seed .dia-title {
+    fill: var(--brand-bright);
+  }
+
+  .devices rect {
+    fill: var(--surface-3);
+    stroke: var(--line-strong);
+    stroke-width: 1;
+  }
+
+  .between path {
+    fill: none;
+    stroke: var(--line-strong);
+    stroke-width: 1;
+    stroke-dasharray: 4 5;
+  }
+
+  .guardians rect {
+    fill: none;
+    stroke: var(--tone-net-edge);
+    stroke-width: 1.5;
+    stroke-dasharray: 7 6;
+  }
+
+  .guardians .dia-label {
+    fill: var(--tone-net);
+  }
+
+  .relation path {
+    fill: none;
+    stroke: var(--brand);
+    stroke-width: 2.5;
+  }
+
+  .relation--net path {
+    stroke: var(--tone-net);
+    stroke-width: 2;
+    stroke-dasharray: 6 5;
+  }
+
+  .relation__label {
+    text-anchor: start;
+  }
+</style>
