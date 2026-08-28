@@ -184,7 +184,7 @@ type StateForEach<T extends readonly unknown[]> = {
 export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
-  "under",
+  "built",
   "planned",
   "planned",
   "planned",

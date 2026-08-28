@@ -22,7 +22,7 @@ import Roles from "./diagrams/Roles.astro";
 import Catalogue from "./diagrams/Catalogue.astro";
 import Published from "./diagrams/Published.astro";
 import Keys from "./diagrams/Keys.astro";
-import Network from "./diagrams/Network.astro";
+import World from "./diagrams/World.astro";
 import Ledger from "./diagrams/Ledger.astro";
 import Roadmap from "./diagrams/Roadmap.astro";
 import UseCases from "./UseCases.astro";
@@ -180,7 +180,7 @@ const s = site[lang];
         <p class="sec-lead">{c.network.lead}</p>
       </div>
 
-      <Network {...d.network} />
+      <World {...d.world} />
 
       <CardGrid points={c.network.points} icons={NETWORK} tone="net" />
 

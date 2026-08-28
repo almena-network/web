@@ -86,15 +86,21 @@ const diagramsEn = {
     caption:
       "Three ways back, and none of them is somebody else holding your identity for you.",
   },
-  network: {
+  world: {
     label:
-      "Several nodes serve the same signed answer; a hostile one can refuse to serve it but cannot alter it.",
-    node: "node",
-    hostile: "hostile",
-    reader: "Whoever checks",
-    captions: ["signed by its author", "can refuse, never lie"] as const,
+      "A world map with nodes in Madrid, Sydney, Buenos Aires, Moscow, London, Tel Aviv and Los Angeles, meshed to one another across the oceans. Three people asking from places with no node of their own each reach the one nearest to them.",
+    cities: [
+      "Madrid",
+      "Sydney",
+      "Buenos Aires",
+      "Moscow",
+      "London",
+      "Tel Aviv",
+      "Los Angeles",
+    ] as const,
+    clients: ["A phone", "A laptop", "A counter"] as const,
     caption:
-      "The node that hands an answer over is a messenger. The signature is what is trusted.",
+      "Seven places, and what matters is that they could be any seven: the node nearest you serves the same signed answer as any other, and none of them is the centre. The map shows how the network is reached, not where it runs today.",
   },
   ledger: {
     label:
@@ -191,15 +197,21 @@ const diagramsEs: Widened<typeof diagramsEn> = {
     caption:
       "Tres formas de volver, y ninguna es que otro te custodie la identidad.",
   },
-  network: {
+  world: {
     label:
-      "Varios nodos sirven la misma respuesta firmada; uno hostil puede negarse a servirla pero no puede alterarla.",
-    node: "nodo",
-    hostile: "hostil",
-    reader: "Quien comprueba",
-    captions: ["firmado por su autor", "puede negarse, nunca mentir"] as const,
+      "Un mapa del mundo con nodos en Madrid, Sídney, Buenos Aires, Moscú, Londres, Tel Aviv y Los Ángeles, unidos entre sí a través de los océanos. Tres personas que preguntan desde sitios sin nodo propio llegan cada una al que tienen más cerca.",
+    cities: [
+      "Madrid",
+      "Sídney",
+      "Buenos Aires",
+      "Moscú",
+      "Londres",
+      "Tel Aviv",
+      "Los Ángeles",
+    ] as const,
+    clients: ["Un móvil", "Un portátil", "Un mostrador"] as const,
     caption:
-      "El nodo que te da una respuesta es un mensajero. Lo que se cree es la firma.",
+      "Siete sitios, y lo que importa es que podrían ser otros siete: el nodo que tengas más cerca sirve la misma respuesta firmada que cualquier otro, y ninguno es el centro. El mapa enseña cómo se llega a la red, no dónde corre hoy.",
   },
   ledger: {
     label:
