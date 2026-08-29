@@ -45,7 +45,7 @@ const roadmapEn = {
     },
     {
       title: "A network that agrees without trusting itself",
-      body: "Several nodes serving the same answers, where what is settled stays settled, what the record says exists can be shown to still exist, and a new node can start from nothing without believing whoever serves it.",
+      body: "Several nodes serving the same answers, where what is settled stays settled, what the record says exists can be shown to still exist, and a new node can start from nothing without believing whoever serves it. A machine behind a household router takes part through a node that volunteers to carry it, and a node can be claimed by whoever contributes it — both of them saying so, in a record anybody can read.",
     },
     {
       title: "The app that holds your identity",
@@ -121,7 +121,7 @@ const roadmapEs: Widened<typeof roadmapEn> = {
     },
     {
       title: "Una red que se pone de acuerdo sin fiarse de sí misma",
-      body: "Varios nodos sirviendo las mismas respuestas, donde lo firme sigue firme, lo que el registro dice que existe se puede demostrar que sigue existiendo, y un nodo nuevo puede arrancar desde cero sin creerse a quien le sirve.",
+      body: "Varios nodos sirviendo las mismas respuestas, donde lo firme sigue firme, lo que el registro dice que existe se puede demostrar que sigue existiendo, y un nodo nuevo puede arrancar desde cero sin creerse a quien le sirve. Una máquina detrás de un router doméstico participa a través de un nodo que se ofrece a llevarla, y un nodo puede reclamarlo quien lo aporta — diciéndolo los dos, en un registro que cualquiera puede leer.",
     },
     {
       title: "La aplicación que guarda tu identidad",
@@ -185,7 +185,7 @@ export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
   "built",
-  "planned",
+  "under",
   "planned",
   "planned",
   "planned",
