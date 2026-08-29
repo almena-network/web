@@ -189,7 +189,7 @@ export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
   "built",
-  "planned",
+  "built",
   "planned",
   "planned",
   "planned",
