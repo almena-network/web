@@ -39,7 +39,7 @@ const organisationsEn = [
         ] as const,
       },
     ] as const,
-    note: "What it asks of you is publishing the form you issue against, and keeping it true. You are vouching for a fact you already hold: Almena adds no knowledge about your people, asks for none, and never becomes a party to what you know.",
+    note: "What it asks of you is publishing the form you issue with, and keeping it up to date. You are vouching for a fact you already hold: Almena adds no knowledge about your people, asks for none, and never becomes a party to what you know.",
   },
   {
     tab: "Revoke",
@@ -137,7 +137,7 @@ const organisationsEn = [
       {
         label: "With Almena",
         lines: [
-          "One check: the signature, the binding, the form, the revocation",
+          "One check: the signature is good, it belongs to whoever shows it, it answers the form, nobody withdrew it",
           "A new issuer needs nothing from you",
           "The answer is the same shape every time",
         ] as const,
@@ -163,7 +163,7 @@ const organisationsEn = [
       {
         label: "With Almena",
         lines: [
-          "A threshold: any k of the n owners",
+          "You set it: any three of five, or whatever you decide",
           "Each of them signs from their own device",
           "Every act carries who signed it",
         ] as const,
@@ -211,7 +211,7 @@ const organisationsEs = [
         ] as const,
       },
     ] as const,
-    note: "Lo que te pide es publicar el formulario contra el que emites, y mantenerlo cierto. Estás acreditando un hecho que ya tienes: Almena no añade conocimiento sobre tu gente, no te lo pide, y nunca se hace parte de lo que sabes.",
+    note: "Lo que te pide es publicar el formulario con el que emites, y mantenerlo al día. Estás acreditando un hecho que ya tienes: Almena no añade conocimiento sobre tu gente, no te lo pide, y nunca se hace parte de lo que sabes.",
   },
   {
     tab: "Revocar",
@@ -309,7 +309,7 @@ const organisationsEs = [
       {
         label: "Con Almena",
         lines: [
-          "Una comprobación: la firma, el vínculo, el formulario, la revocación",
+          "Una comprobación: la firma es buena, es de quien la enseña, responde al formulario, nadie la ha retirado",
           "Un emisor nuevo no necesita nada de ti",
           "La respuesta tiene la misma forma siempre",
         ] as const,
@@ -335,7 +335,7 @@ const organisationsEs = [
       {
         label: "Con Almena",
         lines: [
-          "Un umbral: k cualesquiera de los n owners",
+          "Lo decidís vosotros: tres de cinco, o lo que acordéis",
           "Cada uno firma desde su propio dispositivo",
           "Todo acto lleva quién lo firmó",
         ] as const,

@@ -25,17 +25,17 @@ const diagramsEn = {
     shown: "Of age: yes",
     shownNote: "shown",
     caption:
-      "Signed by the issuer. What the verifier checks is that signature, not a call to them.",
+      "Signed by whoever issued it. What gets checked is that signature — nobody has to ring them.",
   },
   roles: {
     label:
       "An issuer signs a credential and the person keeps it. A verifier puts a question, the person's device answers it with a proof, and the verifier checks that proof. The registry sits underneath and sees none of it.",
     roles: ["Issuer", "You", "Verifier"] as const,
     registry:
-      "The registry: identities, trust and revocation — never a credential, never an attribute",
+      "The register: who is who, who is trusted, what has been withdrawn — never what your credential says",
     flows: ["issues", "a proof", "a question"] as const,
     caption:
-      "Nothing is looked up about you. The question comes to you, and the answer you build is what gets checked.",
+      "Nobody looks you up. The question comes to you, and what gets checked is the answer you send back.",
   },
   catalogue: {
     label:
@@ -49,7 +49,7 @@ const diagramsEn = {
       "Home address",
     ] as const,
     minimal: ["Of age: yes"] as const,
-    note: "Both forms are published, side by side, where anybody can read them. What you answer to either is published nowhere.",
+    note: "Both forms are published side by side, where anybody can read them. What you answer to either one is published nowhere.",
   },
   published: {
     label:
@@ -73,7 +73,7 @@ const diagramsEn = {
       },
     ],
     caption:
-      "Nothing is asked for by hand, so nothing is asked for in private.",
+      "Nothing is asked for off the cuff, so nothing is asked for in private.",
   },
   keys: {
     label:
@@ -84,7 +84,7 @@ const diagramsEn = {
     relations: ["can replace any device", "can help you back"] as const,
     between: "any one can remove another",
     caption:
-      "Three ways back, and none of them is somebody else holding your identity for you.",
+      "Three ways back in, and not one of them is somebody else keeping your identity for you.",
   },
   world: {
     label:
@@ -107,11 +107,11 @@ const diagramsEn = {
       "A record of signed entries in which a mistake is answered by a later correction and nothing earlier is removed.",
     axis: "Time",
     mistake: "the mistake",
-    kept: "not removed",
+    kept: "still there",
     correction: "the correction",
-    link: "corrected forward",
+    link: "the fix comes after",
     caption:
-      "Nothing is removed, so what happened can always be reconstructed — and none of what is kept is personal data.",
+      "Nothing is deleted, so what happened can always be pieced back together — and none of what is kept is data about anybody.",
   },
 };
 
@@ -134,17 +134,17 @@ const diagramsEs: Widened<typeof diagramsEn> = {
     shown: "Mayor de edad: sí",
     shownNote: "se enseña",
     caption:
-      "Firmado por el emisor. Lo que el verificador comprueba es esa firma, no una llamada.",
+      "Firmado por quien lo emitió. Lo que se comprueba es esa firma; no hay que llamar a nadie.",
   },
   roles: {
     label:
       "Un emisor firma una credencial y la persona la guarda. Un verificador plantea una pregunta, el dispositivo de la persona la responde con una prueba, y el verificador comprueba esa prueba. El registro está debajo y no ve nada de esto.",
     roles: ["Emisor", "Tú", "Verificador"] as const,
     registry:
-      "El registro: identidades, confianza y revocación — nunca una credencial, nunca un atributo",
+      "El registro: quién es quién, en quién se confía, qué se ha retirado — nunca lo que dice tu credencial",
     flows: ["emite", "una prueba", "una pregunta"] as const,
     caption:
-      "No se consulta nada sobre ti. La pregunta te llega a ti, y lo que se comprueba es la respuesta que construyes.",
+      "Nadie te consulta en ningún sitio. La pregunta te llega a ti, y lo que se comprueba es la respuesta que devuelves.",
   },
   catalogue: {
     label:
@@ -181,7 +181,7 @@ const diagramsEs: Widened<typeof diagramsEn> = {
         body: "Pedir más de lo que el trámite necesita es algo que cualquiera puede consultar.",
       },
     ],
-    caption: "Nada se pide a mano, así que nada se pide en privado.",
+    caption: "Nada se pide sobre la marcha, así que nada se pide en privado.",
   },
   keys: {
     label:
@@ -195,7 +195,7 @@ const diagramsEs: Widened<typeof diagramsEn> = {
     ] as const,
     between: "cualquiera puede echar a otro",
     caption:
-      "Tres formas de volver, y ninguna es que otro te custodie la identidad.",
+      "Tres formas de volver a entrar, y ninguna es que otro te guarde la identidad.",
   },
   world: {
     label:
@@ -218,11 +218,11 @@ const diagramsEs: Widened<typeof diagramsEn> = {
       "Un registro de entradas firmadas en el que un error se responde con una corrección posterior y nada anterior se borra.",
     axis: "Tiempo",
     mistake: "el error",
-    kept: "no se borra",
+    kept: "sigue ahí",
     correction: "la corrección",
-    link: "corregido hacia adelante",
+    link: "el arreglo viene después",
     caption:
-      "Nada se borra, así que siempre se puede reconstruir lo que pasó — y nada de lo que se guarda es un dato personal.",
+      "Nada se borra, así que siempre se puede reconstruir lo que pasó — y nada de lo que se guarda es un dato de nadie.",
   },
 };
 

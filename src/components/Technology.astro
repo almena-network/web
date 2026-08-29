@@ -1,0 +1,174 @@
+---
+/**
+ * Why the platform belongs to nobody, and what that buys.
+ *
+ * Four things that being owned by nobody actually buys, the sentence that keeps them honest, and
+ * the three standards the platform was shaped in order to reach one day.
+ *
+ * The last three are a `dl` and not a table, because a name and what it is for is exactly what a
+ * definition list is, and because two columns collapse on a phone into something nobody follows.
+ */
+
+interface Entry {
+  /** What the thing is called. The name is the part somebody would search for. */
+  name: string;
+  /** What it is **for**. Never what it is: a definition only helps whoever already knew. */
+  body: string;
+}
+
+interface Props {
+  /** What being owned by nobody actually buys. */
+  why: readonly { title: string; body: string }[];
+  /** What decentralised does not mean, which is the half that keeps the rest honest. */
+  whyNote: string;
+  /** The heading over what is not built yet. */
+  aheadTitle: string;
+  /** What the choices above were made in order to reach. */
+  ahead: readonly Entry[];
+  /** That none of those three exists yet, said plainly. */
+  aheadNote: string;
+}
+
+const { why, whyNote, aheadTitle, ahead, aheadNote } = Astro.props;
+---
+
+<div class="tech">
+  <section class="tech__part">
+    <div class="tech__why">
+      {
+        why.map((point, i) => (
+          <article class="gain">
+            <span class="gain__num">{String(i + 1).padStart(2, "0")}</span>
+            <h4 class="gain__title">{point.title}</h4>
+            <p class="gain__body">{point.body}</p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="callout">{whyNote}</p>
+  </section>
+
+  <section class="tech__part">
+    <h3 class="tech__heading">{aheadTitle}</h3>
+    <div class="tech__ahead">
+      {
+        ahead.map((item) => (
+          <article class="ahead">
+            <dl>
+              <dt>{item.name}</dt>
+              <dd>{item.body}</dd>
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+    <p class="callout callout--quiet">{aheadNote}</p>
+  </section>
+</div>
+
+<style>
+  .tech__part + .tech__part {
+    margin-top: 52px;
+  }
+
+  .tech__heading {
+    margin: 0 0 22px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-text-subtle);
+  }
+
+  /* ── What it buys ── */
+  .tech__why {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  @media (min-width: 780px) {
+    .tech__why {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .gain {
+    padding: 22px 24px 24px;
+    background: linear-gradient(
+      165deg,
+      var(--surface-2) 0%,
+      var(--surface-1) 100%
+    );
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--brand);
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  }
+
+  .gain__num {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--brand);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gain__title {
+    margin: 0 0 8px;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+  }
+
+  .gain__body {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .tech__ahead {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  @media (min-width: 780px) {
+    .tech__ahead {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* Not built. A broken edge says so before the note underneath does. */
+  .ahead {
+    padding: 22px 24px 24px;
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-radius: var(--radius-lg);
+  }
+
+  .ahead dl {
+    margin: 0;
+  }
+
+  .ahead dt {
+    font-size: 0.9375rem;
+    font-weight: 650;
+    letter-spacing: -0.005em;
+    color: var(--color-text-muted);
+  }
+
+  .ahead dd {
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-subtle);
+  }
+
+  .callout--quiet {
+    border-left-color: var(--line-strong);
+  }
+</style>
