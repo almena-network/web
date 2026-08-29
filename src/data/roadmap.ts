@@ -17,7 +17,7 @@ import type { Widened } from "./site";
 export type RoadmapState = "built" | "under" | "planned" | "later";
 
 const roadmapEn = {
-  num: "05",
+  num: "06",
   kicker: "Where the work is",
   title: "What is built, and what is coming",
   lead: "Almena is open source and is being built in the open, in the order its dependencies allow. This is what the platform will let somebody do, and how far each part has got.",
@@ -45,7 +45,7 @@ const roadmapEn = {
     },
     {
       title: "A network that agrees without trusting itself",
-      body: "Several nodes serving the same answers, where what is settled stays settled and a new node can start from nothing without believing whoever serves it.",
+      body: "Several nodes serving the same answers, where what is settled stays settled, what the record says exists can be shown to still exist, and a new node can start from nothing without believing whoever serves it. A machine behind a household router takes part through a node that volunteers to carry it, and a node can be claimed by whoever contributes it — both of them saying so, in a record anybody can read.",
     },
     {
       title: "The app that holds your identity",
@@ -100,7 +100,7 @@ const roadmapEn = {
  * in one language is a roadmap somebody reads and believes complete.
  */
 const roadmapEs: Widened<typeof roadmapEn> = {
-  num: "05",
+  num: "06",
   kicker: "Dónde está el trabajo",
   title: "Qué está hecho, y qué viene",
   lead: "Almena es de código abierto y se construye a la vista, en el orden que permiten sus dependencias. Esto es lo que la plataforma va a dejar hacer, y hasta dónde ha llegado cada parte.",
@@ -121,7 +121,7 @@ const roadmapEs: Widened<typeof roadmapEn> = {
     },
     {
       title: "Una red que se pone de acuerdo sin fiarse de sí misma",
-      body: "Varios nodos sirviendo las mismas respuestas, donde lo firme sigue firme y un nodo nuevo puede arrancar desde cero sin creerse a quien le sirve.",
+      body: "Varios nodos sirviendo las mismas respuestas, donde lo firme sigue firme, lo que el registro dice que existe se puede demostrar que sigue existiendo, y un nodo nuevo puede arrancar desde cero sin creerse a quien le sirve. Una máquina detrás de un router doméstico participa a través de un nodo que se ofrece a llevarla, y un nodo puede reclamarlo quien lo aporta — diciéndolo los dos, en un registro que cualquiera puede leer.",
     },
     {
       title: "La aplicación que guarda tu identidad",
@@ -184,8 +184,8 @@ type StateForEach<T extends readonly unknown[]> = {
 export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
+  "built",
   "under",
-  "planned",
   "planned",
   "planned",
   "planned",

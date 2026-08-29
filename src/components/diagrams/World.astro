@@ -1,0 +1,446 @@
+---
+/**
+ * The network on the map: nodes in seven cities, meshed to one another, reached from wherever the
+ * person asking happens to be.
+ *
+ * **The land is a dot grid and not an outline**, because an outline at this size is either wrong
+ * or enormous, and because a grid of points is the honest resolution for a picture whose subject
+ * is *anywhere* rather than *there*. The mask is written as longitude ranges per band of latitude,
+ * so it can be read and corrected by somebody who knows geography and not SVG.
+ *
+ * **The projection is equirectangular at equal scale on both axes.** Longitude and latitude get
+ * the same pixels per degree, which is why the grid squares are square and why the Pacific route
+ * leaves one edge and comes back on the other instead of being drawn across Asia.
+ *
+ * Every position here is computed from real coordinates. Nothing is nudged into place by hand
+ * except the labels, which have to dodge each other.
+ */
+
+interface Props {
+  /** What a screen reader is told the picture shows. */
+  label: string;
+  /** The seven cities, in the order the coordinates below are written. */
+  cities: readonly [string, string, string, string, string, string, string];
+  /** The three things asking, in the order they are drawn. */
+  clients: readonly [string, string, string];
+  /** The line under the picture. */
+  caption: string;
+}
+
+const { label, cities, clients, caption } = Astro.props;
+
+/** Where the map sits, and how many pixels a degree is worth on both axes. */
+const X0 = 18;
+const Y0 = 34;
+const SCALE = 684 / 360;
+const LAT_TOP = 72;
+const x = (lon: number) => X0 + (lon + 180) * SCALE;
+const y = (lat: number) => Y0 + (LAT_TOP - lat) * SCALE;
+
+/**
+ * Coarse land, as the longitude ranges that are dry at each band of latitude.
+ *
+ * Six degrees a cell, from 69° north to 51° south. Antarctica is off the bottom, as it is on most
+ * maps of where people are, and the Arctic is off the top for a reason of drawing rather than of
+ * geography: at 75° the land runs almost unbroken from Alaska to Siberia, and a row that wide
+ * reads as a border round the picture. It is approximate by construction — at this size a
+ * peninsula is one dot, and the Mediterranean is the gap between two rows.
+ */
+const LAND: readonly [number, readonly (readonly [number, number])[]][] = [
+  [
+    69,
+    [
+      [-165, -65],
+      [-53, -22],
+      [12, 180],
+    ],
+  ],
+  [
+    63,
+    [
+      [-165, -64],
+      [-52, -42],
+      [-24, -14],
+      [5, 180],
+    ],
+  ],
+  [
+    57,
+    [
+      [-165, -96],
+      [-77, -58],
+      [-8, -2],
+      [5, 180],
+    ],
+  ],
+  [
+    51,
+    [
+      [-130, -56],
+      [-10, 1],
+      [3, 160],
+    ],
+  ],
+  [
+    45,
+    [
+      [-125, -60],
+      [-2, 30],
+      [36, 135],
+      [138, 146],
+    ],
+  ],
+  [
+    39,
+    [
+      [-124, -74],
+      [-9, 3],
+      [12, 18],
+      [20, 122],
+      [126, 141],
+    ],
+  ],
+  [
+    33,
+    [
+      [-118, -78],
+      [-10, 122],
+      [130, 140],
+    ],
+  ],
+  [
+    27,
+    [
+      [-115, -80],
+      [-15, 58],
+      [61, 122],
+    ],
+  ],
+  [
+    21,
+    [
+      [-106, -87],
+      [-85, -74],
+      [-17, 57],
+      [70, 110],
+    ],
+  ],
+  [
+    15,
+    [
+      [-95, -83],
+      [-17, 52],
+      [73, 82],
+      [95, 110],
+      [120, 126],
+    ],
+  ],
+  [
+    9,
+    [
+      [-84, -60],
+      [-13, 45],
+      [98, 108],
+      [120, 126],
+    ],
+  ],
+  [
+    3,
+    [
+      [-78, -50],
+      [-10, 42],
+      [96, 120],
+    ],
+  ],
+  [
+    -3,
+    [
+      [-79, -38],
+      [8, 42],
+      [98, 118],
+      [132, 150],
+    ],
+  ],
+  [
+    -9,
+    [
+      [-77, -35],
+      [11, 40],
+      [100, 150],
+    ],
+  ],
+  [
+    -15,
+    [
+      [-75, -38],
+      [12, 40],
+      [43, 50],
+      [125, 140],
+    ],
+  ],
+  [
+    -21,
+    [
+      [-70, -40],
+      [12, 36],
+      [43, 50],
+      [113, 150],
+    ],
+  ],
+  [
+    -27,
+    [
+      [-71, -48],
+      [14, 33],
+      [113, 153],
+    ],
+  ],
+  [
+    -33,
+    [
+      [-72, -53],
+      [17, 32],
+      [115, 152],
+    ],
+  ],
+  [
+    -39,
+    [
+      [-73, -62],
+      [172, 178],
+    ],
+  ],
+  [
+    -45,
+    [
+      [-74, -65],
+      [166, 174],
+    ],
+  ],
+  [-51, [[-75, -68]]],
+];
+
+const COLUMNS = Array.from({ length: 60 }, (_, c) => -177 + c * 6);
+const dots = LAND.flatMap(([lat, ranges]) =>
+  COLUMNS.filter((lon) => ranges.some(([a, b]) => lon >= a && lon <= b)).map(
+    (lon) => ({ cx: x(lon), cy: y(lat) }),
+  ),
+);
+
+/**
+ * The seven, at their own coordinates, with the offset their label needs to clear its neighbours.
+ *
+ * London and Madrid are four degrees of longitude and eleven of latitude apart, which is close
+ * enough on a map this wide that the two names would sit on top of one another.
+ */
+const PLACES = [
+  { lat: 40.42, lon: -3.7, dx: 16, dy: 5, at: "at-start" },
+  { lat: -33.87, lon: 151.21, dx: -20, dy: 5, at: "at-end" },
+  { lat: -34.6, lon: -58.38, dx: -20, dy: 5, at: "at-end" },
+  { lat: 55.75, lon: 37.62, dx: 16, dy: 0, at: "at-start" },
+  { lat: 51.51, lon: -0.13, dx: -16, dy: -7, at: "at-end" },
+  { lat: 32.08, lon: 34.78, dx: 16, dy: 10, at: "at-start" },
+  { lat: 34.05, lon: -118.24, dx: -16, dy: 5, at: "at-end" },
+];
+const places = PLACES.map((p, i) => ({
+  ...p,
+  name: cities[i],
+  cx: x(p.lon),
+  cy: y(p.lat),
+}));
+
+/**
+ * Which of them talk to which, and the arc between them.
+ *
+ * The bow is perpendicular to the link and always to the same side of west-to-east travel, which
+ * is the direction a great circle bends once it is drawn flat. Bowing it vertically instead — the
+ * obvious first go — does nothing at all to a link that is already vertical, and sends the one
+ * from Buenos Aires to Madrid curving back over Brazil.
+ *
+ * The Pacific pair is the exception the projection creates rather than a route: it leaves one edge
+ * and arrives at the other, because that is the short way round and drawing it across Asia would
+ * be drawing the long one.
+ */
+const LINKS: readonly (readonly [number, number])[] = [
+  [4, 0],
+  [4, 3],
+  [0, 5],
+  [3, 5],
+  [4, 6],
+  [6, 2],
+  [2, 0],
+  [3, 1],
+  [1, 5],
+];
+const links = LINKS.map(([a, b]) => {
+  const pair = [places[a], places[b]].sort((p, q) => p.cx - q.cx);
+  const [from, to] = pair;
+  const reach = Math.hypot(to.cx - from.cx, to.cy - from.cy);
+  const bow = Math.min(reach * 0.1, 22);
+  const mx = (from.cx + to.cx) / 2 - ((to.cy - from.cy) / reach) * bow;
+  const my = (from.cy + to.cy) / 2 + ((to.cx - from.cx) / reach) * -bow;
+  return `M${from.cx.toFixed(1)} ${from.cy.toFixed(1)} Q${mx.toFixed(1)} ${my.toFixed(1)} ${to.cx.toFixed(1)} ${to.cy.toFixed(1)}`;
+});
+
+/**
+ * Sydney to Los Angeles, which on a flat map is the one route that has to leave the picture.
+ * Drawn as two pieces meeting at the same height on either edge, because the short way across the
+ * Pacific is the long way across the drawing.
+ */
+const EDGE_Y = 214;
+const pacific = [
+  `M${places[1].cx.toFixed(1)} ${places[1].cy.toFixed(1)} Q680 232 704 ${EDGE_Y}`,
+  `M16 ${EDGE_Y} Q62 190 ${places[6].cx.toFixed(1)} ${places[6].cy.toFixed(1)}`,
+];
+
+/** Whoever is asking, sitting where there is no node, reaching the one that is nearest. */
+const ASKING = [
+  { bx: 286, by: 150, to: 0 },
+  { bx: 170, by: 292, to: 2 },
+  { bx: 560, by: 296, to: 1 },
+];
+const asking = ASKING.map((a, i) => {
+  const node = places[a.to];
+  const fx = a.bx + 6;
+  const fy = a.by - 4;
+  const reach = Math.hypot(node.cx - fx, node.cy - fy);
+  // Stop short of the ring, so the head points at the city instead of sitting on top of it.
+  const back = 11 / reach;
+  return {
+    ...a,
+    name: clients[i],
+    fx,
+    fy,
+    tx: node.cx - (node.cx - fx) * back,
+    ty: node.cy - (node.cy - fy) * back,
+  };
+});
+---
+
+<figure class="panel">
+  <div class="panel__frame">
+    <svg viewBox="0 0 720 320" role="img" aria-label={label}>
+      <defs>
+        <marker
+          id="map-tip"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0 0 L10 5 L0 10 z" fill="var(--brand)"></path>
+        </marker>
+      </defs>
+
+      <!-- The land, one dot to six degrees. -->
+      <g class="land">
+        {dots.map((d) => <circle cx={d.cx} cy={d.cy} r="2.6" />)}
+      </g>
+
+      <!-- What the nodes are to one another. -->
+      <g class="mesh">
+        {links.map((d) => <path d={d} />)}
+        <path d={pacific[0]}></path>
+        <path d={pacific[1]}></path>
+      </g>
+
+      <!-- The seven. None of them is bigger than another, because none of them is. -->
+      <g class="nodes">
+        {
+          places.map((p) => (
+            <>
+              <circle class="halo" cx={p.cx} cy={p.cy} r="9" />
+              <circle cx={p.cx} cy={p.cy} r="4.5" />
+              <text
+                class:list={["dia-note", p.at]}
+                x={p.cx + p.dx}
+                y={p.cy + p.dy}
+              >
+                {p.name}
+              </text>
+            </>
+          ))
+        }
+      </g>
+
+      <!-- And whoever is asking, from somewhere that is not one of them. -->
+      <g class="asking">
+        {
+          asking.map((a) => (
+            <>
+              <path
+                d={`M${a.fx} ${a.fy} L${a.tx.toFixed(1)} ${a.ty.toFixed(1)}`}
+                marker-end="url(#map-tip)"
+              />
+              <circle cx={a.fx - 2} cy={a.fy} r="3.5" />
+              <text class:list={["dia-note", "at-end"]} x={a.bx - 8} y={a.by}>
+                {a.name}
+              </text>
+            </>
+          ))
+        }
+      </g>
+    </svg>
+  </div>
+
+  <figcaption>{caption}</figcaption>
+</figure>
+
+<style>
+  .land circle {
+    fill: var(--tone-net);
+    opacity: 0.45;
+  }
+
+  .mesh path {
+    fill: none;
+    stroke: var(--tone-net);
+    stroke-width: 1.6;
+    opacity: 0.7;
+  }
+
+  .nodes circle {
+    fill: var(--tone-net);
+  }
+
+  /* A ring around each node, so that a city reads as a place on the network and not as a dot of
+     land that happens to be brighter. */
+  .nodes .halo {
+    fill: var(--tone-net-wash);
+    stroke: var(--tone-net);
+    stroke-width: 1.2;
+    opacity: 0.55;
+  }
+
+  .nodes .dia-note {
+    fill: var(--tone-net);
+    font-weight: 600;
+  }
+
+  .asking path {
+    fill: none;
+    stroke: var(--brand);
+    stroke-width: 2.2;
+  }
+
+  .asking circle {
+    fill: var(--brand);
+  }
+
+  .asking .dia-note {
+    fill: var(--brand-bright);
+    font-weight: 600;
+  }
+
+  /* Written as classes and not as `text-anchor` attributes: a presentation attribute loses to the
+     rule that centres every label on this site, so every name would sit on top of its own node. */
+  .at-end {
+    text-anchor: end;
+  }
+
+  .at-start {
+    text-anchor: start;
+  }
+</style>

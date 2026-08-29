@@ -1,0 +1,396 @@
+---
+/**
+ * The errands, one at a time, as a scene rather than a table.
+ *
+ * The first version of this laid each case out as three equal boxes under twelve buttons, and it
+ * read as a filter bar over a spreadsheet: nothing said where to start, the boxes with one line in
+ * them were mostly empty, and the sentence that does the selling — *of age: yes* — was the
+ * smallest thing on the panel. So the case is a **picture** now, and the picture is the argument:
+ *
+ * - **`card`** redraws the credential from the opening of the page, with this errand's rows. Four
+ *   shut and one lit is the asymmetry drawn instead of tabulated, and the lit row is the loudest
+ *   thing on screen because it is the point.
+ * - **`swap`** stacks what happens today over what happens instead, and lets the drop between
+ *   them carry the argument. It is what an organisation is buying, and what somebody who has just
+ *   lost a phone wants to see.
+ *
+ * The buttons went from twelve in view to a switch of two and a strip of six, because twelve
+ * labels in two rows is a menu and a menu is not a carousel.
+ */
+
+import type { CaseKind } from "../data/cases";
+import CaseCard from "./diagrams/CaseCard.astro";
+import CaseSwap from "./diagrams/CaseSwap.astro";
+
+interface Block {
+  /** The tag on the rows of a card, or the heading of half of a swap. */
+  label: string;
+  /** What is in it. */
+  lines: readonly string[];
+}
+
+interface Case {
+  /** The word on the button. Two or three, because six of them share a strip. */
+  tab: string;
+  /** Which picture tells it. */
+  kind: CaseKind;
+  /** The line in display type: the question that is put, or the promise that is made. */
+  headline: string;
+  /** What the situation is, before anything is claimed. */
+  situation: string;
+  /** What stays and what leaves, or what happens today and what happens instead. */
+  blocks: readonly [Block, Block];
+  /** What this does not do, which is the line that makes the rest believable. */
+  note: string;
+}
+
+interface Props {
+  /** What the two sides are called on the switch. */
+  audiences: readonly [string, string];
+  /** What a screen reader is told the switch is for. */
+  audiencePicker: string;
+  /** What a screen reader is told each strip of cases is for. */
+  pickers: readonly [string, string];
+  /** What the credential in a `card` is called. The same on every case that has one. */
+  cardHeading: string;
+  /** The cases, one list per audience. */
+  groups: readonly (readonly Case[])[];
+}
+
+const { audiences, audiencePicker, pickers, cardHeading, groups } = Astro.props;
+
+/**
+ * Every case with the identifiers that tie its button to its panel, and its place in its strip.
+ *
+ * Worked out once here rather than three times in the markup: a tab pointing at a panel that does
+ * not exist is a carousel that looks right and reads as nothing to somebody using a screen reader.
+ */
+const strips = groups.map((cases, g) =>
+  cases.map((item, i) => ({
+    item,
+    tab: `uc-tab-${g}-${i}`,
+    panel: `uc-panel-${g}-${i}`,
+    /** `01 / 06`, so that a slide is somewhere in a sequence rather than simply on screen. */
+    position: `${String(i + 1).padStart(2, "0")} / ${String(cases.length).padStart(2, "0")}`,
+    open: g === 0 && i === 0,
+    entry: i === 0,
+  })),
+);
+---
+
+<div class="uc" data-usecases>
+  <div class="uc__switch" role="group" aria-label={audiencePicker}>
+    {
+      audiences.map((name, g) => (
+        <button
+          type="button"
+          class="uc__side"
+          data-side={g}
+          aria-pressed={g === 0 ? "true" : "false"}
+        >
+          {name}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    strips.map((strip, g) => (
+      <div
+        class="uc__tabs"
+        role="tablist"
+        aria-label={pickers[g]}
+        data-strip={g}
+        hidden={g !== 0}
+      >
+        {strip.map((stop) => (
+          <button
+            type="button"
+            class="uc__tab"
+            role="tab"
+            id={stop.tab}
+            aria-controls={stop.panel}
+            aria-selected={stop.open ? "true" : "false"}
+            tabindex={stop.entry ? 0 : -1}
+          >
+            {stop.item.tab}
+          </button>
+        ))}
+      </div>
+    ))
+  }
+
+  <div class="uc__panels">
+    {
+      strips.flat().map((stop) => (
+        <section
+          class="uc__panel"
+          role="tabpanel"
+          id={stop.panel}
+          aria-labelledby={stop.tab}
+          tabindex="0"
+          hidden={!stop.open}
+        >
+          <div class="uc__words">
+            <span class="uc__position">{stop.position}</span>
+            <h3 class="uc__headline">{stop.item.headline}</h3>
+            <p class="uc__situation">{stop.item.situation}</p>
+            <p class="uc__note">{stop.item.note}</p>
+          </div>
+
+          <div class="uc__figure">
+            {stop.item.kind === "card" ? (
+              <CaseCard
+                heading={cardHeading}
+                kept={stop.item.blocks[0]}
+                shown={stop.item.blocks[1]}
+              />
+            ) : (
+              <CaseSwap
+                before={stop.item.blocks[0]}
+                after={stop.item.blocks[1]}
+              />
+            )}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  /* ── Choosing a side, then a case ── */
+  .uc__switch {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 18px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+  }
+
+  .uc__side {
+    padding: 8px 20px;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    background: none;
+    border: 0;
+    border-radius: 100px;
+    cursor: pointer;
+    transition:
+      color var(--transition),
+      background var(--transition);
+  }
+
+  .uc__side:hover {
+    color: var(--color-text);
+  }
+
+  .uc__side[aria-pressed="true"] {
+    color: #120a04;
+    background: var(--brand);
+  }
+
+  /* Both of these are switched with the `hidden` attribute, and both set `display`, which beats
+     the browser's own rule for it. Without these two lines every strip and every panel is on the
+     page at once and the carousel is a very long list. */
+  .uc__tabs[hidden],
+  .uc__panel[hidden] {
+    display: none;
+  }
+
+  .uc__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 34px;
+  }
+
+  .uc__tab {
+    padding: 9px 15px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--color-text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    cursor: pointer;
+    transition:
+      color var(--transition),
+      background var(--transition),
+      border-color var(--transition);
+  }
+
+  .uc__tab:hover {
+    color: var(--color-text);
+    background: var(--surface-3);
+  }
+
+  .uc__tab[aria-selected="true"] {
+    color: var(--brand-bright);
+    background: var(--brand-wash);
+    border-color: var(--brand-edge);
+  }
+
+  /* ── The scene ──
+     A floor under it so that moving from a four-row case to a two-line one does not throw the
+     rest of the page up and down under the reader's cursor. */
+  .uc__panels {
+    min-height: 27rem;
+  }
+
+  .uc__panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .uc__panel {
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+    }
+  }
+
+  /* Switching used to happen with no transition at all, which is half of why it read as a filter
+     rather than as a carousel. Restarting on display is what makes it fire on every change. */
+  .uc__panel:not([hidden]) {
+    animation: uc-arrive 260ms ease-out both;
+  }
+
+  @keyframes uc-arrive {
+    from {
+      opacity: 0;
+      transform: translateY(9px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .uc__panel:not([hidden]) {
+      animation: none;
+    }
+  }
+
+  .uc__panel:focus-visible {
+    outline-offset: 10px;
+  }
+
+  .uc__position {
+    display: block;
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    color: var(--color-text-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .uc__headline {
+    margin: 14px 0 0;
+    font-size: clamp(1.35rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.022em;
+    line-height: 1.18;
+    color: var(--color-text);
+  }
+
+  .uc__situation {
+    max-width: 46ch;
+    margin: 16px 0 0;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-text-muted);
+  }
+
+  .uc__note {
+    max-width: 52ch;
+    margin: 24px 0 0;
+    padding-left: 16px;
+    border-left: 2px solid var(--line-strong);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-subtle);
+  }
+
+  @media (max-width: 640px) {
+    .uc__panels {
+      min-height: 0;
+    }
+  }
+</style>
+
+<script>
+  /**
+   * A switch of two over strips of six over one region of panels.
+   *
+   * The pattern is WAI-ARIA tabs with a roving `tabindex`, and the two things worth saying are
+   * that each strip keeps its own way in for the keyboard — so the second audience never becomes
+   * something only a mouse can reach — and that arrow keys stay inside the strip they were pressed
+   * in, because the strips are two different arguments and not one long one.
+   *
+   * Changing sides brings back the case that side was last reading, which is what makes the switch
+   * feel like two places rather than one place being reset.
+   */
+  document.querySelectorAll<HTMLElement>("[data-usecases]").forEach((root) => {
+    const sides = [...root.querySelectorAll<HTMLButtonElement>("[data-side]")];
+    const lists = [...root.querySelectorAll<HTMLElement>("[data-strip]")];
+    const tabs = [...root.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const strips = lists.map((list) => [
+      ...list.querySelectorAll<HTMLButtonElement>('[role="tab"]'),
+    ]);
+
+    if (!tabs.length) return;
+
+    /** Where each side was left, so that coming back to it is coming back and not starting over. */
+    const seen = strips.map((strip) => strip[0]);
+
+    const open = (tab: HTMLButtonElement, focus: boolean) => {
+      const side = strips.findIndex((strip) => strip.includes(tab));
+      if (side < 0) return;
+      seen[side] = tab;
+
+      for (const other of tabs) {
+        other.setAttribute("aria-selected", String(other === tab));
+        other.tabIndex = seen.includes(other) ? 0 : -1;
+      }
+      for (const [i, list] of lists.entries()) list.hidden = i !== side;
+      for (const [i, button] of sides.entries()) {
+        button.setAttribute("aria-pressed", String(i === side));
+      }
+      const wanted = tab.getAttribute("aria-controls");
+      for (const panel of panels) panel.hidden = panel.id !== wanted;
+      if (focus) tab.focus();
+    };
+
+    for (const [i, button] of sides.entries()) {
+      button.addEventListener("click", () => open(seen[i], false));
+    }
+
+    for (const tab of tabs) {
+      tab.addEventListener("click", () => open(tab, false));
+      tab.addEventListener("keydown", (event) => {
+        const strip = strips.find((s) => s.includes(tab));
+        if (!strip) return;
+        const at = strip.indexOf(tab);
+        const to = {
+          ArrowLeft: at - 1,
+          ArrowRight: at + 1,
+          ArrowUp: at - 1,
+          ArrowDown: at + 1,
+          Home: 0,
+          End: strip.length - 1,
+        }[event.key];
+        if (to === undefined) return;
+        event.preventDefault();
+        open(strip[(to + strip.length) % strip.length], true);
+      });
+    }
+  });
+</script>

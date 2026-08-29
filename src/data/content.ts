@@ -45,7 +45,7 @@ const contentEn = {
     ],
   },
   different: {
-    num: "02",
+    num: "03",
     kicker: "What is different",
     title: "The asking is public. Your answers never are",
     lead: "Nothing you answer is ever published — not one attribute, not once. What is published is the question: every request is made against a form written down in advance, and every form sits in a catalogue anybody can read and compare.",
@@ -54,7 +54,7 @@ const contentEn = {
       "This does not make abuse impossible — nothing in a protocol can. It makes it legible, and the remedy lives outside: in reputation, and in regulation.",
   },
   keys: {
-    num: "03",
+    num: "04",
     kicker: "Your keys",
     title: "Sovereignty, with the means to exercise it",
     lead: "Holding your own identity means nobody can take it from you, and it also means nobody can give it back. Almena is built so that the second half is survivable — and so that everything the device keeps is encrypted, under keys made inside the hardware it already carries and never handed out.",
@@ -76,7 +76,7 @@ const contentEn = {
       "Not every computer carries that hardware. Where it is missing the protection is a step lower, and the app says so rather than letting you assume otherwise.",
   },
   network: {
-    num: "04",
+    num: "05",
     kicker: "The network",
     title: "Open, traceable, and answerable",
     lead: "Anybody can run a node — no permission, no onboarding, no stake — and the code it runs is public, so what a node does can be read rather than believed. Every act on the network is written down and signed, so what happened can always be reconstructed by anybody; and none of what is written down is personal data.",
@@ -96,7 +96,7 @@ const contentEn = {
     ],
   },
   limits: {
-    num: "06",
+    num: "07",
     kicker: "What it is not",
     title: "Said plainly, because it is easy to assume otherwise",
     lead: "A platform is also the things it refuses to be, and those are worth as much as the promises.",
@@ -120,7 +120,7 @@ const contentEn = {
     ],
   },
   close: {
-    num: "07",
+    num: "08",
     kicker: "Open source",
     title: "Nothing here depends on trusting us",
     quote:
@@ -176,7 +176,7 @@ const contentEs: Widened<typeof contentEn> = {
     ],
   },
   different: {
-    num: "02",
+    num: "03",
     kicker: "Qué es distinto",
     title: "Lo público es la petición, nunca tus respuestas",
     lead: "Nada de lo que respondes se publica jamás — ni un atributo, ni una vez. Lo que se publica es la pregunta: cada petición se hace contra un formulario escrito por adelantado, y cada formulario está en un catálogo que cualquiera puede leer y comparar.",
@@ -185,7 +185,7 @@ const contentEs: Widened<typeof contentEn> = {
       "Esto no hace imposible el abuso — nada en un protocolo puede. Lo hace legible, y el remedio vive fuera: en la reputación y en la regulación.",
   },
   keys: {
-    num: "03",
+    num: "04",
     kicker: "Tus claves",
     title: "Soberanía, con los medios para ejercerla",
     lead: "Tener tu propia identidad significa que nadie te la puede quitar, y también que nadie te la puede devolver. Almena está construida para que esa segunda mitad se pueda sobrevivir — y para que todo lo que el dispositivo guarda esté cifrado, bajo claves creadas dentro del hardware que ya lleva y que nunca salen de él.",
@@ -207,7 +207,7 @@ const contentEs: Widened<typeof contentEn> = {
       "No todos los ordenadores llevan ese hardware. Donde falta, la protección baja un escalón, y la aplicación lo dice en vez de dejar que supongas otra cosa.",
   },
   network: {
-    num: "04",
+    num: "05",
     kicker: "La red",
     title: "Abierta, trazable, y que responde",
     lead: "Cualquiera puede levantar un nodo — sin permiso, sin alta y sin depósito — y el código que ejecuta es público, así que lo que hace un nodo se puede leer en vez de creerlo. Todo acto en la red queda escrito y firmado, así que cualquiera puede reconstruir lo que pasó; y nada de lo que queda escrito es un dato personal.",
@@ -227,7 +227,7 @@ const contentEs: Widened<typeof contentEn> = {
     ],
   },
   limits: {
-    num: "06",
+    num: "07",
     kicker: "Lo que no es",
     title: "Dicho claro, porque es fácil suponer otra cosa",
     lead: "Una plataforma también es lo que se niega a ser, y eso vale tanto como las promesas.",
@@ -251,7 +251,7 @@ const contentEs: Widened<typeof contentEn> = {
     ],
   },
   close: {
-    num: "07",
+    num: "08",
     kicker: "Código abierto",
     title: "Nada de esto depende de que te fíes de nosotros",
     quote:

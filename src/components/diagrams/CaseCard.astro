@@ -1,0 +1,132 @@
+---
+/**
+ * The credential a case is answered with, drawn as the object rather than described as a list.
+ *
+ * The same claim as the drawing that opens the page, and deliberately **not** the same file: that
+ * one is SVG, which cannot wrap a line, and gets away with it because its four rows are fixed. A
+ * case has three or four rows in one language and different ones in the other, and one to three
+ * lit ones, so this is markup and reflows.
+ *
+ * The lit row carries a glow, which is the only place on the site that has one. It is there
+ * because it is the sentence the whole section exists to make: this is all that left.
+ */
+
+interface Props {
+  /** What the credential is called. */
+  heading: string;
+  /** The tag on the rows that stay shut, and the rows themselves. */
+  kept: { label: string; lines: readonly string[] };
+  /** The tag on the rows that open, and the rows themselves. */
+  shown: { label: string; lines: readonly string[] };
+}
+
+const { heading, kept, shown } = Astro.props;
+---
+
+<div class="card-face">
+  <h4 class="card-face__name">{heading}</h4>
+  {
+    kept.lines.map((line) => (
+      <p class="row">
+        <span class="lock" aria-hidden="true" />
+        {line}
+        <b>{kept.label}</b>
+      </p>
+    ))
+  }
+  {
+    shown.lines.map((line) => (
+      <p class="row row--open">
+        <span class="tick" aria-hidden="true" />
+        {line}
+        <b>{shown.label}</b>
+      </p>
+    ))
+  }
+</div>
+
+<style>
+  /* ── The credential ──
+   The same object as the opening of the page, because it is the same claim: what is asked for
+   is a lot, and what leaves is one line. */
+  .card-face {
+    padding: 22px 20px;
+    background: linear-gradient(165deg, var(--surface-3), var(--surface-1));
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-lg);
+  }
+
+  .card-face__name {
+    margin: 0 0 16px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    padding: 12px 14px;
+    font-size: 0.9375rem;
+    line-height: 1.3;
+    color: var(--color-text-subtle);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+  }
+
+  .row:last-child {
+    margin-bottom: 0;
+  }
+
+  .row b {
+    margin-left: auto;
+    padding-left: 10px;
+    font-size: 0.625rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .row--open {
+    color: var(--tone-ok);
+    font-weight: 650;
+    background: var(--tone-ok-wash);
+    border-color: var(--tone-ok-edge);
+    box-shadow: 0 0 34px -10px rgba(67, 201, 138, 0.5);
+  }
+
+  .lock {
+    position: relative;
+    flex: none;
+    width: 13px;
+    height: 13px;
+    border: 1.5px solid currentColor;
+    border-radius: 3px;
+  }
+
+  .lock::before {
+    content: "";
+    position: absolute;
+    left: 2.5px;
+    top: -4px;
+    width: 6px;
+    height: 5px;
+    border: 1.5px solid currentColor;
+    border-bottom: 0;
+    border-radius: 3px 3px 0 0;
+  }
+
+  .tick {
+    flex: none;
+    width: 6px;
+    height: 11px;
+    margin: 0 3px 3px 2px;
+    border-right: 2.5px solid var(--tone-ok);
+    border-bottom: 2.5px solid var(--tone-ok);
+    transform: rotate(42deg);
+  }
+</style>
