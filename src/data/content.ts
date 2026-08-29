@@ -12,35 +12,35 @@ const contentEn = {
   hero: {
     eyebrow: "Decentralised identity",
     title: "Your identity stays with you",
-    lead: "Prove what you need to prove, and nothing more. Organisations that have been checked sign what they already know about you, you carry it on your phone, and whoever asks gets an answer they can verify themselves — never a copy of your documents.",
+    lead: "Prove what you need to prove, and nothing else. An organisation you already deal with confirms something it knows about you. You keep it on your phone. When somebody asks, you send an answer they can check themselves — not a copy of your papers.",
     claims: [
       "Open source",
       "Decentralised",
-      "Encrypted end to end",
-      "Every act leaves a trace",
-      "No personal data in the network",
+      "Everything travels encrypted",
+      "Everything leaves a record",
+      "Your data is not in the network",
     ] as const,
-    note: "No personal data lives in the network. Not your name, not your address, not one attribute.",
+    note: "There is not one piece of your data in the network. Not your name, not your address, not your date of birth.",
     ctaPrimary: "See how it works",
     ctaSecondary: "Read the code",
   },
   how: {
     num: "01",
     kicker: "How it works",
-    title: "Three roles, and nothing in the middle",
-    lead: "A university vouches for its graduates. A professional body vouches for its members. An administration vouches for what its register says — and each of them carries a published grade saying how far it has itself been checked. You keep what they issued, and your device answers with it when somebody asks.",
+    title: "Three parties, and nobody in the middle",
+    lead: "A university stands behind its graduates. A professional body behind its members. A council behind what its register says. Each of them carries a public note saying how far it has been checked itself. You keep what they signed, and you show it when somebody asks.",
     points: [
       {
-        title: "The issuer vouches",
-        body: "It signs something it already knew about you — that you graduated, that you are registered, that you are of age. It does not learn anything new by doing it.",
+        title: "Whoever already knows signs it",
+        body: "They sign something they knew about you anyway: that you graduated, that you are on the register, that you are old enough. They learn nothing new by doing it.",
       },
       {
         title: "You keep it",
-        body: "On your phone, your tablet or your computer, protected by the hardware they already carry. Nobody holds it for you, and nobody can look at it.",
+        body: "On your phone, your tablet or your computer, behind the security chip the device already has. Nobody keeps it for you, and nobody can open it.",
       },
       {
-        title: "The verifier puts a question",
-        body: "It asks — “are you of age?” — and your device answers with a proof built from the credentials you hold. It checks that proof itself: the signature, that it is bound to you, and that nobody has revoked it. Not a copy of your documents.",
+        title: "Whoever needs it asks",
+        body: "They ask — “are you old enough?” — and your device answers with a proof made from what you keep. They check it themselves: that the signature is good, that it is yours, and that nobody has withdrawn it. They never see your papers.",
       },
     ],
   },
@@ -48,20 +48,20 @@ const contentEn = {
     num: "03",
     kicker: "What is different",
     title: "The asking is public. Your answers never are",
-    lead: "Nothing you answer is ever published — not one attribute, not once. What is published is the question: every request is made against a form written down in advance, and every form sits in a catalogue anybody can read and compare.",
-    body: "So a shop asking for your full date of birth to check you are of age is not doing something hidden. What it asks for is something anybody can look up, next to everybody else who asks for less — and what you answered stays between the two of you.",
+    lead: "Nothing you answer is ever published — not one piece of it, not once. What gets published is the question. Every request is made with a form written down beforehand, and every form sits in a list anybody can read and compare.",
+    body: "So a shop that asks for your whole date of birth just to check your age is not doing it in secret. What it asks for is there for anybody to look up, next to everybody else who asks for less. What you answered stays between the two of you.",
     honest:
-      "This does not make abuse impossible — nothing in a protocol can. It makes it legible, and the remedy lives outside: in reputation, and in regulation.",
+      "This does not make abuse impossible. Nothing in software can. It makes it visible, and the remedy is outside: reputation, and the law.",
   },
   keys: {
     num: "04",
     kicker: "Your keys",
-    title: "Sovereignty, with the means to exercise it",
-    lead: "Holding your own identity means nobody can take it from you, and it also means nobody can give it back. Almena is built so that the second half is survivable — and so that everything the device keeps is encrypted, under keys made inside the hardware it already carries and never handed out.",
+    title: "It really is yours, and there is a way back",
+    lead: "If your identity is yours, nobody can take it away. It also means nobody can hand it back. Almena is built so that the second half has an answer — and so that everything the device keeps is encrypted, with keys made inside its own chip that never leave it.",
     points: [
       {
         title: "Several devices",
-        body: "Your account works on all of them at once, and any one of them can throw out a lost one straight away — no words to type, no waiting.",
+        body: "Your account works on all of them at once, and from any one of them you can throw out the one you lost, right then. Nothing to type in, nothing to wait for.",
       },
       {
         title: "Guardians",
@@ -69,29 +69,29 @@ const contentEn = {
       },
       {
         title: "Words as the floor",
-        body: "A recovery phrase you keep. It is the last resort, and the app tells you honestly what it can and cannot do without it.",
+        body: "A handful of words you keep. It is the last resort, and the app tells you straight what it can and cannot do without them.",
       },
     ],
     honest:
-      "Not every computer carries that hardware. Where it is missing the protection is a step lower, and the app says so rather than letting you assume otherwise.",
+      "Not every computer has that chip. Where it is missing the protection is a step lower, and the app tells you so instead of letting you assume.",
   },
   network: {
     num: "05",
     kicker: "The network",
     title: "Open, traceable, and answerable",
-    lead: "Anybody can run a node — no permission, no onboarding, no stake — and the code it runs is public, so what a node does can be read rather than believed. Every act on the network is written down and signed, so what happened can always be reconstructed by anybody; and none of what is written down is personal data.",
+    lead: "Anybody can run a node: no permission, no sign-up, no money down. The program it runs is public, so what a node does can be read instead of taken on trust. Everything that happens is written down and signed, and anybody can go back over it. None of what is written down is data about you.",
     points: [
       {
         title: "A hostile node can refuse, never lie",
-        body: "Everything you receive is signed by whoever had the right to say it. Whoever passes it along is a messenger, and it does not matter who they are.",
+        body: "Everything you get is signed by whoever had the right to say it. Whoever passed it to you is only the messenger, and it does not matter who they are.",
       },
       {
         title: "Every act leaves a trace",
-        body: "Issuing, revoking, granting trust — each one is written down and signed, and none of it is ever rewritten. What was valid when it was signed stays valid, and a mistake is corrected forward rather than erased.",
+        body: "Issuing something, withdrawing it, trusting somebody: each one is written down and signed, and none of it is ever rewritten. A mistake is fixed by adding the correction after it, never by covering it up.",
       },
       {
         title: "What travels is encrypted",
-        body: "Messages between an issuer, you and a verifier are encrypted end to end. A node that carries one along cannot read it, and neither can anybody watching the wire.",
+        body: "Messages between an organisation, you and whoever is asking are encrypted the whole way. The node carrying one cannot read it, and neither can anybody watching the wire.",
       },
     ],
   },
@@ -103,7 +103,7 @@ const contentEn = {
     items: [
       {
         title: "It stores nobody's personal data",
-        body: "The issuer keeps what it knows; the network keeps identity, trust and revocation — and not every node keeps the same part of it.",
+        body: "Whoever issued it keeps what they know. The network keeps who is who, who is trusted and what has been withdrawn — and not every node keeps the same part of that.",
       },
       {
         title: "It is not a place where transactions happen",
@@ -111,7 +111,7 @@ const contentEn = {
       },
       {
         title: "It is not a vault, a loyalty scheme or a messenger",
-        body: "A credential vouches for a fact about a person; it is not a voucher, a receipt or a file.",
+        body: "A credential stands behind one fact about a person. It is not a coupon, a receipt or a file.",
       },
       {
         title: "It does not judge",
@@ -125,7 +125,7 @@ const contentEn = {
     title: "Nothing here depends on trusting us",
     quote:
       "Nobody can take your identity from you, and nothing anybody asks of you is hidden.",
-    body: "Almena is open source and decentralised. There are no master keys over the rules and no privileged reader of the network: anybody can run a node, the code it runs is public, what travels between people is encrypted, and every answer the network gives can be checked by whoever receives it.",
+    body: "Almena is open source and belongs to nobody. There is no master key over the rules and no privileged reader of the network. Anybody can run a node, the program it runs is public, what travels between people is encrypted, and every answer can be checked by whoever gets it.",
     cta: "Read the code on GitHub",
   },
 };
@@ -143,35 +143,35 @@ const contentEs: Widened<typeof contentEn> = {
   hero: {
     eyebrow: "Identidad descentralizada",
     title: "Tu identidad se queda contigo",
-    lead: "Demuestra lo que necesitas demostrar, y nada más. Organizaciones acreditadas firman lo que ya saben de ti, tú lo llevas en el móvil, y quien pregunta recibe una respuesta que puede verificar él mismo — nunca una copia de tus documentos.",
+    lead: "Demuestra lo que necesitas demostrar, y nada más. Una organización con la que ya tratas confirma algo que sabe de ti. Tú lo guardas en el móvil. Cuando alguien te lo pide, le mandas una respuesta que puede comprobar él mismo, no una copia de tus papeles.",
     claims: [
       "Código abierto",
       "Descentralizada",
-      "Cifrada de extremo a extremo",
-      "Todo acto deja rastro",
-      "Ningún dato personal en la red",
+      "Todo viaja cifrado",
+      "De todo queda constancia",
+      "Tus datos no están en la red",
     ] as const,
-    note: "Ningún dato personal vive en la red. Ni tu nombre, ni tu dirección, ni un solo atributo.",
+    note: "En la red no hay ni un dato tuyo. Ni tu nombre, ni tu dirección, ni tu fecha de nacimiento.",
     ctaPrimary: "Ver cómo funciona",
     ctaSecondary: "Leer el código",
   },
   how: {
     num: "01",
     kicker: "Cómo funciona",
-    title: "Tres papeles, y nada en medio",
-    lead: "Una universidad acredita a sus titulados. Un colegio profesional, a sus colegiados. Una administración, lo que consta en su registro — y cada una lleva un grado publicado que dice hasta dónde se la ha comprobado a ella. Tú guardas lo que emitieron, y tu dispositivo responde con ello cuando alguien pregunta.",
+    title: "Tres partes, y nadie en medio",
+    lead: "Una universidad responde por sus titulados. Un colegio profesional, por sus colegiados. Un ayuntamiento, por lo que dice su padrón. Cada uno lleva una nota pública que dice hasta dónde se le ha comprobado a él. Tú guardas lo que firmaron, y lo enseñas cuando te lo piden.",
     points: [
       {
-        title: "El emisor acredita",
-        body: "Firma algo que ya sabía de ti — que te licenciaste, que estás colegiado, que eres mayor de edad. No aprende nada nuevo al hacerlo.",
+        title: "Lo firma quien ya lo sabía",
+        body: "Firma algo que sabía de ti de todas formas: que te licenciaste, que estás colegiado, que tienes la edad. No se entera de nada nuevo por hacerlo.",
       },
       {
         title: "Tú lo guardas",
-        body: "En tu móvil, tu tableta o tu ordenador, protegido por el hardware que ya llevan. Nadie lo custodia por ti, y nadie puede mirarlo.",
+        body: "En tu móvil, tu tableta o tu ordenador, detrás del chip de seguridad que el aparato ya trae. Nadie te lo guarda, y nadie puede abrirlo.",
       },
       {
-        title: "El verificador pregunta",
-        body: "Plantea — «¿eres mayor de edad?» — y tu dispositivo responde con una prueba construida a partir de las credenciales que tienes. Comprueba esa prueba él solo: la firma, que va atada a ti, y que nadie la ha revocado. No una copia de tus documentos.",
+        title: "Pregunta quien lo necesita",
+        body: "Pregunta — «¿tienes la edad?» — y tu dispositivo responde con una prueba hecha con lo que guardas. Él la comprueba solo: que la firma es buena, que es tuya y que nadie la ha retirado. Nunca ve tus papeles.",
       },
     ],
   },
@@ -179,20 +179,20 @@ const contentEs: Widened<typeof contentEn> = {
     num: "03",
     kicker: "Qué es distinto",
     title: "Lo público es la petición, nunca tus respuestas",
-    lead: "Nada de lo que respondes se publica jamás — ni un atributo, ni una vez. Lo que se publica es la pregunta: cada petición se hace contra un formulario escrito por adelantado, y cada formulario está en un catálogo que cualquiera puede leer y comparar.",
-    body: "Así, una tienda que te pide la fecha de nacimiento entera para comprobar que eres mayor de edad no está haciendo algo oculto. Lo que pide es algo que cualquiera puede consultar, al lado de todos los demás que piden menos — y lo que tú respondiste se queda entre los dos.",
+    lead: "Nada de lo que respondes se publica nunca: ni un dato, ni una vez. Lo que se publica es la pregunta. Cada petición se hace con un formulario escrito de antemano, y cada formulario está en una lista que cualquiera puede leer y comparar.",
+    body: "Así, una tienda que te pide la fecha de nacimiento entera solo para comprobar la edad no lo hace a escondidas. Lo que pide está ahí para que cualquiera lo consulte, al lado de todos los que piden menos. Lo que tú respondiste se queda entre los dos.",
     honest:
-      "Esto no hace imposible el abuso — nada en un protocolo puede. Lo hace legible, y el remedio vive fuera: en la reputación y en la regulación.",
+      "Esto no hace imposible el abuso. Ningún programa puede. Lo hace visible, y el remedio está fuera: la reputación y la ley.",
   },
   keys: {
     num: "04",
     kicker: "Tus claves",
-    title: "Soberanía, con los medios para ejercerla",
-    lead: "Tener tu propia identidad significa que nadie te la puede quitar, y también que nadie te la puede devolver. Almena está construida para que esa segunda mitad se pueda sobrevivir — y para que todo lo que el dispositivo guarda esté cifrado, bajo claves creadas dentro del hardware que ya lleva y que nunca salen de él.",
+    title: "Es tuya de verdad, y hay forma de volver",
+    lead: "Si la identidad es tuya, nadie te la puede quitar. También quiere decir que nadie te la puede devolver. Almena está hecha para que esa segunda mitad tenga solución — y para que todo lo que guarda el aparato vaya cifrado, con claves que nacen dentro de su propio chip y no salen de ahí.",
     points: [
       {
         title: "Varios dispositivos",
-        body: "Tu cuenta funciona en todos a la vez, y desde cualquiera puedes echar al que has perdido en el momento — sin teclear palabras y sin esperas.",
+        body: "Tu cuenta funciona en todos a la vez, y desde cualquiera puedes echar al que has perdido, en ese momento. Nada que teclear y nada que esperar.",
       },
       {
         title: "Guardianes",
@@ -200,29 +200,29 @@ const contentEs: Widened<typeof contentEn> = {
       },
       {
         title: "Las palabras como suelo",
-        body: "Una frase de recuperación que guardas tú. Es el último recurso, y la aplicación te dice con honestidad qué puede y qué no puede hacer sin ella.",
+        body: "Unas palabras que guardas tú. Es el último recurso, y la aplicación te dice claro qué puede y qué no puede hacer sin ellas.",
       },
     ],
     honest:
-      "No todos los ordenadores llevan ese hardware. Donde falta, la protección baja un escalón, y la aplicación lo dice en vez de dejar que supongas otra cosa.",
+      "No todos los ordenadores llevan ese chip. Donde falta, la protección baja un escalón, y la aplicación te lo dice en vez de dejar que lo supongas.",
   },
   network: {
     num: "05",
     kicker: "La red",
     title: "Abierta, trazable, y que responde",
-    lead: "Cualquiera puede levantar un nodo — sin permiso, sin alta y sin depósito — y el código que ejecuta es público, así que lo que hace un nodo se puede leer en vez de creerlo. Todo acto en la red queda escrito y firmado, así que cualquiera puede reconstruir lo que pasó; y nada de lo que queda escrito es un dato personal.",
+    lead: "Cualquiera puede montar un nodo: sin permiso, sin darse de alta y sin poner dinero. El programa que corre es público, así que lo que hace se puede leer en vez de creérselo. Todo lo que pasa queda escrito y firmado, y cualquiera puede repasarlo. Nada de lo que queda escrito es un dato tuyo.",
     points: [
       {
         title: "Un nodo hostil puede negarse, nunca mentir",
-        body: "Todo lo que recibes va firmado por quien tenía derecho a afirmarlo. Quien te lo pasa es un mensajero, y da igual quién sea.",
+        body: "Todo lo que recibes va firmado por quien tenía derecho a decirlo. Quien te lo pasa es solo el mensajero, y da igual quién sea.",
       },
       {
         title: "Todo acto deja rastro",
-        body: "Emitir, revocar, conceder confianza — cada uno queda escrito y firmado, y nada de eso se reescribe nunca. Lo que era válido cuando se firmó sigue siéndolo, y un error se corrige hacia adelante en vez de borrarse.",
+        body: "Emitir algo, retirarlo, confiar en alguien: cada cosa queda escrita y firmada, y nada de eso se reescribe nunca. Un error se arregla añadiendo la corrección detrás, nunca tapándolo.",
       },
       {
         title: "Lo que viaja va cifrado",
-        body: "Los mensajes entre un emisor, tú y un verificador van cifrados de extremo a extremo. El nodo que los transporta no puede leerlos, y quien mire el cable tampoco.",
+        body: "Los mensajes entre una organización, tú y quien pregunta van cifrados todo el camino. El nodo que los lleva no puede leerlos, y quien mire el cable tampoco.",
       },
     ],
   },
@@ -234,7 +234,7 @@ const contentEs: Widened<typeof contentEn> = {
     items: [
       {
         title: "No guarda los datos personales de nadie",
-        body: "El emisor tiene lo que sabe; la red guarda identidad, confianza y revocación — y no todos los nodos guardan la misma parte.",
+        body: "Quien lo emitió tiene lo que sabe. La red guarda quién es quién, en quién se confía y qué se ha retirado — y no todos los nodos guardan la misma parte.",
       },
       {
         title: "No es un sitio donde ocurran transacciones",
@@ -242,7 +242,7 @@ const contentEs: Widened<typeof contentEn> = {
       },
       {
         title: "No es un almacén, ni fidelización, ni mensajería",
-        body: "Una credencial acredita un hecho sobre una persona; no es un bono, ni un recibo, ni un fichero.",
+        body: "Una credencial responde por un hecho sobre una persona. No es un cupón, ni un recibo, ni un fichero.",
       },
       {
         title: "No juzga",
@@ -256,7 +256,7 @@ const contentEs: Widened<typeof contentEn> = {
     title: "Nada de esto depende de que te fíes de nosotros",
     quote:
       "Nadie puede quitarte tu identidad, y nada de lo que te piden está oculto.",
-    body: "Almena es de código abierto y descentralizada. No hay claves maestras sobre las reglas ni un lector privilegiado de la red: cualquiera puede levantar un nodo, el código que ejecuta es público, lo que viaja entre personas va cifrado, y cada respuesta que da la red la puede comprobar quien la recibe.",
+    body: "Almena es de código abierto y no es de nadie. No hay una llave maestra sobre las reglas ni un lector privilegiado de la red. Cualquiera puede montar un nodo, el programa que corre es público, lo que viaja entre personas va cifrado, y cada respuesta la puede comprobar quien la recibe.",
     cta: "Leer el código en GitHub",
   },
 };

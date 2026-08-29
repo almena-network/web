@@ -37,23 +37,23 @@ const roadmapEn = {
   items: [
     {
       title: "The record everything is written in",
-      body: "One way of writing and signing an entry that two independent programs agree on, byte for byte.",
+      body: "One single way of writing down and signing each entry, that two different programs read exactly the same.",
     },
     {
       title: "A node anybody can run",
-      body: "Starting a node, creating an identity on it, and having anybody resolve that identity without asking permission.",
+      body: "Starting a node, creating an identity on it, and having anybody look that identity up without asking permission.",
     },
     {
       title: "A network that agrees without trusting itself",
-      body: "Several nodes serving the same answers, where what is settled stays settled, what the record says exists can be shown to still exist, and a new node can start from nothing without believing whoever serves it. A machine behind a household router takes part through a node that volunteers to carry it, and a node can be claimed by whoever contributes it — both of them saying so, in a record anybody can read.",
+      body: "Several nodes giving the same answers, where what is already closed cannot be reopened, what the record says exists can be shown to still be there, and a new node can start from nothing without having to believe whoever is feeding it. A machine behind a home router takes part through a node that offers to carry it, and whoever puts up a node can claim it — with both of them saying so, on a record anybody can read.",
     },
     {
       title: "The app that holds your identity",
-      body: "One account across your phone, your tablet and your computer, and any of them able to throw out one you have lost.",
+      body: "One account across your phone, your tablet and your computer, and any of them able to throw out one you have lost. If the phone is the only one you had, your twelve words stop the account from a machine you have just picked up — immediately, and without leaving anything of yours on it.",
     },
     {
       title: "Delivery while your phone is shut",
-      body: "An encrypted mailbox, so an issuer can hand you something when you are not there and you collect it later.",
+      body: "An encrypted inbox, so somebody can leave you something when you are not there and you pick it up later.",
     },
     {
       title: "Organisations, and who signs for them",
@@ -68,8 +68,8 @@ const roadmapEn = {
       body: "Every request form published where anybody can read it, next to everybody else asking for the same thing.",
     },
     {
-      title: "Issuing, proving and revoking",
-      body: "The whole errand end to end: a credential issued against a published form, answered as a proof, checked, and revoked when it stops being true.",
+      title: "Issuing, showing and withdrawing",
+      body: "The whole errand from end to end: something issued against a published form, answered with a proof, checked, and withdrawn when it stops being true.",
     },
     {
       title: "Getting back in when you lose everything",
@@ -81,7 +81,7 @@ const roadmapEn = {
     },
     {
       title: "Voting on the network itself",
-      body: "Proposals and votes with a frozen roll of who may take part, so decisions about Almena are taken the way Almena works.",
+      body: "Proposals and votes with a closed list of who may take part, so decisions about Almena are taken the way Almena works.",
     },
     {
       title: "Working with wallets that already exist",
@@ -113,23 +113,23 @@ const roadmapEs: Widened<typeof roadmapEn> = {
   items: [
     {
       title: "El registro en el que se escribe todo",
-      body: "Una única forma de escribir y firmar una entrada en la que dos programas independientes coinciden byte a byte.",
+      body: "Una única forma de escribir y firmar cada apunte, que dos programas distintos leen exactamente igual.",
     },
     {
       title: "Un nodo que puede levantar cualquiera",
-      body: "Arrancar un nodo, crear en él una identidad, y que cualquiera la resuelva sin pedir permiso.",
+      body: "Arrancar un nodo, crear en él una identidad, y que cualquiera pueda consultarla sin pedir permiso.",
     },
     {
       title: "Una red que se pone de acuerdo sin fiarse de sí misma",
-      body: "Varios nodos sirviendo las mismas respuestas, donde lo firme sigue firme, lo que el registro dice que existe se puede demostrar que sigue existiendo, y un nodo nuevo puede arrancar desde cero sin creerse a quien le sirve. Una máquina detrás de un router doméstico participa a través de un nodo que se ofrece a llevarla, y un nodo puede reclamarlo quien lo aporta — diciéndolo los dos, en un registro que cualquiera puede leer.",
+      body: "Varios nodos dando las mismas respuestas, donde lo que ya está cerrado no se puede reabrir, lo que el registro dice que existe se puede demostrar que sigue ahí, y un nodo nuevo puede arrancar de cero sin tener que creerse a quien le sirve. Una máquina detrás de un router de casa participa a través de un nodo que se ofrece a llevarla, y quien pone un nodo puede reclamarlo — diciéndolo los dos, en un registro que cualquiera puede leer.",
     },
     {
       title: "La aplicación que guarda tu identidad",
-      body: "Una cuenta en tu móvil, tu tableta y tu ordenador a la vez, y desde cualquiera echar al que has perdido.",
+      body: "Una cuenta en tu móvil, tu tableta y tu ordenador a la vez, y desde cualquiera echar al que has perdido. Si el móvil era el único que tenías, tus doce palabras detienen la cuenta desde una máquina que acabas de coger — al momento, y sin dejar nada tuyo en ella.",
     },
     {
       title: "Entrega con el móvil apagado",
-      body: "Un buzón cifrado, para que un emisor pueda entregarte algo cuando no estás y lo recojas más tarde.",
+      body: "Un buzón cifrado, para que alguien pueda dejarte algo cuando no estás y lo recojas más tarde.",
     },
     {
       title: "Entidades, y quién firma por ellas",
@@ -144,8 +144,8 @@ const roadmapEs: Widened<typeof roadmapEn> = {
       body: "Cada formulario de petición publicado donde cualquiera puede leerlo, al lado de todos los demás que piden lo mismo.",
     },
     {
-      title: "Emitir, probar y revocar",
-      body: "El trámite entero de punta a punta: una credencial emitida contra un formulario publicado, respondida como prueba, comprobada, y revocada cuando deja de ser cierta.",
+      title: "Emitir, enseñar y retirar",
+      body: "El trámite entero de punta a punta: algo emitido contra un formulario publicado, respondido con una prueba, comprobado, y retirado cuando deja de ser cierto.",
     },
     {
       title: "Volver a entrar cuando lo pierdes todo",
@@ -157,7 +157,7 @@ const roadmapEs: Widened<typeof roadmapEn> = {
     },
     {
       title: "Votación sobre la propia red",
-      body: "Propuestas y votos con un censo congelado de quién puede participar, para que las decisiones sobre Almena se tomen como funciona Almena.",
+      body: "Propuestas y votos con una lista cerrada de quién puede participar, para que las decisiones sobre Almena se tomen como funciona Almena.",
     },
     {
       title: "Funcionar con las carteras que ya existen",
@@ -185,7 +185,7 @@ export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
   "built",
-  "under",
+  "built",
   "planned",
   "planned",
   "planned",

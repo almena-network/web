@@ -27,11 +27,13 @@ import Ledger from "./diagrams/Ledger.astro";
 import Roadmap from "./diagrams/Roadmap.astro";
 import UseCases from "./UseCases.astro";
 import CardGrid from "./CardGrid.astro";
+import Technology from "./Technology.astro";
 import { site, GITHUB_URL, type Lang } from "../data/site";
 import { content } from "../data/content";
 import { diagrams } from "../data/diagrams";
 import { roadmap, roadmapStates } from "../data/roadmap";
 import { cases } from "../data/cases";
+import { technology } from "../data/technology";
 import { HOW, KEYS, NETWORK, NOT } from "./icons";
 
 interface Props {
@@ -44,6 +46,7 @@ const c = content[lang];
 const d = diagrams[lang];
 const r = roadmap[lang];
 const u = cases[lang];
+const t = technology[lang];
 
 /**
  * The capabilities with their states attached.
@@ -205,7 +208,28 @@ const s = site[lang];
     </div>
   </section>
 
-  <section id="limits" class="section">
+  <!-- For the reader who wants names. It comes after the roadmap because it answers a question
+       somebody only asks once they have decided they are interested. -->
+  <section id="technology" class="section">
+    <div class="page">
+      <div class="sec-head">
+        <span class="sec-num">{t.num}</span>
+        <span class="sec-kicker">{t.kicker}</span>
+        <h2 class="sec-title">{t.title}</h2>
+        <p class="sec-lead">{t.lead}</p>
+      </div>
+
+      <Technology
+        why={t.why}
+        whyNote={t.whyNote}
+        aheadTitle={t.aheadTitle}
+        ahead={t.ahead}
+        aheadNote={t.aheadNote}
+      />
+    </div>
+  </section>
+
+  <section id="limits" class="section section--alt">
     <div class="page">
       <div class="sec-head sec-head--center">
         <span class="sec-num">{c.limits.num}</span>
@@ -220,7 +244,7 @@ const s = site[lang];
 
   <!-- The close. It makes no promise the rest of the page has not already had to earn, and its
        one link is to the code, which is the only claim here anybody can check today. -->
-  <section id="close" class="section section--alt close">
+  <section id="close" class="section close">
     <div class="page close__inner">
       <div class="sec-head sec-head--center close__head">
         <span class="sec-num">{c.close.num}</span>
