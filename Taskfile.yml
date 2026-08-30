@@ -25,13 +25,17 @@ tasks:
   # repository missing one of them is a repository where the closing check cannot run. This one
   # went without for long enough that a broken type import sat in its layout unnoticed.
   check:
-    desc: Type-check, lint and check formatting
+    desc: Type-check, lint, check formatting and run the suites
     dir: "{{.TASKFILE_DIR}}"
     cmds:
       - echo "Checking web (astro check, eslint, prettier)..."
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run check'
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run lint'
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run format:check'
+      # Last, and inside: a check that left the suites out would be one a change could run in
+      # full and still be half done. `test` builds first, because the suites read `dist/` —
+      # what a reader is shown is what shipped, not the file it came from.
+      - task: test
 
   format:
     desc: Format the source with Prettier

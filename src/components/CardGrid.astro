@@ -41,20 +41,33 @@ const glyph = (i: number) => (typeof icons === "string" ? icons : icons[i]);
 </div>
 
 <style>
+  /* **The grid finds its own column count from the width it is given**, which is the platform's
+     own rule and the reason there is one breakpoint in this stylesheet rather than nine. The
+     `max` is what caps it: a column never goes below the width a card of prose stays readable
+     at, and never below its share of the row, so two-up stays two-up on the widest screen and
+     falls to one when there is no room for two. */
   .grid {
+    --gap: 18px;
     display: grid;
-    gap: 18px;
+    gap: var(--gap);
     margin-top: 30px;
     grid-template-columns: 1fr;
   }
 
-  @media (min-width: 760px) {
-    .grid--2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
+  .grid--2 {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(var(--width-card-min), calc(50% - var(--gap)))), 1fr)
+    );
+  }
 
-    .grid--3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
+  .grid--3 {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(
+        min(100%, max(var(--width-card-min), calc(33.33% - var(--gap)))),
+        1fr
+      )
+    );
   }
 </style>

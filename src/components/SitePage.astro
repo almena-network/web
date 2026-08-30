@@ -293,11 +293,18 @@ const s = site[lang];
     padding-bottom: 76px;
   }
 
+  /* The words beside the picture where both fit, stacked where they do not — worked out from the
+     width rather than switched at one. The floor is the picture's: a credential drawn narrower
+     than this stops being a credential and becomes a smudge with lettering on it. */
   .hero__grid {
+    --least: 420px;
     display: grid;
-    grid-template-columns: 1fr;
     gap: 44px;
     align-items: center;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(var(--least), calc(50% - 44px))), 1fr)
+    );
   }
 
   /* A grid track is at least as wide as its item's minimum content, and the credential keeps a
@@ -305,13 +312,6 @@ const s = site[lang];
      pushes the whole opening wider than the screen. */
   .hero__grid > * {
     min-width: 0;
-  }
-
-  @media (min-width: 980px) {
-    .hero__grid {
-      grid-template-columns: 1.06fr 0.94fr;
-      gap: 60px;
-    }
   }
 
   .hero__title {

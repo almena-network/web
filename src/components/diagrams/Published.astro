@@ -40,21 +40,22 @@ const { label, steps, caption } = Astro.props;
 </figure>
 
 <style>
+  /* Four across where four fit, and stacked where they do not — decided by the width itself.
+     The gap is the wide one throughout, because it is also what the chevron between steps is
+     positioned into. */
   ol {
+    /* Named so the chevron below can ask this list's own width rather than the window's. */
+    container-type: inline-size;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 26px;
     margin: 0;
     padding: 0;
     list-style: none;
     counter-reset: none;
-  }
-
-  @media (min-width: 860px) {
-    ol {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 26px;
-    }
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(180px, calc(25% - 26px))), 1fr)
+    );
   }
 
   .step {
@@ -65,9 +66,11 @@ const { label, steps, caption } = Astro.props;
     border-radius: var(--radius);
   }
 
-  /* The chevron between steps. It exists on wide screens only: stacked, the reading order is
-     already the arrow, and a chevron pointing sideways would be pointing at nothing. */
-  @media (min-width: 860px) {
+  /* The chevron between steps. It points along the row, so it is drawn only where there is a row
+     to point along: stacked, the reading order is already the arrow and a chevron pointing
+     sideways would be pointing at nothing. The container query asks the one thing that decides
+     it — whether this list is laid out across or down — instead of guessing from the window. */
+  @container (min-width: 860px) {
     .step:not(:last-child)::after {
       content: "";
       position: absolute;

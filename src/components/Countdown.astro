@@ -63,10 +63,13 @@ const units = [
     color: var(--color-text);
   }
 
+  /* Four tiles across where four fit, two-by-two where they do not — worked out from the width
+     rather than switched at one. */
   .launch__grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(78px, 116px));
+    grid-template-columns: repeat(auto-fit, minmax(78px, 116px));
     gap: 14px;
+    max-width: calc(4 * 116px + 3 * 14px);
   }
 
   .launch__grid--done {
@@ -134,14 +137,6 @@ const units = [
     font-size: 0.9375rem;
     font-weight: 600;
     color: var(--color-text-muted);
-  }
-
-  @media (max-width: 460px) {
-    .launch__grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-      width: 100%;
-    }
   }
 </style>
 

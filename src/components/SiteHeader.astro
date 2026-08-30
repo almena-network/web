@@ -236,9 +236,13 @@ const languageLabel = site[lang].language;
     color: var(--color-text);
   }
 
+  /* The one place a literal is unavoidable: an option list is drawn by the operating system and
+     several browsers refuse a custom property here. The values are the ladder's own — a card's
+     rung and the text on it — so that the drop-down is the one surface it looks like rather than
+     the one that got left behind when the palette moved. */
   .nav__lang-select option {
-    color: #f3f5f8;
-    background: #141821;
+    color: #e9ecf1;
+    background: #1c212a;
   }
 
   .nav__lang-caret {
@@ -346,6 +350,11 @@ const languageLabel = site[lang].language;
     border-top: 1px solid var(--line);
   }
 
+  /* **The one exception, and it is named rather than left to be found.** Everything else on this
+     site reflows from the width it is given; a row of navigation cannot, because what decides
+     whether the links fit is how long the words are in the language being read. Below this the
+     links become a menu, and the pair is one decision written twice because a menu that stayed
+     open above it would be two navigations at once. */
   @media (max-width: 940px) {
     .nav__links {
       display: none;
@@ -366,7 +375,7 @@ const languageLabel = site[lang].language;
     }
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     .nav__inner {
       padding: 0 16px;
       gap: 12px;
