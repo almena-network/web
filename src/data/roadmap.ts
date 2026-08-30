@@ -190,9 +190,15 @@ export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
   "built",
-  "planned",
-  "planned",
-  "planned",
+  "built",
+  "built",
+  // **Under way and not built**, and the distinction is the whole of what this list is worth. What
+  // opening production takes is written and runs: the format is frozen against a checklist that
+  // probes it rather than a page somebody ticks, the two networks cannot speak to each other, and
+  // the trust anchor's own composition is published for anybody to read. What is missing is not
+  // code — it is a production network with real organisations on it, and calling that built on the
+  // strength of the code being ready is the caveat this list does not allow.
+  "under",
   "later",
   "later",
 ];

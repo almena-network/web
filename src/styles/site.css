@@ -1,10 +1,16 @@
 /*
  * The palette, and the one rule it exists to enforce: dark is not the same as flat.
  *
- * The surfaces are a **ladder** — four steps a reader can actually tell apart — built on one
- * cool hue rather than on neutral grey, so that a card sitting on a panel sitting on the page
- * reads as three depths instead of one slab. Every step is a token; a raw colour written into a
- * component is the thing that flattens the ladder again.
+ * **These are the platform's own values and not this site's.** The application and the node draw
+ * from `tokens.css` in their own repositories, and what is written here is the same ladder, the
+ * same identity colour and the same type scale under the names this site's markup already uses.
+ * A public site that looked like a different product from the thing it is about would be arguing
+ * against itself in the one place it cannot afford to.
+ *
+ * The surfaces are a **ladder** — five steps a reader can actually tell apart — built on one cool
+ * hue rather than on neutral grey, so that a card sitting on a panel sitting on the page reads as
+ * three depths instead of one slab. Every step is a token; a raw colour written into a component
+ * is the thing that flattens the ladder again.
  *
  * Colour carries meaning here and is never decoration. Four accents, one job each, and nothing
  * outside a diagram or the closing list uses the last three:
@@ -14,55 +20,71 @@
  *   `--tone-ok`  the minimal answer: what is enough
  *   `--tone-bad` what refuses, what is hostile, what this platform is not
  *
+ * The last three are the platform's own state colours — the green, the red and, for the network
+ * tone, the blue of its five identity colours — so a reader who has used the application meets the
+ * same greens meaning the same thing.
+ *
  * Every text tone below clears 4.5:1 against the page, including the quietest one — a caption
  * nobody can read is a caption that was not written.
  */
 :root {
   color-scheme: dark;
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    sans-serif;
+  /* The platform's own stack, and no webfont. A face fetched from somewhere else is a request
+     this site makes on a reader's behalf to a party they did not choose, on a page whose whole
+     argument is that they should get to choose. It is also one more thing between arriving and
+     reading. */
+  font-family: system-ui, Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 1.6;
 
-  /* Identity */
+  /* Identity: the colour of the application icon, drawn exactly as the application draws it. */
   --brand: #eb7229;
-  --brand-bright: #f7913f;
-  --brand-wash: rgba(235, 114, 41, 0.1);
-  --brand-edge: rgba(235, 114, 41, 0.38);
+  --brand-bright: color-mix(in srgb, var(--brand) 82%, white);
+  --brand-wash: color-mix(in srgb, var(--brand) 16%, transparent);
+  --brand-edge: color-mix(in srgb, var(--brand) 38%, transparent);
 
-  /* The three accents that only diagrams and the closing list may use */
-  --tone-net: #6aa6e8;
-  --tone-net-wash: rgba(106, 166, 232, 0.09);
-  --tone-net-edge: rgba(106, 166, 232, 0.34);
-  --tone-ok: #43c98a;
-  --tone-ok-wash: rgba(67, 201, 138, 0.09);
-  --tone-ok-edge: rgba(67, 201, 138, 0.34);
-  --tone-bad: #e2564d;
-  --tone-bad-wash: rgba(226, 86, 77, 0.09);
-  --tone-bad-edge: rgba(226, 86, 77, 0.32);
+  /* The three accents that only diagrams and the closing list may use. The blue is the
+     platform's own second identity colour; the green and the red are its *well* and *failed*
+     states, so a reader meets the same colours meaning the same things. */
+  --tone-net: #4a9eff;
+  --tone-net-wash: color-mix(in srgb, var(--tone-net) 14%, transparent);
+  --tone-net-edge: color-mix(in srgb, var(--tone-net) 34%, transparent);
+  --tone-ok: #3fb950;
+  --tone-ok-wash: color-mix(in srgb, var(--tone-ok) 14%, transparent);
+  --tone-ok-edge: color-mix(in srgb, var(--tone-ok) 34%, transparent);
+  --tone-bad: #f85149;
+  --tone-bad-wash: color-mix(in srgb, var(--tone-bad) 14%, transparent);
+  --tone-bad-edge: color-mix(in srgb, var(--tone-bad) 32%, transparent);
 
-  /* The ladder: page, panel, card, raised. Four steps, each visible against the last. */
-  --surface-0: #06070a;
-  --surface-1: #0d0f15;
-  --surface-2: #141821;
-  --surface-3: #1c212c;
+  /* The ladder, from the back of the screen to the front — the platform's five rungs. `sunken`
+     is cut into a surface, `surface-0` is the page, and the three above it are a panel, a card,
+     and a control on a card. */
+  --sunken: #080a0e;
+  --surface-0: #0e1116;
+  --surface-1: #1c212a;
+  --surface-2: #262b36;
+  --surface-3: #313743;
 
-  --line: rgba(150, 166, 196, 0.14);
-  --line-strong: rgba(150, 166, 196, 0.26);
+  --line: #303745;
+  --line-strong: rgb(255 255 255 / 14%);
 
-  /* Text: three weights of voice, all of them legible on the page */
-  --color-text: #f3f5f8;
-  --color-text-muted: #a7aebd;
-  --color-text-subtle: #7c8598;
+  /* Text: three weights of voice, all of them legible on the page. */
+  --color-text: #e9ecf1;
+  --color-text-muted: #a2a9b8;
+  --color-text-subtle: #798190;
 
-  /* Shape and motion */
-  --radius-sm: 9px;
-  --radius: 14px;
-  --radius-lg: 22px;
+  /* Shape and motion. One radius, with the platform's own steps off it. */
+  --radius: 10px;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-lg: calc(var(--radius) + 4px);
   --transition: 180ms ease-out;
+
+  /* The one breakpoint, and the one width a column of cards will not go below. Nothing else
+     about the device is ever asked: width is what a person changes by dragging, so a narrow
+     window and a small screen are one case rather than two. Grids find their own column count
+     from `auto-fit` and need no breakpoint of their own, which is what makes one enough. */
+  --breakpoint: 600px;
+  --width-card-min: 300px;
 }
 
 *,
@@ -90,12 +112,12 @@ body {
   background:
     radial-gradient(
       ellipse 120% 70% at 50% -15%,
-      rgba(235, 114, 41, 0.09) 0%,
+      color-mix(in srgb, var(--brand) 9%, transparent) 0%,
       transparent 62%
     ),
     radial-gradient(
       ellipse 90% 50% at 85% 108%,
-      rgba(106, 166, 232, 0.05) 0%,
+      color-mix(in srgb, var(--tone-net) 5%, transparent) 0%,
       transparent 60%
     ),
     var(--surface-0);
@@ -137,8 +159,8 @@ svg {
 .section--alt {
   background: linear-gradient(
     180deg,
-    rgba(150, 166, 196, 0.045) 0%,
-    rgba(150, 166, 196, 0.015) 100%
+    color-mix(in srgb, var(--surface-1) 55%, transparent) 0%,
+    transparent 100%
   );
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -380,14 +402,12 @@ svg {
   scrollbar-color: var(--line-strong) transparent;
 }
 
-@media (max-width: 700px) {
-  .panel__frame > svg {
-    min-width: 600px;
-  }
+.panel__frame > svg {
+  min-width: 600px;
+}
 
-  .panel__frame--narrow > svg {
-    min-width: 380px;
-  }
+.panel__frame--narrow > svg {
+  min-width: 380px;
 }
 
 .panel figcaption {
@@ -400,7 +420,9 @@ svg {
   text-align: center;
 }
 
-@media (max-width: 640px) {
+/* **The one breakpoint.** Below it the page is in its compact shape — everything above reflows
+   on its own, from the width it is given, which is what leaves only this. */
+@media (max-width: 600px) {
   .panel {
     padding: 20px 14px 16px;
   }

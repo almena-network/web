@@ -245,18 +245,17 @@ const strips = groups.map((cases, g) =>
     min-height: 27rem;
   }
 
+  /* The picture beside the words where both fit, and stacked where they do not. The floor is
+     the picture's rather than a card's: a drawing narrower than this stops being one. */
   .uc__panel {
+    --least: 380px;
     display: grid;
-    grid-template-columns: 1fr;
     gap: 32px;
     align-items: center;
-  }
-
-  @media (min-width: 900px) {
-    .uc__panel {
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-    }
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(var(--least), calc(50% - 32px))), 1fr)
+    );
   }
 
   /* Switching used to happen with no transition at all, which is half of why it read as a filter
@@ -318,7 +317,7 @@ const strips = groups.map((cases, g) =>
     color: var(--color-text-subtle);
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 600px) {
     .uc__panels {
       min-height: 0;
     }

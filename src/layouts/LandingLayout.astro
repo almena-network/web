@@ -33,7 +33,7 @@ const greets = lang === "en";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#06070a" />
+    <meta name="theme-color" content="#0e1116" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -41,12 +41,6 @@ const greets = lang === "en";
     <link rel="alternate" hreflang="en" href={`${Astro.url.origin}/`} />
     <link rel="alternate" hreflang="es" href={`${Astro.url.origin}/es/`} />
     <link rel="alternate" hreflang="x-default" href={`${Astro.url.origin}/`} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
     <title>{title}</title>
     <script is:inline>
       // Inline and in the head on purpose: this has to settle before anything is painted, or a
