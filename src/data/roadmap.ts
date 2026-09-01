@@ -53,7 +53,7 @@ const roadmapEn = {
     },
     {
       title: "Delivery while your phone is shut",
-      body: "An encrypted inbox, so somebody can leave you something when you are not there and you pick it up later.",
+      body: "An encrypted inbox, so somebody can leave you something when you are not there and you pick it up later. You start one by showing them a code — a different one every time, never the name of your account, so that two people you meet cannot work out they met the same person.",
     },
     {
       title: "Organisations, and who signs for them",
@@ -129,7 +129,7 @@ const roadmapEs: Widened<typeof roadmapEn> = {
     },
     {
       title: "Entrega con el móvil apagado",
-      body: "Un buzón cifrado, para que alguien pueda dejarte algo cuando no estás y lo recojas más tarde.",
+      body: "Un buzón cifrado, para que alguien pueda dejarte algo cuando no estás y lo recojas más tarde. Se empieza enseñándole un código: uno distinto cada vez, nunca el nombre de tu cuenta, para que dos personas a las que conozcas no puedan averiguar que conocieron a la misma.",
     },
     {
       title: "Entidades, y quién firma por ellas",
