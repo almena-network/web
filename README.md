@@ -56,4 +56,8 @@ Run `task` or `task --list` from this directory.
 | `task serve` | Serve built site (run build first) |
 | `task clean` | Remove build artifacts (dist/) |
 
+4321 is fixed, so `task dev`, `task preview` and `task serve` stop when something is already
+answering there, and name the process holding it with the `kill` to type. Nothing moves to
+the next port up: every instruction naming 4321 would be wrong for it.
+
 From the repo root: `task -d web install`, `task -d web build`, etc.

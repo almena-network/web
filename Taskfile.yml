@@ -8,6 +8,39 @@ vars:
   PKG_MGR: pnpm
 
 tasks:
+  # Refuse to start where something is already answering, and say what holds it. Every port here
+  # is written down — in a config, in the table of what answers where, in an instruction — so a
+  # busy one is not a thing to work around: Astro quietly takes the next port up and leaves every
+  # instruction naming this one wrong, Vite refuses with a message that names no process, and a
+  # second node fails to bind at all. Each of those is the same fact said badly, and the fact is
+  # that the last run never stopped.
+  #
+  # PORTS is a list, each entry a port or a `host:port`. Where there is no `lsof` — Windows, where
+  # Task runs these commands itself — nothing is asked and nothing is said, because a check that
+  # cannot run is not a reason to refuse.
+  ports:
+    internal: true
+    silent: true
+    cmds:
+      - |
+        command -v lsof >/dev/null 2>&1 || exit 0
+        held=""
+        for entry in {{.PORTS}}; do
+          port="${entry##*:}"
+          # `|| true` twice: lsof exits 1 where it matches nothing, and a free port is the
+          # ordinary case rather than a failure.
+          pids="$({ lsof -nP -iTCP:"$port" -sTCP:LISTEN -t 2>/dev/null || true; lsof -nP -iUDP:"$port" -t 2>/dev/null || true; } | sort -u)"
+          [ -n "$pids" ] || continue
+          [ -n "$held" ] || printf '\nSomething is already answering:\n\n'
+          for pid in $pids; do
+            printf '  %-5s  pid %-7s %s\n' "$port" "$pid" "$(ps -p "$pid" -o user=,etime=,command= 2>/dev/null | cut -c1-86)"
+            case " $held " in *" $pid "*) ;; *) held="$held $pid" ;; esac
+          done
+        done
+        [ -n "$held" ] || exit 0
+        printf '\nThe ports are fixed, so nothing here moves to the next one up. Stop that and run\nthis again:\n\n  kill%s\n\nStill there a moment later:\n\n  kill -9%s\n\n' "$held" "$held"
+        exit 1
+
   default:
     desc: List available tasks
     dir: "{{.TASKFILE_DIR}}"
@@ -65,6 +98,8 @@ tasks:
     desc: Run dev server with hot reload
     dir: "{{.TASKFILE_DIR}}"
     cmds:
+      - task: ports
+        vars: { PORTS: "4321" }
       - echo "Starting web dev server with hot reload..."
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run dev'
 
@@ -72,6 +107,8 @@ tasks:
     desc: Serve built site locally
     dir: "{{.TASKFILE_DIR}}"
     cmds:
+      - task: ports
+        vars: { PORTS: "4321" }
       - echo "Previewing built web site locally..."
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run preview'
 
@@ -79,6 +116,8 @@ tasks:
     desc: Serve built site (run build first if needed)
     dir: "{{.TASKFILE_DIR}}"
     cmds:
+      - task: ports
+        vars: { PORTS: "4321" }
       - echo "Serving built web site locally..."
       - '{{.PKG_MGR}} --dir "{{.TASKFILE_DIR}}" run preview'
 
