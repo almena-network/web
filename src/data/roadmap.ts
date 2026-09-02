@@ -190,7 +190,12 @@ export const roadmapStates: StateForEach<(typeof roadmapEn)["items"]> = [
   "built",
   "built",
   "built",
+  // Issuing, showing and withdrawing: the errand ran in a test, and now runs between two
+  // programs on a real node — the reference issuer and verifier on one side, the holder's app
+  // driven headless on the other (its `live` walk), through issue, present, refuse and revoke.
   "built",
+  // Getting back in: the same walk names guardians, freezes over post and comes back in from an
+  // empty machine, on a node whose clock is moved so that the waiting days pass.
   "built",
   // **Under way and not built**, and the distinction is the whole of what this list is worth. What
   // opening production takes is written and runs: the format is frozen against a checklist that
